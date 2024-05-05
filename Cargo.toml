@@ -1,0 +1,15 @@
+[package]
+name = "nts1mkii-rust-wave"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+crate-type = ["bin"]
+
+[profile.release]
+panic = "abort"
+opt-level = "s"
+lto = true
+
+[build-dependencies]
+bindgen = "0.65.1"

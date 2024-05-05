@@ -1,0 +1,3 @@
+[submodule "components/logue-sdk"]
+	path = components/logue-sdk
+	url = https://github.com/korginc/logue-sdk.git

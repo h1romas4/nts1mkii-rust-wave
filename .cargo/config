@@ -1,0 +1,18 @@
+[build]
+target = "thumbv7em-none-eabihf"
+
+[target.thumbv7em-none-eabihf]
+rustflags = [
+    "-C", "link-arg=--Map=dist/nts1mkii-rust-wave.map",
+    "-C", "link-arg=--cref",
+    "-C", "link-arg=--no-warn-mismatch",
+    "-C", "link-arg=--library-path=toolchain/gcc-arm-none-eabi/arm-none-eabi/lib",
+    "-C", "link-arg=--library-path=script/",
+    "-C", "link-arg=--script=unit.ld",
+    "-C", "link-arg=-shared",
+    "-C", "link-arg=--entry=0",
+    # "-C", "link-arg=-z max-page-size=128",
+    # "-C", "link-arg=--nmagic", # Align sections to page size
+    "-lc",
+    "-lm"
+]
