@@ -19,14 +19,14 @@ Clone repository: require `--recursive`
 git clone --recursive https://github.com/h1romas4/nts1mkii-rust-wave
 ```
 
-Build NTS-1 digital kit mkII sound unit: `dist/nts1mkii-rust-wave.nts1mkiiunit`
+Build NTS-1 digital kit mkII sound unit:
 
 ```bash
 cargo build --release
 cp -p target/thumbv7em-none-eabihf/release/nts1mkii-rust-wave dist/nts1mkii-rust-wave.nts1mkiiunit
 ```
 
-Transfer dist/nts1mkii-rust-wave.nts1mkiiunit to NTS-1 digital kit mkII.
+Transfer `dist/nts1mkii-rust-wave.nts1mkiiunit` to NTS-1 digital kit mkII.
 
 Enjoy!
 
