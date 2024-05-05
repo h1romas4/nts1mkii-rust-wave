@@ -1,5 +1,7 @@
 # nts1mkii-rust-wave
 
+![NTS-1](https://raw.githubusercontent.com/h1romas4/nts1mkii-rust-wave/main/docs/images/nts1mkii-rust-wave-01.jpg)
+
 ![](https://github.com/h1romas4/nts1mkii-rust-wave/workflows/Build/badge.svg)
 
 This repository is a Rust ported build of the WAVE(osc) synthesizer for the NTS-1 digital kit mkII included in [logue-sdk](https://github.com/korginc/logue-sdk).
