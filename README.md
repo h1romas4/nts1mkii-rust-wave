@@ -32,6 +32,7 @@ cd ..
 Build NTS-1 digital kit mkII sound unit:
 
 ```bash
+rustup target add thumbv7em-none-eabihf
 cargo build --release
 cp -p target/thumbv7em-none-eabihf/release/nts1mkii-rust-wave dist/nts1mkii-rust-wave.nts1mkiiunit
 ```
