@@ -1,0 +1,24 @@
+name: Build
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    steps:
+    - uses: actions/checkout@v1
+      with:
+        submodules: recursive
+
+    - name: Rust Toolchain Setup
+      run: |
+        curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+        rustup target add thumbv7em-none-eabihf
+
+    - name: Build
+      run: |
+        cargo build --release
+        readelf -a target/thumbv7em-none-eabihf/release/nts1mkii-rust-wave
