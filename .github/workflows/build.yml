@@ -12,13 +12,37 @@ jobs:
     - uses: actions/checkout@v1
       with:
         submodules: recursive
+        token: ${{secrets.GITHUB_TOKEN}}
+
+    - name: Cache gcc-arm-none-eabi
+      id: cache-gcc-arm-none-eabi
+      uses: actions/cache@v3
+      with:
+        path: ./toolchain
+        key: ${{ runner.os }}-gcc-arm-none-eabi-10.3-2021.10
+
+    - name: gcc-arm-none-eabi Toolchain Setup
+      if: steps.cache-gcc-arm-none-eabi.outputs.cache-hit != 'true'
+      run: |
+        cd toolchain
+        wget https://developer.arm.com/-/media/Files/downloads/gnu-rm/10.3-2021.10/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux.tar.bz2
+        tar xvf gcc-arm-none-eabi-10.3-2021.10-x86_64-linux.tar.bz2
+        rm gcc-arm-none-eabi-10.3-2021.10-x86_64-linux.tar.bz2
+        mv gcc-arm-none-eabi-10.3-2021.10 gcc-arm-none-eabi
+        touch gcc-arm-none-eabi/EMPTY # for git
 
     - name: Rust Toolchain Setup
       run: |
         curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
         rustup target add thumbv7em-none-eabihf
 
-    - name: Build
+    - name: Build logue-sdk
+      run: |
+        mkdir build && cd build
+        cmake ..
+        make
+
+    - name: Build Sound unit
       run: |
         cargo build --release
         readelf -a target/thumbv7em-none-eabihf/release/nts1mkii-rust-wave

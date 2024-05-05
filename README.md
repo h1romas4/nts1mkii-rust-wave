@@ -8,14 +8,42 @@ This may be useful if you want to write the sound source for the NTS-1 Digital K
 
 **WIP: No waveform is output yet**
 
-## Build
+## Reauire
+
+Clone repository: require `--recursive`
 
 ```bash
 git clone --recursive https://github.com/h1romas4/nts1mkii-rust-wave
+```
+
+Install Arm toolchaine (for Linux)
+
+```bash
+cd toolchain
+wget https://developer.arm.com/-/media/Files/downloads/gnu-rm/10.3-2021.10/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux.tar.bz2
+tar xvf gcc-arm-none-eabi-10.3-2021.10-x86_64-linux.tar.bz2
+rm gcc-arm-none-eabi-10.3-2021.10-x86_64-linux.tar.bz2
+mv gcc-arm-none-eabi-10.3-2021.10 gcc-arm-none-eabi
+touch gcc-arm-none-eabi/EMPTY # for git
+```
+
+## Build
+
+NTS-1 digital kit mkII sound unit: `dist/nts1mkii-rust-wave.nts1mkiiunit`
+
+```bash
 cargo build --release
 readelf -a target/thumbv7em-none-eabihf/release/nts1mkii-rust-wave > dist/nts1mkii-rust-wave.elf.txt
-# NTS-1 digital kit mkII sound unit `nts1mkii-rust-wave.nts1mkiiunit`
+# nts1mkii-rust-wave.nts1mkiiunit
 cp -p target/thumbv7em-none-eabihf/release/nts1mkii-rust-wave dist/nts1mkii-rust-wave.nts1mkiiunit
+```
+
+logue-sdk (optional): `dist/libnts1mkii.a`
+
+```bash
+mkdir build && cd build
+cmake ..
+make
 ```
 
 ## License
