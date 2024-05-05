@@ -8,7 +8,6 @@ This repository is a Rust ported build of the WAVE(osc) synthesizer for the NTS-
 
 **WIP: No waveform is output yet**
 
-
 ## Build
 
 Clone repository:
