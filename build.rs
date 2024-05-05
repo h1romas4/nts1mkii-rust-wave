@@ -8,8 +8,10 @@ fn main() {
     println!("cargo:rustc-link-search=native={}/dist", dir);
     println!("cargo:rustc-link-lib=nts1mkii");
 
-    bindgen_patch();
-    bindgen();
+    if std::env::var("WITH_LOGUE_SDK_BINDGEN").map(|s| s == "true").unwrap_or(false) {
+        bindgen_patch();
+        bindgen();
+    }
 }
 
 #[allow(dead_code)]

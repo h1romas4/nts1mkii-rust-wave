@@ -10,13 +10,27 @@ This may be useful if you want to write the sound source for the NTS-1 Digital K
 
 **WIP: No waveform is output yet**
 
-## Reauire
+
+## Build
 
 Clone repository: require `--recursive`
 
 ```bash
 git clone --recursive https://github.com/h1romas4/nts1mkii-rust-wave
 ```
+
+Build NTS-1 digital kit mkII sound unit: `dist/nts1mkii-rust-wave.nts1mkiiunit`
+
+```bash
+cargo build --release
+cp -p target/thumbv7em-none-eabihf/release/nts1mkii-rust-wave dist/nts1mkii-rust-wave.nts1mkiiunit
+```
+
+Transfer dist/nts1mkii-rust-wave.nts1mkiiunit to NTS-1 digital kit mkII.
+
+Enjoy!
+
+## Full Build (Optional - with louge-sdk bindgen)
 
 Install Arm toolchaine (for Linux) - [For other OS](https://github.com/korginc/logue-sdk/tree/master/tools/gcc)
 
@@ -30,23 +44,22 @@ mv gcc-arm-none-eabi-10.3-2021.10 gcc-arm-none-eabi
 touch gcc-arm-none-eabi/EMPTY # for git
 ```
 
-## Build
-
-NTS-1 digital kit mkII sound unit: `dist/nts1mkii-rust-wave.nts1mkiiunit`
-
-```bash
-cargo build --release
-readelf -a target/thumbv7em-none-eabihf/release/nts1mkii-rust-wave > dist/nts1mkii-rust-wave.elf.txt
-# nts1mkii-rust-wave.nts1mkiiunit
-cp -p target/thumbv7em-none-eabihf/release/nts1mkii-rust-wave dist/nts1mkii-rust-wave.nts1mkiiunit
-```
-
-logue-sdk (optional): `dist/libnts1mkii.a`
+Build logue-sdk: `dist/libnts1mkii.a`
 
 ```bash
 mkdir build && cd build
 cmake ..
 make
+cd ..
+ls -laF dist/libnts1mkii.a
+```
+
+Build Rust with bindgen: `WITH_LOGUE_SDK_BINDGEN=true`
+
+```bash
+WITH_LOGUE_SDK_BINDGEN=true cargo build --release
+readelf -a target/thumbv7em-none-eabihf/release/nts1mkii-rust-wave > dist/nts1mkii-rust-wave.elf.txt
+cp -p target/thumbv7em-none-eabihf/release/nts1mkii-rust-wave dist/nts1mkii-rust-wave.nts1mkiiunit
 ```
 
 ## License
