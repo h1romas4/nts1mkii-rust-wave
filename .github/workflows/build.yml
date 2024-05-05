@@ -30,6 +30,9 @@ jobs:
         rm gcc-arm-none-eabi-10.3-2021.10-x86_64-linux.tar.bz2
         mv gcc-arm-none-eabi-10.3-2021.10 gcc-arm-none-eabi
         touch gcc-arm-none-eabi/EMPTY # for git
+        pwd
+        ls -laF
+        ls -laF ../
 
     - name: Rust Toolchain Setup
       run: |
