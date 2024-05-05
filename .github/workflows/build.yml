@@ -32,6 +32,7 @@ jobs:
         touch gcc-arm-none-eabi/EMPTY # for git
         pwd
         ls -laF
+        ls -laF gcc-arm-none-eabi/
         ls -laF ../
 
     - name: Rust Toolchain Setup
@@ -41,6 +42,7 @@ jobs:
 
     - name: Build logue-sdk
       run: |
+        pwd
         mkdir build && cd build
         cmake ..
         make
