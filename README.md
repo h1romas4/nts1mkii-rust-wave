@@ -17,6 +17,19 @@ Clone repository:
 git clone --recursive https://github.com/h1romas4/nts1mkii-rust-wave
 ```
 
+Install Arm toolchaine (for Linux) - [For other OS](https://github.com/korginc/logue-sdk/tree/master/tools/gcc)
+
+```bash
+cd toolchain
+rm -Rf gcc-arm-none-eabi/
+wget https://developer.arm.com/-/media/Files/downloads/gnu-rm/10.3-2021.10/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux.tar.bz2
+tar xvf gcc-arm-none-eabi-10.3-2021.10-x86_64-linux.tar.bz2
+rm gcc-arm-none-eabi-10.3-2021.10-x86_64-linux.tar.bz2
+mv gcc-arm-none-eabi-10.3-2021.10 gcc-arm-none-eabi
+touch gcc-arm-none-eabi/EMPTY # for git
+cd ..
+```
+
 Build NTS-1 digital kit mkII sound unit:
 
 ```bash
@@ -29,18 +42,6 @@ Transfer `dist/nts1mkii-rust-wave.nts1mkiiunit` to NTS-1 digital kit mkII.
 Enjoy!
 
 ## Full Build (Optional - with louge-sdk bindgen)
-
-Install Arm toolchaine (for Linux) - [For other OS](https://github.com/korginc/logue-sdk/tree/master/tools/gcc)
-
-```bash
-cd toolchain
-rm -Rf gcc-arm-none-eabi/
-wget https://developer.arm.com/-/media/Files/downloads/gnu-rm/10.3-2021.10/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux.tar.bz2
-tar xvf gcc-arm-none-eabi-10.3-2021.10-x86_64-linux.tar.bz2
-rm gcc-arm-none-eabi-10.3-2021.10-x86_64-linux.tar.bz2
-mv gcc-arm-none-eabi-10.3-2021.10 gcc-arm-none-eabi
-touch gcc-arm-none-eabi/EMPTY # for git
-```
 
 Build logue-sdk: `dist/libnts1mkii.a`
 
