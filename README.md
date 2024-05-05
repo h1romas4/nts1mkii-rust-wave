@@ -16,7 +16,7 @@ Clone repository: require `--recursive`
 git clone --recursive https://github.com/h1romas4/nts1mkii-rust-wave
 ```
 
-Install Arm toolchaine (for Linux)
+Install Arm toolchaine (for Linux) - [For other OS](https://github.com/korginc/logue-sdk/tree/master/tools/gcc)
 
 ```bash
 cd toolchain
