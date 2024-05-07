@@ -6,7 +6,18 @@
 
 This repository is a Rust ported build of the WAVE(osc) synthesizer for the NTS-1 digital kit mkII included in [logue-sdk](https://github.com/korginc/logue-sdk). This may be useful if you want to write the sound unit for the NTS-1 Digital Kit mkII in Rust.
 
-**WIP: No waveform is output yet**
+**WIP: not working yet!**
+
+```rust
+#[no_mangle]
+pub extern "C" fn unit_note_on(_arg1: u8, _arg2: u8) {
+    // TODO: The problem is that it freezes.
+    // Relocation section '.rel.plt' at offset 0x5cc contains 1 entry:
+    // Offset     Info    Type            Sym.Value  Sym. Name
+    // 00000854  00001316 R_ARM_JUMP_SLOT   00000000   osc_white
+    // unsafe { osc_white() };
+}
+```
 
 ## Build
 
