@@ -225,7 +225,11 @@ pub extern "C" fn unit_tempo_4ppqn_tick(_arg1: u32) {
 
 #[no_mangle]
 pub extern "C" fn unit_note_on(_arg1: u8, _arg2: u8) {
-
+    // TODO: The problem is that it freezes.
+    // Relocation section '.rel.plt' at offset 0x5cc contains 1 entry:
+    // Offset     Info    Type            Sym.Value  Sym. Name
+    // 00000854  00001316 R_ARM_JUMP_SLOT   00000000   osc_white
+    // unsafe { osc_white() };
 }
 
 #[no_mangle]
