@@ -9,7 +9,7 @@ crate-type = ["bin"]
 [profile.release]
 panic = "abort"
 opt-level = "s"
-lto = true
+lto = false
 
 [build-dependencies]
 bindgen = "0.65.1"
