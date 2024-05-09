@@ -2,6 +2,7 @@
 target = "thumbv7em-none-eabihf"
 
 [target.thumbv7em-none-eabihf]
+# linker = "toolchain/gcc-arm-none-eabi/bin/arm-none-eabi-ld"
 rustflags = [
     "-C", "relocation-model=pic",
     "-C", "link-arg=--Map=dist/nts1mkii-rust-wave.map",
