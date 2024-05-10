@@ -2,11 +2,12 @@
 target = "thumbv7em-none-eabihf"
 
 [target.thumbv7em-none-eabihf]
-# linker = "toolchain/gcc-arm-none-eabi/bin/arm-none-eabi-ld"
+#  $(rustc --print sysroot)/lib/rustlib/x86_64-unknown-linux-gnu/bin/gcc-ld/ld.lld --help
 rustflags = [
     "-C", "target-cpu=cortex-m7",
     "-C", "relocation-model=pic",
     "-C", "link-arg=--nmagic",
+    "-C", "link-arg=--target2=got-rel",
     "-C", "link-arg=--Map=dist/nts1mkii-rust-wave.map",
     "-C", "link-arg=--cref",
     "-C", "link-arg=--no-warn-mismatch",
