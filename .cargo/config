@@ -4,7 +4,9 @@ target = "thumbv7em-none-eabihf"
 [target.thumbv7em-none-eabihf]
 # linker = "toolchain/gcc-arm-none-eabi/bin/arm-none-eabi-ld"
 rustflags = [
+    "-C", "target-cpu=cortex-m7",
     "-C", "relocation-model=pic",
+    "-C", "link-arg=--nmagic",
     "-C", "link-arg=--Map=dist/nts1mkii-rust-wave.map",
     "-C", "link-arg=--cref",
     "-C", "link-arg=--no-warn-mismatch",
@@ -13,8 +15,6 @@ rustflags = [
     "-C", "link-arg=--script=unit.ld",
     "-C", "link-arg=-shared",
     "-C", "link-arg=--entry=0",
-    # "-C", "link-arg=-z max-page-size=128",
-    # "-C", "link-arg=--nmagic", # Align sections to page size
     "-lc",
     "-lm"
 ]
