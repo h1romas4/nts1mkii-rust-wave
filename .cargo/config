@@ -2,7 +2,8 @@
 target = "thumbv7em-none-eabihf"
 
 [target.thumbv7em-none-eabihf]
-#  $(rustc --print sysroot)/lib/rustlib/x86_64-unknown-linux-gnu/bin/gcc-ld/ld.lld --help
+# rustc --print target-features --target thumbv7em-none-eabihf
+# $(rustc --print sysroot)/lib/rustlib/x86_64-unknown-linux-gnu/bin/gcc-ld/ld.lld --help
 rustflags = [
     "-C", "target-cpu=cortex-m7",
     "-C", "relocation-model=pic",
