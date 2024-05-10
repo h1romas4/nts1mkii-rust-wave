@@ -7,8 +7,6 @@ target = "thumbv7em-none-eabihf"
 rustflags = [
     "-C", "target-cpu=cortex-m7",
     "-C", "relocation-model=pic",
-    "-C", "link-arg=--nmagic",
-    "-C", "link-arg=--target2=got-rel",
     "-C", "link-arg=--Map=dist/nts1mkii-rust-wave.map",
     "-C", "link-arg=--cref",
     "-C", "link-arg=--no-warn-mismatch",
