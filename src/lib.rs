@@ -166,7 +166,7 @@ pub extern "C" fn unit_note_on(_arg1: u8, _arg2: u8) {
     // Relocation section '.rel.plt' at offset 0x5cc contains 1 entry:
     // Offset     Info    Type            Sym.Value  Sym. Name
     // 00000854  00001316 R_ARM_JUMP_SLOT   00000000   osc_white
-    // unsafe { osc_white() };
+    unsafe { osc_white() };
 }
 
 ///
