@@ -1,0 +1,31 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "objdump",
+            "type": "shell",
+            "command": "toolchain/gcc-arm-none-eabi/bin/arm-none-eabi-objdump",
+            "args": [
+                "-d",
+                "target/thumbv7em-none-eabihf/release/nts1mkii-rust-wave",
+                "|",
+                "tee",
+                "dist/nts1mkii-rust-wave.objdump.txt"
+            ],
+            "problemMatcher": []
+        },
+        {
+            "label": "readelf",
+            "type": "shell",
+            "command": "readelf",
+            "args": [
+                "-a",
+                "target/thumbv7em-none-eabihf/release/nts1mkii-rust-wave",
+                "|",
+                "tee",
+                "dist/nts1mkii-rust-wave.readelf.txt"
+            ],
+            "problemMatcher": []
+    }
+    ]
+}
