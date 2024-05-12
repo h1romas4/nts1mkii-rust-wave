@@ -1,0 +1,340 @@
+
+Discarded input sections
+
+ .group         0x0000000000000000        0x8 /home/hiromasa/devel/korg/logue-sdk/platform/nts-1_mkii/waves//build/obj/unit.o
+ .group         0x0000000000000000        0xc /home/hiromasa/devel/korg/logue-sdk/platform/nts-1_mkii/waves//build/obj/unit.o
+ .group         0x0000000000000000        0x8 /home/hiromasa/devel/korg/logue-sdk/platform/nts-1_mkii/waves//build/obj/unit.o
+ .group         0x0000000000000000        0x8 /home/hiromasa/devel/korg/logue-sdk/platform/nts-1_mkii/waves//build/obj/unit.o
+
+Memory Configuration
+
+Name             Origin             Length             Attributes
+*default*        0x0000000000000000 0xffffffffffffffff
+
+Linker script and memory map
+
+LOAD /home/hiromasa/devel/korg/logue-sdk/platform/nts-1_mkii/waves//build/obj/header.o
+LOAD /home/hiromasa/devel/korg/logue-sdk/platform/nts-1_mkii/waves//build/obj/_unit_base.o
+LOAD /home/hiromasa/devel/korg/logue-sdk/platform/nts-1_mkii/waves//build/obj/unit.o
+                0x0000000000000000                __heap_size = 0x0
+                0x0000000000000000                __stack_size = 0x0
+                0x00000000000000d4                . = SIZEOF_HEADERS
+
+.hash           0x00000000000000d4      0x164
+ *(.hash)
+ .hash          0x00000000000000d4      0x164 /home/hiromasa/devel/korg/logue-sdk/platform/nts-1_mkii/waves//build/obj/header.o
+
+.dynsym         0x0000000000000238      0x320
+ *(.dynsym)
+ .dynsym        0x0000000000000238      0x320 /home/hiromasa/devel/korg/logue-sdk/platform/nts-1_mkii/waves//build/obj/header.o
+
+.dynstr         0x0000000000000558      0x277
+ *(.dynstr)
+ .dynstr        0x0000000000000558      0x277 /home/hiromasa/devel/korg/logue-sdk/platform/nts-1_mkii/waves//build/obj/header.o
+
+.rel.dyn        0x00000000000007d0       0x58
+ *(.rel.dyn)
+ .rel.got       0x00000000000007d0       0x50 /home/hiromasa/devel/korg/logue-sdk/platform/nts-1_mkii/waves//build/obj/header.o
+ .rel.iplt      0x0000000000000820        0x0 /home/hiromasa/devel/korg/logue-sdk/platform/nts-1_mkii/waves//build/obj/header.o
+ .rel.init_array
+                0x0000000000000820        0x8 /home/hiromasa/devel/korg/logue-sdk/platform/nts-1_mkii/waves//build/obj/header.o
+
+.rel.plt        0x0000000000000828       0x28
+ *(.rel.plt)
+ .rel.plt       0x0000000000000828       0x28 /home/hiromasa/devel/korg/logue-sdk/platform/nts-1_mkii/waves//build/obj/header.o
+
+.text           0x0000000000000850      0x980
+ *(.text)
+ .text          0x0000000000000850        0x0 /home/hiromasa/devel/korg/logue-sdk/platform/nts-1_mkii/waves//build/obj/header.o
+ .text          0x0000000000000850       0x2a /home/hiromasa/devel/korg/logue-sdk/platform/nts-1_mkii/waves//build/obj/_unit_base.o
+ *fill*         0x000000000000087a        0x2 
+ .text          0x000000000000087c      0x628 /home/hiromasa/devel/korg/logue-sdk/platform/nts-1_mkii/waves//build/obj/unit.o
+                0x000000000000087c                unit_init
+                0x0000000000000984                unit_teardown
+                0x0000000000000986                unit_reset
+                0x0000000000000998                unit_resume
+                0x000000000000099a                unit_suspend
+                0x000000000000099c                unit_render
+                0x0000000000000e44                unit_set_param_value
+                0x0000000000000e58                unit_get_param_value
+                0x0000000000000e6c                unit_get_param_str_value
+                0x0000000000000e70                unit_set_tempo
+                0x0000000000000e72                unit_tempo_4ppqn_tick
+                0x0000000000000e74                unit_note_on
+                0x0000000000000e98                unit_note_off
+                0x0000000000000e9a                unit_all_note_off
+                0x0000000000000e9c                unit_pitch_bend
+                0x0000000000000e9e                unit_channel_pressure
+                0x0000000000000ea0                unit_aftertouch
+ *(.text.*)
+ .text._ZN5Waves5State5ResetEv
+                0x0000000000000ea4        0xe /home/hiromasa/devel/korg/logue-sdk/platform/nts-1_mkii/waves//build/obj/unit.o
+                0x0000000000000ea4                Waves::State::Reset()
+ *fill*         0x0000000000000eb2        0x2 
+ .text._ZN5WavesC2Ev
+                0x0000000000000eb4       0xa4 /home/hiromasa/devel/korg/logue-sdk/platform/nts-1_mkii/waves//build/obj/unit.o
+                0x0000000000000eb4                Waves::Waves()
+                0x0000000000000eb4                Waves::Waves()
+ .text._ZN5Waves12setParameterEhl
+                0x0000000000000f58      0x190 /home/hiromasa/devel/korg/logue-sdk/platform/nts-1_mkii/waves//build/obj/unit.o
+                0x0000000000000f58                Waves::setParameter(unsigned char, long)
+ .text._ZNK5Waves17getParameterValueEh
+                0x00000000000010e8       0xd8 /home/hiromasa/devel/korg/logue-sdk/platform/nts-1_mkii/waves//build/obj/unit.o
+                0x00000000000010e8                Waves::getParameterValue(unsigned char) const
+ .text.startup  0x00000000000011c0       0x10 /home/hiromasa/devel/korg/logue-sdk/platform/nts-1_mkii/waves//build/obj/unit.o
+ *(.init)
+ *(.fini)
+ *crtbegin.o(.ctors)
+ *crtbegin?.o(.ctors)
+ *(EXCLUDE_FILE(*crtend.o *crtend?.o) .ctors)
+ *(SORT_BY_NAME(.ctors.*))
+ *(.ctors)
+ *(.rodata)
+ *(.rodata.*)
+
+.glue_7         0x00000000000011d0        0x0
+ .glue_7        0x00000000000011d0        0x0 linker stubs
+
+.glue_7t        0x00000000000011d0        0x0
+ .glue_7t       0x00000000000011d0        0x0 linker stubs
+
+.vfp11_veneer   0x00000000000011d0        0x0
+ .vfp11_veneer  0x00000000000011d0        0x0 linker stubs
+
+.v4_bx          0x00000000000011d0        0x0
+ .v4_bx         0x00000000000011d0        0x0 linker stubs
+
+.plt            0x00000000000011d0       0x60
+ .plt           0x00000000000011d0       0x60 /home/hiromasa/devel/korg/logue-sdk/platform/nts-1_mkii/waves//build/obj/header.o
+
+.iplt           0x0000000000001230        0x0
+ .iplt          0x0000000000001230        0x0 /home/hiromasa/devel/korg/logue-sdk/platform/nts-1_mkii/waves//build/obj/header.o
+
+.unit_header    0x0000000000001230      0x330
+                0x0000000000001230                . = ALIGN (0x8)
+ *(.unit_header)
+ .unit_header   0x0000000000001230      0x198 /home/hiromasa/devel/korg/logue-sdk/platform/nts-1_mkii/waves//build/obj/header.o
+                0x0000000000001230                unit_header
+ .unit_header   0x00000000000013c8      0x198 /home/hiromasa/devel/korg/logue-sdk/platform/nts-1_mkii/waves//build/obj/_unit_base.o
+
+.gnu.version_d  0x0000000000001560        0x0
+ .gnu.version_d
+                0x0000000000001560        0x0 /home/hiromasa/devel/korg/logue-sdk/platform/nts-1_mkii/waves//build/obj/header.o
+
+.gnu.version    0x0000000000001560        0x0
+ .gnu.version   0x0000000000001560        0x0 /home/hiromasa/devel/korg/logue-sdk/platform/nts-1_mkii/waves//build/obj/header.o
+
+.gnu.version_r  0x0000000000001560        0x0
+ .gnu.version_r
+                0x0000000000001560        0x0 /home/hiromasa/devel/korg/logue-sdk/platform/nts-1_mkii/waves//build/obj/header.o
+
+.preinit_array  0x0000000000001560        0x0
+                0x0000000000001560                . = ALIGN (0x4)
+                [!provide]                        PROVIDE (__preinit_array_start = .)
+ *(.preinit_array)
+                [!provide]                        PROVIDE (__preinit_array_end = .)
+
+.init_array     0x0000000000001560        0x4
+                0x0000000000001560                . = ALIGN (0x4)
+                [!provide]                        PROVIDE (__init_array_start = .)
+ *(SORT_BY_INIT_PRIORITY(.init_array.*))
+ *(.init_array)
+ .init_array    0x0000000000001560        0x4 /home/hiromasa/devel/korg/logue-sdk/platform/nts-1_mkii/waves//build/obj/unit.o
+                [!provide]                        PROVIDE (__init_array_end = .)
+
+.dynamic        0x0000000000001568       0xa0
+                0x0000000000001568                . = ALIGN (0x8)
+ *(.dynamic)
+ .dynamic       0x0000000000001568       0xa0 /home/hiromasa/devel/korg/logue-sdk/platform/nts-1_mkii/waves//build/obj/header.o
+                0x0000000000001568                _DYNAMIC
+
+.got            0x0000000000001608       0x48
+ *(.got.plt)
+ .got.plt       0x0000000000001608       0x20 /home/hiromasa/devel/korg/logue-sdk/platform/nts-1_mkii/waves//build/obj/header.o
+                0x0000000000001608                _GLOBAL_OFFSET_TABLE_
+ *(.igot.plt)
+ .igot.plt      0x0000000000001628        0x0 /home/hiromasa/devel/korg/logue-sdk/platform/nts-1_mkii/waves//build/obj/header.o
+ *(.got)
+ .got           0x0000000000001628       0x28 /home/hiromasa/devel/korg/logue-sdk/platform/nts-1_mkii/waves//build/obj/header.o
+ *(.igot)
+
+.data           0x0000000000001650        0x0
+                0x0000000000001650                . = ALIGN (0x4)
+                0x0000000000001650                __data_start__ = .
+ *(vtable)
+ *(.data)
+ .data          0x0000000000001650        0x0 /home/hiromasa/devel/korg/logue-sdk/platform/nts-1_mkii/waves//build/obj/header.o
+ .data          0x0000000000001650        0x0 /home/hiromasa/devel/korg/logue-sdk/platform/nts-1_mkii/waves//build/obj/_unit_base.o
+ .data          0x0000000000001650        0x0 /home/hiromasa/devel/korg/logue-sdk/platform/nts-1_mkii/waves//build/obj/unit.o
+ *(.data.*)
+ .data.rel.ro   0x0000000000001650        0x0 /home/hiromasa/devel/korg/logue-sdk/platform/nts-1_mkii/waves//build/obj/header.o
+                0x0000000000001650                . = ALIGN (0x4)
+                0x0000000000001650                __data_end__ = .
+
+.bss            0x0000000000001650       0xb0
+                0x0000000000001650                . = ALIGN (0x4)
+                0x0000000000001650                __bss_start__ = .
+ *(.bss)
+ .bss           0x0000000000001650        0x0 /home/hiromasa/devel/korg/logue-sdk/platform/nts-1_mkii/waves//build/obj/header.o
+ .bss           0x0000000000001650        0x0 /home/hiromasa/devel/korg/logue-sdk/platform/nts-1_mkii/waves//build/obj/_unit_base.o
+ .bss           0x0000000000001650       0xb0 /home/hiromasa/devel/korg/logue-sdk/platform/nts-1_mkii/waves//build/obj/unit.o
+ *(.bss.*)
+ *(COMMON)
+                0x0000000000001700                . = ALIGN (0x4)
+                0x0000000000001700                __bss_end__ = .
+
+.dynbss         0x0000000000001700        0x0
+ .dynbss        0x0000000000001700        0x0 /home/hiromasa/devel/korg/logue-sdk/platform/nts-1_mkii/waves//build/obj/header.o
+
+.stack          0x0000000000001700        0x4
+                0x0000000000001700                . = ALIGN (0x10)
+                0x0000000000001700                __HEAP = .
+                0x0000000000001700                _end = .
+                0x0000000000001700                end = .
+                0x0000000000001700                . = (. + __heap_size)
+                0x0000000000001700                __HEAP_END = .
+                0x0000000000001700                _stack_end = .
+                0x0000000000001700                . = (. + __stack_size)
+                0x0000000000001700                _stack_addr = .
+                0x0000000000001700                __stack = .
+                0x0000000000001700                __SP_INIT = .
+                0x0000000000001704                . = (. + 0x4)
+ *fill*         0x0000000000001700        0x4 
+
+/DISCARD/
+ *(.fini_array.* .fini_array .dtors.* .dtors)
+ *(.note.GNU-stack)
+ *(.gnu_debuglink)
+ *(.gnu.lto_*)
+LOAD /home/hiromasa/devel/korg/logue-sdk/tools/gcc/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libc_nano.a
+LOAD /home/hiromasa/devel/korg/logue-sdk/tools/gcc/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libm.a
+START GROUP
+LOAD /home/hiromasa/devel/korg/logue-sdk/tools/gcc/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/thumb/v7e-m+fp/hard/libgcc.a
+END GROUP
+START GROUP
+LOAD /home/hiromasa/devel/korg/logue-sdk/tools/gcc/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/thumb/v7e-m+fp/hard/libgcc.a
+LOAD /home/hiromasa/devel/korg/logue-sdk/tools/gcc/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libc_nano.a
+LOAD /home/hiromasa/devel/korg/logue-sdk/tools/gcc/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libnosys.a
+END GROUP
+START GROUP
+LOAD /home/hiromasa/devel/korg/logue-sdk/tools/gcc/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/thumb/v7e-m+fp/hard/libgcc.a
+LOAD /home/hiromasa/devel/korg/logue-sdk/tools/gcc/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libc_nano.a
+LOAD /home/hiromasa/devel/korg/logue-sdk/tools/gcc/gcc-arm-none-eabi-10.3-2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libnosys.a
+END GROUP
+OUTPUT(/home/hiromasa/devel/korg/logue-sdk/platform/nts-1_mkii/waves//build/waves.elf elf32-littlearm)
+LOAD linker stubs
+
+.debug_info     0x0000000000000000     0x5956
+ .debug_info    0x0000000000000000      0x3d4 /home/hiromasa/devel/korg/logue-sdk/platform/nts-1_mkii/waves//build/obj/header.o
+ .debug_info    0x00000000000003d4      0x7bd /home/hiromasa/devel/korg/logue-sdk/platform/nts-1_mkii/waves//build/obj/_unit_base.o
+ .debug_info    0x0000000000000b91     0x4dc5 /home/hiromasa/devel/korg/logue-sdk/platform/nts-1_mkii/waves//build/obj/unit.o
+
+.debug_abbrev   0x0000000000000000      0xc57
+ .debug_abbrev  0x0000000000000000      0x11b /home/hiromasa/devel/korg/logue-sdk/platform/nts-1_mkii/waves//build/obj/header.o
+ .debug_abbrev  0x000000000000011b      0x2d4 /home/hiromasa/devel/korg/logue-sdk/platform/nts-1_mkii/waves//build/obj/_unit_base.o
+ .debug_abbrev  0x00000000000003ef      0x868 /home/hiromasa/devel/korg/logue-sdk/platform/nts-1_mkii/waves//build/obj/unit.o
+
+.debug_aranges  0x0000000000000000       0x80
+ .debug_aranges
+                0x0000000000000000       0x18 /home/hiromasa/devel/korg/logue-sdk/platform/nts-1_mkii/waves//build/obj/header.o
+ .debug_aranges
+                0x0000000000000018       0x20 /home/hiromasa/devel/korg/logue-sdk/platform/nts-1_mkii/waves//build/obj/_unit_base.o
+ .debug_aranges
+                0x0000000000000038       0x48 /home/hiromasa/devel/korg/logue-sdk/platform/nts-1_mkii/waves//build/obj/unit.o
+
+.debug_line     0x0000000000000000     0x16e0
+ .debug_line    0x0000000000000000      0x172 /home/hiromasa/devel/korg/logue-sdk/platform/nts-1_mkii/waves//build/obj/header.o
+ .debug_line    0x0000000000000172      0x2c1 /home/hiromasa/devel/korg/logue-sdk/platform/nts-1_mkii/waves//build/obj/_unit_base.o
+ .debug_line    0x0000000000000433     0x12ad /home/hiromasa/devel/korg/logue-sdk/platform/nts-1_mkii/waves//build/obj/unit.o
+
+.debug_str      0x0000000000000000     0x2c8f
+ .debug_str     0x0000000000000000      0x657 /home/hiromasa/devel/korg/logue-sdk/platform/nts-1_mkii/waves//build/obj/header.o
+                                        0x6da (size before relaxing)
+ .debug_str     0x0000000000000657      0x32b /home/hiromasa/devel/korg/logue-sdk/platform/nts-1_mkii/waves//build/obj/_unit_base.o
+                                        0x872 (size before relaxing)
+ .debug_str     0x0000000000000982     0x230d /home/hiromasa/devel/korg/logue-sdk/platform/nts-1_mkii/waves//build/obj/unit.o
+                                       0x2a28 (size before relaxing)
+
+.comment        0x0000000000000000       0x49
+ .comment       0x0000000000000000       0x49 /home/hiromasa/devel/korg/logue-sdk/platform/nts-1_mkii/waves//build/obj/header.o
+                                         0x4a (size before relaxing)
+ .comment       0x0000000000000049       0x4a /home/hiromasa/devel/korg/logue-sdk/platform/nts-1_mkii/waves//build/obj/_unit_base.o
+ .comment       0x0000000000000049       0x4a /home/hiromasa/devel/korg/logue-sdk/platform/nts-1_mkii/waves//build/obj/unit.o
+
+.ARM.attributes
+                0x0000000000000000       0x34
+ .ARM.attributes
+                0x0000000000000000       0x34 /home/hiromasa/devel/korg/logue-sdk/platform/nts-1_mkii/waves//build/obj/header.o
+ .ARM.attributes
+                0x0000000000000034       0x34 /home/hiromasa/devel/korg/logue-sdk/platform/nts-1_mkii/waves//build/obj/_unit_base.o
+ .ARM.attributes
+                0x0000000000000068       0x34 /home/hiromasa/devel/korg/logue-sdk/platform/nts-1_mkii/waves//build/obj/unit.o
+
+.debug_loc      0x0000000000000000     0x1825
+ .debug_loc     0x0000000000000000       0x6f /home/hiromasa/devel/korg/logue-sdk/platform/nts-1_mkii/waves//build/obj/_unit_base.o
+ .debug_loc     0x000000000000006f     0x17b6 /home/hiromasa/devel/korg/logue-sdk/platform/nts-1_mkii/waves//build/obj/unit.o
+
+.debug_frame    0x0000000000000000      0x328
+ .debug_frame   0x0000000000000000      0x120 /home/hiromasa/devel/korg/logue-sdk/platform/nts-1_mkii/waves//build/obj/_unit_base.o
+ .debug_frame   0x0000000000000120      0x208 /home/hiromasa/devel/korg/logue-sdk/platform/nts-1_mkii/waves//build/obj/unit.o
+
+.debug_ranges   0x0000000000000000      0x660
+ .debug_ranges  0x0000000000000000      0x660 /home/hiromasa/devel/korg/logue-sdk/platform/nts-1_mkii/waves//build/obj/unit.o
+
+Cross Reference Table
+
+Symbol                                            File
+Waves::State::Reset()                             /home/hiromasa/devel/korg/logue-sdk/platform/nts-1_mkii/waves//build/obj/unit.o
+Waves::Waves()                                    /home/hiromasa/devel/korg/logue-sdk/platform/nts-1_mkii/waves//build/obj/unit.o
+Waves::Waves()                                    /home/hiromasa/devel/korg/logue-sdk/platform/nts-1_mkii/waves//build/obj/unit.o
+Waves::getParameterValue(unsigned char) const     /home/hiromasa/devel/korg/logue-sdk/platform/nts-1_mkii/waves//build/obj/unit.o
+Waves::setParameter(unsigned char, long)          /home/hiromasa/devel/korg/logue-sdk/platform/nts-1_mkii/waves//build/obj/unit.o
+_DYNAMIC                                          /home/hiromasa/devel/korg/logue-sdk/platform/nts-1_mkii/waves//build/obj/header.o
+_GLOBAL_OFFSET_TABLE_                             /home/hiromasa/devel/korg/logue-sdk/platform/nts-1_mkii/waves//build/obj/header.o
+                                                  /home/hiromasa/devel/korg/logue-sdk/platform/nts-1_mkii/waves//build/obj/unit.o
+bitres_lut_f                                      /home/hiromasa/devel/korg/logue-sdk/platform/nts-1_mkii/waves//build/obj/unit.o
+midi_to_hz_lut_f                                  /home/hiromasa/devel/korg/logue-sdk/platform/nts-1_mkii/waves//build/obj/unit.o
+osc_white                                         /home/hiromasa/devel/korg/logue-sdk/platform/nts-1_mkii/waves//build/obj/unit.o
+tanpi_lut_f                                       /home/hiromasa/devel/korg/logue-sdk/platform/nts-1_mkii/waves//build/obj/unit.o
+unit_aftertouch                                   /home/hiromasa/devel/korg/logue-sdk/platform/nts-1_mkii/waves//build/obj/unit.o
+                                                  /home/hiromasa/devel/korg/logue-sdk/platform/nts-1_mkii/waves//build/obj/_unit_base.o
+unit_all_note_off                                 /home/hiromasa/devel/korg/logue-sdk/platform/nts-1_mkii/waves//build/obj/unit.o
+                                                  /home/hiromasa/devel/korg/logue-sdk/platform/nts-1_mkii/waves//build/obj/_unit_base.o
+unit_channel_pressure                             /home/hiromasa/devel/korg/logue-sdk/platform/nts-1_mkii/waves//build/obj/unit.o
+                                                  /home/hiromasa/devel/korg/logue-sdk/platform/nts-1_mkii/waves//build/obj/_unit_base.o
+unit_get_param_str_value                          /home/hiromasa/devel/korg/logue-sdk/platform/nts-1_mkii/waves//build/obj/unit.o
+                                                  /home/hiromasa/devel/korg/logue-sdk/platform/nts-1_mkii/waves//build/obj/_unit_base.o
+unit_get_param_value                              /home/hiromasa/devel/korg/logue-sdk/platform/nts-1_mkii/waves//build/obj/unit.o
+                                                  /home/hiromasa/devel/korg/logue-sdk/platform/nts-1_mkii/waves//build/obj/_unit_base.o
+unit_header                                       /home/hiromasa/devel/korg/logue-sdk/platform/nts-1_mkii/waves//build/obj/header.o
+                                                  /home/hiromasa/devel/korg/logue-sdk/platform/nts-1_mkii/waves//build/obj/unit.o
+unit_init                                         /home/hiromasa/devel/korg/logue-sdk/platform/nts-1_mkii/waves//build/obj/unit.o
+                                                  /home/hiromasa/devel/korg/logue-sdk/platform/nts-1_mkii/waves//build/obj/_unit_base.o
+unit_note_off                                     /home/hiromasa/devel/korg/logue-sdk/platform/nts-1_mkii/waves//build/obj/unit.o
+                                                  /home/hiromasa/devel/korg/logue-sdk/platform/nts-1_mkii/waves//build/obj/_unit_base.o
+unit_note_on                                      /home/hiromasa/devel/korg/logue-sdk/platform/nts-1_mkii/waves//build/obj/unit.o
+                                                  /home/hiromasa/devel/korg/logue-sdk/platform/nts-1_mkii/waves//build/obj/_unit_base.o
+unit_pitch_bend                                   /home/hiromasa/devel/korg/logue-sdk/platform/nts-1_mkii/waves//build/obj/unit.o
+                                                  /home/hiromasa/devel/korg/logue-sdk/platform/nts-1_mkii/waves//build/obj/_unit_base.o
+unit_render                                       /home/hiromasa/devel/korg/logue-sdk/platform/nts-1_mkii/waves//build/obj/unit.o
+                                                  /home/hiromasa/devel/korg/logue-sdk/platform/nts-1_mkii/waves//build/obj/_unit_base.o
+unit_reset                                        /home/hiromasa/devel/korg/logue-sdk/platform/nts-1_mkii/waves//build/obj/unit.o
+                                                  /home/hiromasa/devel/korg/logue-sdk/platform/nts-1_mkii/waves//build/obj/_unit_base.o
+unit_resume                                       /home/hiromasa/devel/korg/logue-sdk/platform/nts-1_mkii/waves//build/obj/unit.o
+                                                  /home/hiromasa/devel/korg/logue-sdk/platform/nts-1_mkii/waves//build/obj/_unit_base.o
+unit_set_param_value                              /home/hiromasa/devel/korg/logue-sdk/platform/nts-1_mkii/waves//build/obj/unit.o
+                                                  /home/hiromasa/devel/korg/logue-sdk/platform/nts-1_mkii/waves//build/obj/_unit_base.o
+unit_set_tempo                                    /home/hiromasa/devel/korg/logue-sdk/platform/nts-1_mkii/waves//build/obj/unit.o
+                                                  /home/hiromasa/devel/korg/logue-sdk/platform/nts-1_mkii/waves//build/obj/_unit_base.o
+unit_suspend                                      /home/hiromasa/devel/korg/logue-sdk/platform/nts-1_mkii/waves//build/obj/unit.o
+                                                  /home/hiromasa/devel/korg/logue-sdk/platform/nts-1_mkii/waves//build/obj/_unit_base.o
+unit_teardown                                     /home/hiromasa/devel/korg/logue-sdk/platform/nts-1_mkii/waves//build/obj/unit.o
+                                                  /home/hiromasa/devel/korg/logue-sdk/platform/nts-1_mkii/waves//build/obj/_unit_base.o
+unit_tempo_4ppqn_tick                             /home/hiromasa/devel/korg/logue-sdk/platform/nts-1_mkii/waves//build/obj/unit.o
+                                                  /home/hiromasa/devel/korg/logue-sdk/platform/nts-1_mkii/waves//build/obj/_unit_base.o
+wavesA                                            /home/hiromasa/devel/korg/logue-sdk/platform/nts-1_mkii/waves//build/obj/unit.o
+wavesB                                            /home/hiromasa/devel/korg/logue-sdk/platform/nts-1_mkii/waves//build/obj/unit.o
+wavesC                                            /home/hiromasa/devel/korg/logue-sdk/platform/nts-1_mkii/waves//build/obj/unit.o
+wavesD                                            /home/hiromasa/devel/korg/logue-sdk/platform/nts-1_mkii/waves//build/obj/unit.o
+wavesE                                            /home/hiromasa/devel/korg/logue-sdk/platform/nts-1_mkii/waves//build/obj/unit.o
+wavesF                                            /home/hiromasa/devel/korg/logue-sdk/platform/nts-1_mkii/waves//build/obj/unit.o

@@ -1,0 +1,325 @@
+ELF ヘッダ:
+  マジック:   7f 45 4c 46 01 01 01 00 00 00 00 00 00 00 00 00 
+  クラス:                            ELF32
+  データ:                            2 の補数、リトルエンディアン
+  Version:                           1 (current)
+  OS/ABI:                            UNIX - System V
+  ABI バージョン:                    0
+  型:                                DYN (共有オブジェクトファイル)
+  マシン:                            ARM
+  バージョン:                        0x1
+  エントリポイントアドレス:               0x0
+  プログラムヘッダ始点:          52 (バイト)
+  セクションヘッダ始点:          60880 (バイト)
+  フラグ:                            0x5000400, Version5 EABI, hard-float ABI
+  Size of this header:               52 (bytes)
+  Size of program headers:           32 (bytes)
+  Number of program headers:         5
+  Size of section headers:           40 (bytes)
+  Number of section headers:         29
+  Section header string table index: 28
+
+セクションヘッダ:
+  [番] 名前              タイプ          アドレス Off    サイズ ES Flg Lk Inf Al
+  [ 0]                   NULL            00000000 000000 000000 00      0   0  0
+  [ 1] .hash             HASH            000000d4 0000d4 000164 04   A  2   0  4
+  [ 2] .dynsym           DYNSYM          00000238 000238 000320 10   A  3   3  4
+  [ 3] .dynstr           STRTAB          00000558 000558 000277 00   A  0   0  4
+  [ 4] .rel.plt          REL             00000828 000828 000028 08  AI  2  11  4
+  [ 5] .text             PROGBITS        00000850 000850 000980 00  AX  0   0  4
+  [ 6] .plt              PROGBITS        000011d0 0011d0 000060 04  AX  0   0  4
+  [ 7] .unit_header      PROGBITS        00001230 001230 000330 00   A  0   0  8
+  [ 8] .preinit_array    PREINIT_ARRAY   00001560 001650 000000 04  WA  0   0  4
+  [ 9] .init_array       INIT_ARRAY      00001560 001560 000004 04  WA  0   0  4
+  [10] .dynamic          DYNAMIC         00001568 001568 0000a0 08  WA  3   0  8
+  [11] .got              PROGBITS        00001608 001608 000048 04  WA  0   0  4
+  [12] .data             PROGBITS        00001650 001650 000000 00  WA  0   0  4
+  [13] .bss              NOBITS          00001650 001650 0000b0 00  WA  0   0  4
+  [14] .stack            NOBITS          00001700 001650 000004 00  WA  0   0 16
+  [15] .debug_info       PROGBITS        00000000 001650 005956 00      0   0  1
+  [16] .debug_abbrev     PROGBITS        00000000 006fa6 000c57 00      0   0  1
+  [17] .debug_aranges    PROGBITS        00000000 007bfd 000080 00      0   0  1
+  [18] .debug_line       PROGBITS        00000000 007c7d 0016e0 00      0   0  1
+  [19] .debug_str        PROGBITS        00000000 00935d 002c8f 01  MS  0   0  1
+  [20] .comment          PROGBITS        00000000 00bfec 000049 01  MS  0   0  1
+  [21] .ARM.attributes   ARM_ATTRIBUTES  00000000 00c035 000034 00      0   0  1
+  [22] .rel.dyn          REL             000007d0 0007d0 000058 08   A  2   0  4
+  [23] .debug_loc        PROGBITS        00000000 00c069 001825 00      0   0  1
+  [24] .debug_frame      PROGBITS        00000000 00d890 000328 00      0   0  4
+  [25] .debug_ranges     PROGBITS        00000000 00dbb8 000660 00      0   0  1
+  [26] .symtab           SYMTAB          00000000 00e218 0007b0 10     27  76  4
+  [27] .strtab           STRTAB          00000000 00e9c8 0002f5 00      0   0  1
+  [28] .shstrtab         STRTAB          00000000 00ecbd 000110 00      0   0  1
+Key to Flags:
+  W (write), A (alloc), X (execute), M (merge), S (strings), I (info),
+  L (link order), O (extra OS processing required), G (group), T (TLS),
+  C (compressed), x (unknown), o (OS specific), E (exclude),
+  D (mbind), y (purecode), p (processor specific)
+
+このファイルにはセクショングループがありません。
+
+プログラムヘッダ:
+  タイプ       オフセット 仮想Addr   物理Addr   FileSiz MemSiz  Flg Align
+  PHDR           0x000034 0x00000034 0x00000034 0x000a0 0x000a0 R   0x4
+  LOAD           0x000000 0x00000000 0x00000000 0x01230 0x01230 R E 0x80
+  LOAD           0x001230 0x00001230 0x00001230 0x00330 0x00330 R   0x80
+  LOAD           0x001560 0x00001560 0x00001560 0x000f0 0x001a4 RW  0x80
+  DYNAMIC        0x001568 0x00001568 0x00001568 0x000a0 0x000a0 RW  0x8
+
+ セグメントマッピングへのセクション:
+  セグメントセクション...
+   00     
+   01     .hash .dynsym .dynstr .rel.plt .text .plt .rel.dyn 
+   02     .unit_header 
+   03     .init_array .dynamic .got .bss .stack 
+   04     .dynamic 
+
+Dynamic section at offset 0x1568 contains 16 entries:
+  タグ        タイプ                       名前/値
+ 0x00000019 (INIT_ARRAY)                 0x1560
+ 0x0000001b (INIT_ARRAYSZ)               4 (バイト)
+ 0x00000004 (HASH)                       0xd4
+ 0x00000005 (STRTAB)                     0x558
+ 0x00000006 (SYMTAB)                     0x238
+ 0x0000000a (STRSZ)                      631 (バイト)
+ 0x0000000b (SYMENT)                     16 (バイト)
+ 0x00000003 (PLTGOT)                     0x1608
+ 0x00000002 (PLTRELSZ)                   40 (バイト)
+ 0x00000014 (PLTREL)                     REL
+ 0x00000017 (JMPREL)                     0x828
+ 0x00000011 (REL)                        0x7d0
+ 0x00000012 (RELSZ)                      88 (バイト)
+ 0x00000013 (RELENT)                     8 (バイト)
+ 0x6ffffffa (RELCOUNT)                   1
+ 0x00000000 (NULL)                       0x0
+
+再配置セクション '.rel.plt' at offset 0x828 contains 5 entries:
+ オフセット 情報    型              シンボル値 シンボル名
+00001614  00000816 R_ARM_JUMP_SLOT   00000000   osc_white
+00001618  00001316 R_ARM_JUMP_SLOT   00000eb5   _ZN5WavesC1Ev
+0000161c  00001916 R_ARM_JUMP_SLOT   00000ea5   _ZN5Waves5State5R[...]
+00001620  00002216 R_ARM_JUMP_SLOT   000010e9   _ZNK5Waves17getPa[...]
+00001624  00002716 R_ARM_JUMP_SLOT   00000f59   _ZN5Waves12setPar[...]
+
+再配置セクション '.rel.dyn' at offset 0x7d0 contains 11 entries:
+ オフセット 情報    型              シンボル値 シンボル名
+00001560  00000017 R_ARM_RELATIVE   
+00001628  00000715 R_ARM_GLOB_DAT    00000000   bitres_lut_f
+0000162c  00000f15 R_ARM_GLOB_DAT    00000000   wavesF
+00001630  00001015 R_ARM_GLOB_DAT    00000000   wavesC
+00001634  00001515 R_ARM_GLOB_DAT    00000000   tanpi_lut_f
+00001638  00001e15 R_ARM_GLOB_DAT    00000000   wavesE
+0000163c  00002615 R_ARM_GLOB_DAT    00000000   wavesA
+00001640  00002915 R_ARM_GLOB_DAT    00001230   unit_header
+00001644  00002e15 R_ARM_GLOB_DAT    00000000   wavesB
+00001648  00002f15 R_ARM_GLOB_DAT    00000000   wavesD
+0000164c  00003015 R_ARM_GLOB_DAT    00000000   midi_to_hz_lut_f
+
+このファイルにはスタック巻き戻し (unwind) セクションがありません。
+
+Symbol table '.dynsym' contains 50 entries:
+   番号:      値 サイズ タイプ  Bind   Vis      索引名
+     0: 00000000     0 NOTYPE  LOCAL  DEFAULT  UND 
+     1: 00000850     0 SECTION LOCAL  DEFAULT    5 .text
+     2: 00001650     0 SECTION LOCAL  DEFAULT   12 .data
+     3: 00001700     0 NOTYPE  GLOBAL DEFAULT   14 __HEAP
+     4: 0000087d   264 FUNC    GLOBAL DEFAULT    5 unit_init
+     5: 00001650     0 NOTYPE  GLOBAL DEFAULT   12 __data_start__
+     6: 00000987    18 FUNC    GLOBAL DEFAULT    5 unit_reset
+     7: 00000000     0 NOTYPE  GLOBAL DEFAULT  UND bitres_lut_f
+     8: 00000000     0 NOTYPE  GLOBAL DEFAULT  UND osc_white
+     9: 00000e9b     2 FUNC    GLOBAL DEFAULT    5 unit_all_note_off
+    10: 00000eb5   164 FUNC    WEAK   DEFAULT    5 _ZN5WavesC2Ev
+    11: 00000e59    20 FUNC    GLOBAL DEFAULT    5 unit_get_param_value
+    12: 00000ea1     2 FUNC    GLOBAL DEFAULT    5 unit_aftertouch
+    13: 00001700     0 NOTYPE  GLOBAL DEFAULT   14 _stack_addr
+    14: 00000000     0 NOTYPE  GLOBAL DEFAULT  ABS __stack_size
+    15: 00000000     0 NOTYPE  GLOBAL DEFAULT  UND wavesF
+    16: 00000000     0 NOTYPE  GLOBAL DEFAULT  UND wavesC
+    17: 00000e75    36 FUNC    GLOBAL DEFAULT    5 unit_note_on
+    18: 00001650     0 NOTYPE  GLOBAL DEFAULT   13 __bss_start__
+    19: 00000eb5   164 FUNC    WEAK   DEFAULT    5 _ZN5WavesC1Ev
+    20: 00000e6d     4 FUNC    GLOBAL DEFAULT    5 unit_get_param_s[...]
+    21: 00000000     0 NOTYPE  GLOBAL DEFAULT  UND tanpi_lut_f
+    22: 00000e73     2 FUNC    GLOBAL DEFAULT    5 unit_tempo_4ppqn_tick
+    23: 00000e45    20 FUNC    GLOBAL DEFAULT    5 unit_set_param_value
+    24: 00000999     2 FUNC    GLOBAL DEFAULT    5 unit_resume
+    25: 00000ea5    14 FUNC    WEAK   DEFAULT    5 _ZN5Waves5State5[...]
+    26: 00000000     0 NOTYPE  GLOBAL DEFAULT  ABS __heap_size
+    27: 00001700     0 NOTYPE  GLOBAL DEFAULT   14 end
+    28: 00001650     0 NOTYPE  GLOBAL DEFAULT   12 __data_end__
+    29: 00001700     0 NOTYPE  GLOBAL DEFAULT   13 __bss_end__
+    30: 00000000     0 NOTYPE  GLOBAL DEFAULT  UND wavesE
+    31: 00001700     0 NOTYPE  GLOBAL DEFAULT   14 __SP_INIT
+    32: 00000e99     2 FUNC    GLOBAL DEFAULT    5 unit_note_off
+    33: 0000099b     2 FUNC    GLOBAL DEFAULT    5 unit_suspend
+    34: 000010e9   216 FUNC    WEAK   DEFAULT    5 _ZNK5Waves17getP[...]
+    35: 0000099d  1192 FUNC    GLOBAL DEFAULT    5 unit_render
+    36: 00001700     0 NOTYPE  GLOBAL DEFAULT   14 _stack_end
+    37: 00000e9f     2 FUNC    GLOBAL DEFAULT    5 unit_channel_pressure
+    38: 00000000     0 NOTYPE  GLOBAL DEFAULT  UND wavesA
+    39: 00000f59   400 FUNC    WEAK   DEFAULT    5 _ZN5Waves12setPa[...]
+    40: 00000e9d     2 FUNC    GLOBAL DEFAULT    5 unit_pitch_bend
+    41: 00001230   408 OBJECT  GLOBAL DEFAULT    7 unit_header
+    42: 00000985     2 FUNC    GLOBAL DEFAULT    5 unit_teardown
+    43: 00001700     0 NOTYPE  GLOBAL DEFAULT   14 __stack
+    44: 00000e71     2 FUNC    GLOBAL DEFAULT    5 unit_set_tempo
+    45: 00001700     0 NOTYPE  GLOBAL DEFAULT   14 _end
+    46: 00000000     0 NOTYPE  GLOBAL DEFAULT  UND wavesB
+    47: 00000000     0 NOTYPE  GLOBAL DEFAULT  UND wavesD
+    48: 00000000     0 NOTYPE  GLOBAL DEFAULT  UND midi_to_hz_lut_f
+    49: 00001700     0 NOTYPE  GLOBAL DEFAULT   14 __HEAP_END
+
+Symbol table '.symtab' contains 123 entries:
+   番号:      値 サイズ タイプ  Bind   Vis      索引名
+     0: 00000000     0 NOTYPE  LOCAL  DEFAULT  UND 
+     1: 000000d4     0 SECTION LOCAL  DEFAULT    1 .hash
+     2: 00000238     0 SECTION LOCAL  DEFAULT    2 .dynsym
+     3: 00000558     0 SECTION LOCAL  DEFAULT    3 .dynstr
+     4: 00000828     0 SECTION LOCAL  DEFAULT    4 .rel.plt
+     5: 00000850     0 SECTION LOCAL  DEFAULT    5 .text
+     6: 000011d0     0 SECTION LOCAL  DEFAULT    6 .plt
+     7: 00001230     0 SECTION LOCAL  DEFAULT    7 .unit_header
+     8: 00001560     0 SECTION LOCAL  DEFAULT    8 .preinit_array
+     9: 00001560     0 SECTION LOCAL  DEFAULT    9 .init_array
+    10: 00001568     0 SECTION LOCAL  DEFAULT   10 .dynamic
+    11: 00001608     0 SECTION LOCAL  DEFAULT   11 .got
+    12: 00001650     0 SECTION LOCAL  DEFAULT   12 .data
+    13: 00001650     0 SECTION LOCAL  DEFAULT   13 .bss
+    14: 00001700     0 SECTION LOCAL  DEFAULT   14 .stack
+    15: 00000000     0 SECTION LOCAL  DEFAULT   15 .debug_info
+    16: 00000000     0 SECTION LOCAL  DEFAULT   16 .debug_abbrev
+    17: 00000000     0 SECTION LOCAL  DEFAULT   17 .debug_aranges
+    18: 00000000     0 SECTION LOCAL  DEFAULT   18 .debug_line
+    19: 00000000     0 SECTION LOCAL  DEFAULT   19 .debug_str
+    20: 00000000     0 SECTION LOCAL  DEFAULT   20 .comment
+    21: 00000000     0 SECTION LOCAL  DEFAULT   21 .ARM.attributes
+    22: 000007d0     0 SECTION LOCAL  DEFAULT   22 .rel.dyn
+    23: 00000000     0 SECTION LOCAL  DEFAULT   23 .debug_loc
+    24: 00000000     0 SECTION LOCAL  DEFAULT   24 .debug_frame
+    25: 00000000     0 SECTION LOCAL  DEFAULT   25 .debug_ranges
+    26: 00000000     0 FILE    LOCAL  DEFAULT  ABS header.c
+    27: 0000124e     0 NOTYPE  LOCAL  DEFAULT    7 $d
+    28: 00000000     0 FILE    LOCAL  DEFAULT  ABS _unit_base.c
+    29: 00000850     0 NOTYPE  LOCAL  DEFAULT    5 $t
+    30: 000013ea     0 NOTYPE  LOCAL  DEFAULT    7 $d
+    31: 00000000     0 FILE    LOCAL  DEFAULT  ABS unit.cc
+    32: 00000ea4     0 NOTYPE  LOCAL  DEFAULT    5 $t
+    33: 00000eb4     0 NOTYPE  LOCAL  DEFAULT    5 $t
+    34: 00000f38     0 NOTYPE  LOCAL  DEFAULT    5 $d
+    35: 00000f58     0 NOTYPE  LOCAL  DEFAULT    5 $t
+    36: 00000f62     0 NOTYPE  LOCAL  DEFAULT    5 $d
+    37: 00000f6a     0 NOTYPE  LOCAL  DEFAULT    5 $t
+    38: 000010cc     0 NOTYPE  LOCAL  DEFAULT    5 $d
+    39: 000010e8     0 NOTYPE  LOCAL  DEFAULT    5 $t
+    40: 000010f0     0 NOTYPE  LOCAL  DEFAULT    5 $d
+    41: 000010f8     0 NOTYPE  LOCAL  DEFAULT    5 $t
+    42: 000011ac     0 NOTYPE  LOCAL  DEFAULT    5 $d
+    43: 0000087c     0 NOTYPE  LOCAL  DEFAULT    5 $t
+    44: 0000095c     0 NOTYPE  LOCAL  DEFAULT    5 $d
+    45: 00000984     0 NOTYPE  LOCAL  DEFAULT    5 $t
+    46: 00000994     0 NOTYPE  LOCAL  DEFAULT    5 $d
+    47: 00000987    18 FUNC    LOCAL  DEFAULT    5 unit_reset.localalias
+    48: 00000998     0 NOTYPE  LOCAL  DEFAULT    5 $t
+    49: 00000b80     0 NOTYPE  LOCAL  DEFAULT    5 $d
+    50: 00000be4     0 NOTYPE  LOCAL  DEFAULT    5 $t
+    51: 00000e30     0 NOTYPE  LOCAL  DEFAULT    5 $d
+    52: 00000e44     0 NOTYPE  LOCAL  DEFAULT    5 $t
+    53: 00000e54     0 NOTYPE  LOCAL  DEFAULT    5 $d
+    54: 00000e58     0 NOTYPE  LOCAL  DEFAULT    5 $t
+    55: 00000e68     0 NOTYPE  LOCAL  DEFAULT    5 $d
+    56: 00000e6c     0 NOTYPE  LOCAL  DEFAULT    5 $t
+    57: 00000e94     0 NOTYPE  LOCAL  DEFAULT    5 $d
+    58: 00000e98     0 NOTYPE  LOCAL  DEFAULT    5 $t
+    59: 000011c0     0 NOTYPE  LOCAL  DEFAULT    5 $t
+    60: 000011c1    16 FUNC    LOCAL  DEFAULT    5 _GLOBAL__sub_I_u[...]
+    61: 000011cc     0 NOTYPE  LOCAL  DEFAULT    5 $d
+    62: 00001560     0 NOTYPE  LOCAL  DEFAULT    9 $d
+    63: 00001650     0 NOTYPE  LOCAL  DEFAULT   13 $d
+    64: 00001650   176 OBJECT  LOCAL  DEFAULT   13 _ZL16s_waves_instance
+    65: 00000000     0 FILE    LOCAL  DEFAULT  ABS 
+    66: 00001568     0 OBJECT  LOCAL  DEFAULT  ABS _DYNAMIC
+    67: 00001608     0 OBJECT  LOCAL  DEFAULT  ABS _GLOBAL_OFFSET_TABLE_
+    68: 000011d0     0 NOTYPE  LOCAL  DEFAULT    6 $t
+    69: 000011dc     0 NOTYPE  LOCAL  DEFAULT    6 $d
+    70: 000011e0     0 NOTYPE  LOCAL  DEFAULT    6 $t
+    71: 000011e0     0 NOTYPE  LOCAL  DEFAULT    6 $t
+    72: 000011f0     0 NOTYPE  LOCAL  DEFAULT    6 $t
+    73: 00001200     0 NOTYPE  LOCAL  DEFAULT    6 $t
+    74: 00001210     0 NOTYPE  LOCAL  DEFAULT    6 $t
+    75: 00001220     0 NOTYPE  LOCAL  DEFAULT    6 $t
+    76: 00001700     0 NOTYPE  GLOBAL DEFAULT   14 __HEAP
+    77: 0000087d   264 FUNC    GLOBAL DEFAULT    5 unit_init
+    78: 00001650     0 NOTYPE  GLOBAL DEFAULT   12 __data_start__
+    79: 00000987    18 FUNC    GLOBAL DEFAULT    5 unit_reset
+    80: 00000000     0 NOTYPE  GLOBAL DEFAULT  UND bitres_lut_f
+    81: 00000000     0 NOTYPE  GLOBAL DEFAULT  UND osc_white
+    82: 00000e9b     2 FUNC    GLOBAL DEFAULT    5 unit_all_note_off
+    83: 00000eb5   164 FUNC    WEAK   DEFAULT    5 _ZN5WavesC2Ev
+    84: 00000e59    20 FUNC    GLOBAL DEFAULT    5 unit_get_param_value
+    85: 00000ea1     2 FUNC    GLOBAL DEFAULT    5 unit_aftertouch
+    86: 00001700     0 NOTYPE  GLOBAL DEFAULT   14 _stack_addr
+    87: 00000000     0 NOTYPE  GLOBAL DEFAULT  ABS __stack_size
+    88: 00000000     0 NOTYPE  GLOBAL DEFAULT  UND wavesF
+    89: 00000000     0 NOTYPE  GLOBAL DEFAULT  UND wavesC
+    90: 00000e75    36 FUNC    GLOBAL DEFAULT    5 unit_note_on
+    91: 00001650     0 NOTYPE  GLOBAL DEFAULT   13 __bss_start__
+    92: 00000eb5   164 FUNC    WEAK   DEFAULT    5 _ZN5WavesC1Ev
+    93: 00000e6d     4 FUNC    GLOBAL DEFAULT    5 unit_get_param_s[...]
+    94: 00000000     0 NOTYPE  GLOBAL DEFAULT  UND tanpi_lut_f
+    95: 00000e73     2 FUNC    GLOBAL DEFAULT    5 unit_tempo_4ppqn_tick
+    96: 00000e45    20 FUNC    GLOBAL DEFAULT    5 unit_set_param_value
+    97: 00000999     2 FUNC    GLOBAL DEFAULT    5 unit_resume
+    98: 00000ea5    14 FUNC    WEAK   DEFAULT    5 _ZN5Waves5State5[...]
+    99: 00000000     0 NOTYPE  GLOBAL DEFAULT  ABS __heap_size
+   100: 00001700     0 NOTYPE  GLOBAL DEFAULT   14 end
+   101: 00001650     0 NOTYPE  GLOBAL DEFAULT   12 __data_end__
+   102: 00001700     0 NOTYPE  GLOBAL DEFAULT   13 __bss_end__
+   103: 00000000     0 NOTYPE  GLOBAL DEFAULT  UND wavesE
+   104: 00001700     0 NOTYPE  GLOBAL DEFAULT   14 __SP_INIT
+   105: 00000e99     2 FUNC    GLOBAL DEFAULT    5 unit_note_off
+   106: 0000099b     2 FUNC    GLOBAL DEFAULT    5 unit_suspend
+   107: 000010e9   216 FUNC    WEAK   DEFAULT    5 _ZNK5Waves17getP[...]
+   108: 0000099d  1192 FUNC    GLOBAL DEFAULT    5 unit_render
+   109: 00001700     0 NOTYPE  GLOBAL DEFAULT   14 _stack_end
+   110: 00000e9f     2 FUNC    GLOBAL DEFAULT    5 unit_channel_pressure
+   111: 00000000     0 NOTYPE  GLOBAL DEFAULT  UND wavesA
+   112: 00000f59   400 FUNC    WEAK   DEFAULT    5 _ZN5Waves12setPa[...]
+   113: 00000e9d     2 FUNC    GLOBAL DEFAULT    5 unit_pitch_bend
+   114: 00001230   408 OBJECT  GLOBAL DEFAULT    7 unit_header
+   115: 00000985     2 FUNC    GLOBAL DEFAULT    5 unit_teardown
+   116: 00001700     0 NOTYPE  GLOBAL DEFAULT   14 __stack
+   117: 00000e71     2 FUNC    GLOBAL DEFAULT    5 unit_set_tempo
+   118: 00001700     0 NOTYPE  GLOBAL DEFAULT   14 _end
+   119: 00000000     0 NOTYPE  GLOBAL DEFAULT  UND wavesB
+   120: 00000000     0 NOTYPE  GLOBAL DEFAULT  UND wavesD
+   121: 00000000     0 NOTYPE  GLOBAL DEFAULT  UND midi_to_hz_lut_f
+   122: 00001700     0 NOTYPE  GLOBAL DEFAULT   14 __HEAP_END
+
+Histogram for bucket list length (total of 37 buckets):
+ 長さ  個数        占有率      範囲
+      0  11         ( 29.7%)
+      1  12         ( 32.4%)     25.5%
+      2  8          ( 21.6%)     59.6%
+      3  5          ( 13.5%)     91.5%
+      4  1          (  2.7%)    100.0%
+
+このファイルからはバージョン情報が見つかりません。
+Attribute Section: aeabi
+ファイル属性
+  Tag_CPU_name: "7E-M"
+  Tag_CPU_arch: v7E-M
+  Tag_CPU_arch_profile: マイクロコントローラ
+  Tag_THUMB_ISA_use: Thumb-2
+  Tag_FP_arch: VFPv4-D16
+  Tag_ABI_PCS_wchar_t: 4
+  Tag_ABI_FP_denormal: Needed
+  Tag_ABI_FP_exceptions: Needed
+  Tag_ABI_FP_number_model: IEEE 754
+  Tag_ABI_align_needed: 8-バイト
+  Tag_ABI_align_preserved: 末端の SP を除き 8-バイト
+  Tag_ABI_enum_size: small
+  Tag_ABI_HardFP_use: SP only
+  Tag_ABI_VFP_args: VFP registers
+  Tag_ABI_optimization_goals: Aggressive Size
+  Tag_CPU_unaligned_access: v6

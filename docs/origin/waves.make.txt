@@ -1,0 +1,18 @@
+Compiler Options
+/home/hiromasa/devel/korg/logue-sdk/platform/nts-1_mkii/waves//../../../tools/gcc/gcc-arm-none-eabi-10.3-2021.10/bin/arm-none-eabi-gcc -c -mcpu=cortex-m7 -mthumb -mno-thumb-interwork -DTHUMB_NO_INTERWORKING -DTHUMB_PRESENT -g -Os -mlittle-endian -mfloat-abi=hard -mfpu=fpv4-sp-d16 -fsingle-precision-constant -fcheck-new -fPIC -std=c11 -fno-exceptions -W -Wall -Wextra -Wa,-alms=/home/hiromasa/devel/korg/logue-sdk/platform/nts-1_mkii/waves//build/lst/ -DSTM32H725xE -DCORTEX_USE_FPU=TRUE -DARM_MATH_CM7 -D__FPU_PRESENT -I. -I/home/hiromasa/devel/korg/logue-sdk/platform/nts-1_mkii/common -I/home/hiromasa/devel/korg/logue-sdk/platform/nts-1_mkii/waves//../../ext/CMSIS/CMSIS/Include
+
+Compiling header.c
+Compiling _unit_base.c
+Compiling unit.cc
+Linking /home/hiromasa/devel/korg/logue-sdk/platform/nts-1_mkii/waves//build/waves.elf
+/home/hiromasa/devel/korg/logue-sdk/platform/nts-1_mkii/waves//../../../tools/gcc/gcc-arm-none-eabi-10.3-2021.10/bin/arm-none-eabi-gcc /home/hiromasa/devel/korg/logue-sdk/platform/nts-1_mkii/waves//build/obj/header.o /home/hiromasa/devel/korg/logue-sdk/platform/nts-1_mkii/waves//build/obj/_unit_base.o /home/hiromasa/devel/korg/logue-sdk/platform/nts-1_mkii/waves//build/obj/unit.o -mcpu=cortex-m7 -mthumb -mno-thumb-interwork -DTHUMB_NO_INTERWORKING -DTHUMB_PRESENT -g -Os -mlittle-endian -mfloat-abi=hard -mfpu=fpv4-sp-d16 -fsingle-precision-constant -fcheck-new -nostartfiles -Wl,-z,max-page-size=128,-Map=/home/hiromasa/devel/korg/logue-sdk/platform/nts-1_mkii/waves//build/waves.map,--cref,--no-warn-mismatch,--library-path=/home/hiromasa/devel/korg/logue-sdk/platform/nts-1_mkii/waves//../ld,--script=/home/hiromasa/devel/korg/logue-sdk/platform/nts-1_mkii/waves//../ld/unit.ld -shared --entry=0 -specs=nano.specs -specs=nosys.specs -lc -lm -o /home/hiromasa/devel/korg/logue-sdk/platform/nts-1_mkii/waves//build/waves.elf
+Creating /home/hiromasa/devel/korg/logue-sdk/platform/nts-1_mkii/waves//build/waves.hex
+Creating /home/hiromasa/devel/korg/logue-sdk/platform/nts-1_mkii/waves//build/waves.bin
+Creating /home/hiromasa/devel/korg/logue-sdk/platform/nts-1_mkii/waves//build/waves.dmp
+
+   text	   data	    bss	    dec	    hex	filename
+   5259	    236	    180	   5675	   162b	/home/hiromasa/devel/korg/logue-sdk/platform/nts-1_mkii/waves//build/waves.elf
+
+Creating /home/hiromasa/devel/korg/logue-sdk/platform/nts-1_mkii/waves//build/waves.list
+Done
+

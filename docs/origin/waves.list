@@ -1,0 +1,1339 @@
+
+/home/hiromasa/devel/korg/logue-sdk/platform/nts-1_mkii/waves//build/waves.elf:     file format elf32-littlearm
+
+
+Disassembly of section .text:
+
+00000850 <unit_init-0x2c>:
+// ---- Fallback implementation for exposed unit API -----------------------------------------------
+
+__attribute__((weak)) int8_t unit_init(const unit_runtime_desc_t * desc) {
+  (void)desc;
+  return k_unit_err_undef;
+}
+     850:	f06f 001f 	mvn.w	r0, #31
+     854:	4770      	bx	lr
+
+__attribute__((weak)) void unit_teardown() {}
+     856:	4770      	bx	lr
+     858:	4770      	bx	lr
+     85a:	4770      	bx	lr
+     85c:	4770      	bx	lr
+
+__attribute__((weak)) void unit_render(const float * in, float * out, uint32_t frames) {
+  (void)in;
+  (void)out;
+  (void)frames;
+}
+     85e:	4770      	bx	lr
+
+__attribute__((weak)) int32_t unit_get_param_value(uint8_t id) {
+  (void)id;
+  return 0;
+}
+     860:	2000      	movs	r0, #0
+     862:	4770      	bx	lr
+
+__attribute__((weak)) const char * unit_get_param_str_value(uint8_t id, int32_t value) {
+  (void)id;
+  (void)value;
+  return NULL;
+}
+     864:	2000      	movs	r0, #0
+     866:	4770      	bx	lr
+
+__attribute__((weak)) void unit_set_param_value(uint8_t id, int32_t value) {
+  (void)id;
+  (void)value;
+}
+     868:	4770      	bx	lr
+
+__attribute__((weak)) void unit_set_tempo(uint32_t tempo) { (void)tempo; }
+     86a:	4770      	bx	lr
+     86c:	4770      	bx	lr
+__attribute__((weak)) void unit_tempo_4ppqn_tick(uint32_t counter) { (void)counter; }
+
+__attribute__((weak)) void unit_note_on(uint8_t note, uint8_t mod) {
+  (void)note;
+  (void)mod;
+}
+     86e:	4770      	bx	lr
+
+__attribute__((weak)) void unit_note_off(uint8_t note) { (void)note; }
+     870:	4770      	bx	lr
+
+__attribute__((weak)) void unit_all_note_off(void) {}
+     872:	4770      	bx	lr
+
+__attribute__((weak)) void unit_pitch_bend(uint16_t bend) { (void)bend; }
+     874:	4770      	bx	lr
+     876:	4770      	bx	lr
+     878:	4770      	bx	lr
+	...
+
+0000087c <unit_init>:
+
+static Waves s_waves_instance; // In this case, actual instance of custom osc object.
+
+// ---- Callbacks exposed to runtime ----------------------------------------------
+
+__unit_callback int8_t unit_init(const unit_runtime_desc_t * desc) {  
+     87c:	4b3c      	ldr	r3, [pc, #240]	; (970 <unit_init+0xf4>)
+     87e:	b570      	push	{r4, r5, r6, lr}
+     880:	447b      	add	r3, pc
+  
+  Waves(void)  { }
+  ~Waves(void) { }
+
+  inline int8_t Init(const unit_runtime_desc_t * desc) {
+    if (!desc)
+     882:	2800      	cmp	r0, #0
+     884:	d05b      	beq.n	93e <unit_init+0xc2>
+      return k_unit_err_undef;
+    
+    // Note: make sure the unit is being loaded to the correct platform/module target
+    if (desc->target != unit_header.target)
+     886:	4a3b      	ldr	r2, [pc, #236]	; (974 <unit_init+0xf8>)
+     888:	6801      	ldr	r1, [r0, #0]
+     88a:	589a      	ldr	r2, [r3, r2]
+     88c:	6852      	ldr	r2, [r2, #4]
+     88e:	4291      	cmp	r1, r2
+     890:	d158      	bne.n	944 <unit_init+0xc8>
+      return k_unit_err_target;
+    
+    // Note: check API compatibility with the one this unit was built against
+    if (!UNIT_API_IS_COMPAT(desc->api))
+     892:	6842      	ldr	r2, [r0, #4]
+     894:	f402 01fe 	and.w	r1, r2, #8323072	; 0x7f0000
+     898:	f5b1 3f00 	cmp.w	r1, #131072	; 0x20000
+     89c:	d155      	bne.n	94a <unit_init+0xce>
+     89e:	f412 4ffe 	tst.w	r2, #32512	; 0x7f00
+     8a2:	d152      	bne.n	94a <unit_init+0xce>
+      return k_unit_err_api_version;
+    
+    // Check compatibility of samplerate with unit, for NTS-1 MKII should be 48000
+    if (desc->samplerate != 48000)
+     8a4:	6881      	ldr	r1, [r0, #8]
+     8a6:	f64b 3280 	movw	r2, #48000	; 0xbb80
+     8aa:	4291      	cmp	r1, r2
+     8ac:	d150      	bne.n	950 <unit_init+0xd4>
+      return k_unit_err_samplerate;
+
+    // Check compatibility of frame geometry
+    if (desc->input_channels != 2 || desc->output_channels != 1)  // should be stereo input / mono output
+     8ae:	7b82      	ldrb	r2, [r0, #14]
+     8b0:	2a02      	cmp	r2, #2
+     8b2:	d150      	bne.n	956 <unit_init+0xda>
+     8b4:	7bc2      	ldrb	r2, [r0, #15]
+     8b6:	2a01      	cmp	r2, #1
+     8b8:	d14d      	bne.n	956 <unit_init+0xda>
+   * @note Not checking input, caller responsible for bounding x.
+   */
+  static fast_inline float osc_tanpif(float x) {
+    const float idxf = x * k_tanpi_range_recip * k_tanpi_size;
+    const uint32_t idx = (uint32_t)idxf;
+    const float y0 = tanpi_lut_f[idx];
+     8ba:	4a2f      	ldr	r2, [pc, #188]	; (978 <unit_init+0xfc>)
+      void setFOLP(const float k) {
+        const float kp1 = k+1.f;
+        const float km1 = k-1.f;
+        ff0 = ff1 = k / kp1;
+        fb1 = km1 / kp1;
+        fb2 = ff2 = 0.f;
+     8bc:	2400      	movs	r4, #0
+
+/** Linear interpolation
+ */
+static inline __attribute__((optimize("Ofast"), always_inline))
+float linintf(const float fr, const float x0, const float x1) {
+  return x0 + fr * (x1 - x0);
+     8be:	eddf 6a27 	vldr	s13, [pc, #156]	; 95c <unit_init+0xe0>
+    // Initialize pre/post filter coefficients
+    prelpf_.mCoeffs.setPoleLP(0.9f);
+    postlpf_.mCoeffs.setFOLP(osc_tanpif(0.45f));
+
+    // Cache runtime descriptor to keep access to API hooks
+    runtime_desc_ = *desc;
+     8c2:	f100 0620 	add.w	r6, r0, #32
+     8c6:	589b      	ldr	r3, [r3, r2]
+        ff0 = ff1 = k / kp1;
+     8c8:	4a2c      	ldr	r2, [pc, #176]	; (97c <unit_init+0x100>)
+     8ca:	edd3 7aeb 	vldr	s15, [r3, #940]	; 0x3ac
+     8ce:	ed93 7aec 	vldr	s14, [r3, #944]	; 0x3b0
+     8d2:	447a      	add	r2, pc
+     8d4:	4603      	mov	r3, r0
+     8d6:	ee37 7a67 	vsub.f32	s14, s14, s15
+        fb2 = ff2 = 0.f;
+     8da:	67d4      	str	r4, [r2, #124]	; 0x7c
+     8dc:	f8c2 4084 	str.w	r4, [r2, #132]	; 0x84
+     8e0:	3290      	adds	r2, #144	; 0x90
+     8e2:	eee7 7a26 	vfma.f32	s15, s14, s13
+        const float kp1 = k+1.f;
+     8e6:	eef7 6a00 	vmov.f32	s13, #112	; 0x3f800000  1.0
+     8ea:	ee37 7aa6 	vadd.f32	s14, s15, s13
+        ff0 = ff1 = k / kp1;
+     8ee:	ee87 6a87 	vdiv.f32	s12, s15, s14
+        const float km1 = k-1.f;
+     8f2:	ee77 7ae6 	vsub.f32	s15, s15, s13
+        fb1 = km1 / kp1;
+     8f6:	eec7 6a87 	vdiv.f32	s13, s15, s14
+        ff0 = ff1 = k / kp1;
+     8fa:	ed02 6a06 	vstr	s12, [r2, #-24]	; 0xffffffe8
+     8fe:	ed02 6a07 	vstr	s12, [r2, #-28]	; 0xffffffe4
+        fb1 = km1 / kp1;
+     902:	ed42 6a04 	vstr	s13, [r2, #-16]
+     906:	6818      	ldr	r0, [r3, #0]
+     908:	3308      	adds	r3, #8
+     90a:	f853 1c04 	ldr.w	r1, [r3, #-4]
+     90e:	4615      	mov	r5, r2
+     910:	42b3      	cmp	r3, r6
+     912:	c503      	stmia	r5!, {r0, r1}
+     914:	462a      	mov	r2, r5
+     916:	d1f6      	bne.n	906 <unit_init+0x8a>
+      sub_mix = 0.05f;
+     918:	4b19      	ldr	r3, [pc, #100]	; (980 <unit_init+0x104>)
+      wave_a = 0;
+     91a:	2000      	movs	r0, #0
+      sub_mix = 0.05f;
+     91c:	4a10      	ldr	r2, [pc, #64]	; (960 <unit_init+0xe4>)
+     91e:	447b      	add	r3, pc
+     920:	641a      	str	r2, [r3, #64]	; 0x40
+      drift = 1.25f;
+     922:	4a10      	ldr	r2, [pc, #64]	; (964 <unit_init+0xe8>)
+      ring_mix = 0.f;
+     924:	645c      	str	r4, [r3, #68]	; 0x44
+      drift = 1.25f;
+     926:	651a      	str	r2, [r3, #80]	; 0x50
+        ff0 = 1.f - pole;
+     928:	4a0f      	ldr	r2, [pc, #60]	; (968 <unit_init+0xec>)
+      bit_crush = 0.f;
+     92a:	649c      	str	r4, [r3, #72]	; 0x48
+     92c:	659a      	str	r2, [r3, #88]	; 0x58
+        fb1 = -pole;
+     92e:	4a0f      	ldr	r2, [pc, #60]	; (96c <unit_init+0xf0>)
+      shape = 0.f;
+     930:	64dc      	str	r4, [r3, #76]	; 0x4c
+      wave_a = 0;
+     932:	6558      	str	r0, [r3, #84]	; 0x54
+        fb2 = ff2 = ff1 = 0.f;
+     934:	65dc      	str	r4, [r3, #92]	; 0x5c
+     936:	661c      	str	r4, [r3, #96]	; 0x60
+        fb1 = -pole;
+     938:	665a      	str	r2, [r3, #100]	; 0x64
+        fb2 = ff2 = ff1 = 0.f;
+     93a:	669c      	str	r4, [r3, #104]	; 0x68
+  return s_waves_instance.Init(desc);
+}
+     93c:	bd70      	pop	{r4, r5, r6, pc}
+      return k_unit_err_undef;
+     93e:	f06f 001f 	mvn.w	r0, #31
+     942:	e7fb      	b.n	93c <unit_init+0xc0>
+      return k_unit_err_target;
+     944:	f04f 30ff 	mov.w	r0, #4294967295	; 0xffffffff
+     948:	e7f8      	b.n	93c <unit_init+0xc0>
+      return k_unit_err_api_version;
+     94a:	f06f 0001 	mvn.w	r0, #1
+     94e:	e7f5      	b.n	93c <unit_init+0xc0>
+      return k_unit_err_samplerate;
+     950:	f06f 0003 	mvn.w	r0, #3
+     954:	e7f2      	b.n	93c <unit_init+0xc0>
+      return k_unit_err_geometry;
+     956:	f06f 0007 	mvn.w	r0, #7
+     95a:	e7ef      	b.n	93c <unit_init+0xc0>
+     95c:	3dd0f800 	.word	0x3dd0f800
+     960:	3d4ccccd 	.word	0x3d4ccccd
+     964:	3fa00000 	.word	0x3fa00000
+     968:	3dccccd0 	.word	0x3dccccd0
+     96c:	bf666666 	.word	0xbf666666
+     970:	00000d84 	.word	0x00000d84
+     974:	00000038 	.word	0x00000038
+     978:	0000002c 	.word	0x0000002c
+     97c:	00000d7a 	.word	0x00000d7a
+     980:	00000d2e 	.word	0x00000d2e
+
+00000984 <unit_teardown>:
+
+__unit_callback void unit_teardown() {
+  s_waves_instance.Teardown();
+}
+     984:	4770      	bx	lr
+
+00000986 <unit_reset>:
+    // Note: cleanup and release resources if any
+  }
+  
+  inline void Reset() {
+    // Note: Reset effect state, excluding exposed parameter values.
+    state_.Reset();
+     986:	4803      	ldr	r0, [pc, #12]	; (994 <unit_reset+0xe>)
+
+__unit_callback void unit_reset() {
+     988:	b508      	push	{r3, lr}
+     98a:	4478      	add	r0, pc
+     98c:	f000 fc38 	bl	1200 <_ZN5Waves5State5ResetEv@plt>
+  s_waves_instance.Reset();
+}
+     990:	bd08      	pop	{r3, pc}
+     992:	bf00      	nop
+     994:	00000cc2 	.word	0x00000cc2
+
+00000998 <unit_resume>:
+     998:	e7f5      	b.n	986 <unit_reset>
+
+0000099a <unit_suspend>:
+     99a:	4770      	bx	lr
+
+0000099c <unit_render>:
+  fast_inline void Process(const float * in, float * out, size_t frames) {
+    (void)in; // Note: not using input
+    
+    State &s = state_;
+    const Waves::Params &p = params_;
+    const unit_runtime_osc_context_t *ctxt = static_cast<const unit_runtime_osc_context_t *>(runtime_desc_.hooks.runtime_context);
+     99c:	4b82      	ldr	r3, [pc, #520]	; (ba8 <unit_render+0x20c>)
+    const float f = clipmaxf(linintf(mod * k_note_mod_fscale, f0, f1), k_note_max_hz);
+     99e:	eddf 6a78 	vldr	s13, [pc, #480]	; b80 <unit_render+0x1e4>
+     9a2:	447b      	add	r3, pc
+  fast_inline void updatePitch(float w0) {
+    w0 += state_.imperfection;
+    const float drift = params_.drift;
+    state_.w0_a = w0;
+    // Alt. osc with slight phase drift (0.25Hz@48KHz)
+    state_.w0_b = w0 + drift * 5.20833333333333e-006f;
+     9a4:	ed9f 6a77 	vldr	s12, [pc, #476]	; b84 <unit_render+0x1e8>
+
+__unit_callback void unit_suspend() {
+  s_waves_instance.Suspend();
+}
+
+__unit_callback void unit_render(const float * in, float * out, uint32_t frames) {
+     9a8:	e92d 41f0 	stmdb	sp!, {r4, r5, r6, r7, r8, lr}
+    const unit_runtime_osc_context_t *ctxt = static_cast<const unit_runtime_osc_context_t *>(runtime_desc_.hooks.runtime_context);
+     9ac:	f8d3 60a0 	ldr.w	r6, [r3, #160]	; 0xa0
+     9b0:	460d      	mov	r5, r1
+     9b2:	4c7e      	ldr	r4, [pc, #504]	; (bac <unit_render+0x210>)
+     9b4:	4690      	mov	r8, r2
+      updatePitch(osc_w0f_for_note((ctxt->pitch)>>8, ctxt->pitch & 0xFF));
+     9b6:	88b1      	ldrh	r1, [r6, #4]
+     9b8:	447c      	add	r4, pc
+    return midi_to_hz_lut_f[clipmaxu32(note,k_midi_to_hz_size-1)];
+     9ba:	4a7d      	ldr	r2, [pc, #500]	; (bb0 <unit_render+0x214>)
+     9bc:	0a08      	lsrs	r0, r1, #8
+    const float f = clipmaxf(linintf(mod * k_note_mod_fscale, f0, f1), k_note_max_hz);
+     9be:	b2c9      	uxtb	r1, r1
+    return midi_to_hz_lut_f[clipmaxu32(note,k_midi_to_hz_size-1)];
+     9c0:	2897      	cmp	r0, #151	; 0x97
+     9c2:	4607      	mov	r7, r0
+    const float f = clipmaxf(linintf(mod * k_note_mod_fscale, f0, f1), k_note_max_hz);
+     9c4:	ee07 1a90 	vmov	s15, r1
+    const float f1 = osc_notehzf(note+1);
+     9c8:	f100 0101 	add.w	r1, r0, #1
+    return midi_to_hz_lut_f[clipmaxu32(note,k_midi_to_hz_size-1)];
+     9cc:	bf28      	it	cs
+     9ce:	2797      	movcs	r7, #151	; 0x97
+     9d0:	b2c9      	uxtb	r1, r1
+    const float f = clipmaxf(linintf(mod * k_note_mod_fscale, f0, f1), k_note_max_hz);
+     9d2:	eef8 7ae7 	vcvt.f32.s32	s15, s15
+    return midi_to_hz_lut_f[clipmaxu32(note,k_midi_to_hz_size-1)];
+     9d6:	2997      	cmp	r1, #151	; 0x97
+    const float f = clipmaxf(linintf(mod * k_note_mod_fscale, f0, f1), k_note_max_hz);
+     9d8:	ee67 7aa6 	vmul.f32	s15, s15, s13
+    return midi_to_hz_lut_f[clipmaxu32(note,k_midi_to_hz_size-1)];
+     9dc:	bf28      	it	cs
+     9de:	2197      	movcs	r1, #151	; 0x97
+     9e0:	ed2d 8b0e 	vpush	{d8-d14}
+     9e4:	58a2      	ldr	r2, [r4, r2]
+     9e6:	eb02 0787 	add.w	r7, r2, r7, lsl #2
+     9ea:	eb02 0281 	add.w	r2, r2, r1, lsl #2
+
+      _GLIBCXX_ALWAYS_INLINE __int_type
+      exchange(__int_type __i,
+	       memory_order __m = memory_order_seq_cst) noexcept
+      {
+	return __atomic_exchange_n(&_M_i, __i, int(__m));
+     9ee:	2100      	movs	r1, #0
+     9f0:	ed97 7a00 	vldr	s14, [r7]
+     9f4:	edd2 6a00 	vldr	s13, [r2]
+     9f8:	f103 023c 	add.w	r2, r3, #60	; 0x3c
+     9fc:	ee76 6ac7 	vsub.f32	s13, s13, s14
+     a00:	eea7 7aa6 	vfma.f32	s14, s15, s13
+    w0 += state_.imperfection;
+     a04:	eddf 7a60 	vldr	s15, [pc, #384]	; b88 <unit_render+0x1ec>
+     a08:	edd3 6a0e 	vldr	s13, [r3, #56]	; 0x38
+     a0c:	eeb4 7ae7 	vcmpe.f32	s14, s15
+     a10:	eef1 fa10 	vmrs	APSR_nzcv, fpscr
+     a14:	bf88      	it	hi
+     a16:	eeb0 7a67 	vmovhi.f32	s14, s15
+     a1a:	eddf 7a5c 	vldr	s15, [pc, #368]	; b8c <unit_render+0x1f0>
+     a1e:	eee7 6a27 	vfma.f32	s13, s14, s15
+    const float drift = params_.drift;
+     a22:	edd3 7a14 	vldr	s15, [r3, #80]	; 0x50
+    state_.w0_b = w0 + drift * 5.20833333333333e-006f;
+     a26:	eeb0 7a66 	vmov.f32	s14, s13
+    state_.w0_a = w0;
+     a2a:	edc3 6a06 	vstr	s13, [r3, #24]
+    state_.w0_b = w0 + drift * 5.20833333333333e-006f;
+     a2e:	eea7 7a86 	vfma.f32	s14, s15, s12
+     a32:	ed83 7a07 	vstr	s14, [r3, #28]
+    // Sub one octave down, with a phase drift (0.15Hz@48KHz)
+    state_.w0_sub = 0.5f * w0 + drift * 3.125e-006f;
+     a36:	ed9f 7a56 	vldr	s14, [pc, #344]	; b90 <unit_render+0x1f4>
+     a3a:	ee67 7a87 	vmul.f32	s15, s15, s14
+     a3e:	eeb6 7a00 	vmov.f32	s14, #96	; 0x3f000000  0.5
+     a42:	eee6 7a87 	vfma.f32	s15, s13, s14
+     a46:	edc3 7a08 	vstr	s15, [r3, #32]
+     a4a:	e852 7f00 	ldrex	r7, [r2]
+     a4e:	e842 1000 	strex	r0, r1, [r2]
+     a52:	2800      	cmp	r0, #0
+     a54:	d1f9      	bne.n	a4a <unit_render+0xae>
+  }
+    
+  fast_inline void updateWaves(const uint32_t flags) {
+    if (flags & State::k_flag_wave_a) {
+     a56:	07ba      	lsls	r2, r7, #30
+     a58:	d510      	bpl.n	a7c <unit_render+0xe0>
+      static const uint8_t k_a_thr = k_waves_a_cnt;
+      static const uint8_t k_b_thr = k_a_thr + k_waves_b_cnt;
+      static const uint8_t k_c_thr = k_b_thr + k_waves_c_cnt;
+      
+      uint8_t idx = params_.wave_a;
+     a5a:	f893 3054 	ldrb.w	r3, [r3, #84]	; 0x54
+      const float * const * table;
+      
+      if (idx < k_a_thr) {
+     a5e:	2b0f      	cmp	r3, #15
+     a60:	f240 81d0 	bls.w	e04 <unit_render+0x468>
+        table = wavesA;
+      }
+      else if (idx < k_b_thr) {
+     a64:	2b1f      	cmp	r3, #31
+     a66:	f200 81c9 	bhi.w	dfc <unit_render+0x460>
+        table = wavesB;
+        idx -= k_a_thr;
+     a6a:	3b10      	subs	r3, #16
+        table = wavesB;
+     a6c:	4a51      	ldr	r2, [pc, #324]	; (bb4 <unit_render+0x218>)
+        idx -= k_a_thr;
+     a6e:	b2db      	uxtb	r3, r3
+        table = wavesA;
+     a70:	58a2      	ldr	r2, [r4, r2]
+      }
+      else { 
+        table = wavesC;
+        idx -= k_b_thr;
+      }
+      state_.wave_a = table[idx];
+     a72:	f852 2023 	ldr.w	r2, [r2, r3, lsl #2]
+     a76:	4b50      	ldr	r3, [pc, #320]	; (bb8 <unit_render+0x21c>)
+     a78:	447b      	add	r3, pc
+     a7a:	601a      	str	r2, [r3, #0]
+    }
+    if (flags & State::k_flag_wave_b) {
+     a7c:	077b      	lsls	r3, r7, #29
+     a7e:	d512      	bpl.n	aa6 <unit_render+0x10a>
+      static const uint8_t k_d_thr = k_waves_d_cnt;
+      static const uint8_t k_e_thr = k_d_thr + k_waves_e_cnt;
+      static const uint8_t k_f_thr = k_e_thr + k_waves_f_cnt;
+      
+      uint8_t idx = params_.wave_b;
+     a80:	4b4e      	ldr	r3, [pc, #312]	; (bbc <unit_render+0x220>)
+     a82:	447b      	add	r3, pc
+     a84:	f893 3055 	ldrb.w	r3, [r3, #85]	; 0x55
+      const float * const * table;
+      
+      if (idx < k_d_thr) {
+     a88:	2b0c      	cmp	r3, #12
+     a8a:	f240 81c1 	bls.w	e10 <unit_render+0x474>
+        table = wavesD;
+      }
+      else if (idx < k_e_thr) {
+     a8e:	2b1b      	cmp	r3, #27
+     a90:	f200 81ba 	bhi.w	e08 <unit_render+0x46c>
+        table = wavesE;
+        idx -= k_d_thr;
+     a94:	3b0d      	subs	r3, #13
+        table = wavesE;
+     a96:	4a4a      	ldr	r2, [pc, #296]	; (bc0 <unit_render+0x224>)
+        idx -= k_d_thr;
+     a98:	b2db      	uxtb	r3, r3
+        table = wavesD;
+     a9a:	58a2      	ldr	r2, [r4, r2]
+      else { // if (idx < k_f_thr) {
+        table = wavesF;
+        idx -= k_e_thr;
+      }
+      
+      state_.wave_b = table[idx];
+     a9c:	f852 2023 	ldr.w	r2, [r2, r3, lsl #2]
+     aa0:	4b48      	ldr	r3, [pc, #288]	; (bc4 <unit_render+0x228>)
+     aa2:	447b      	add	r3, pc
+     aa4:	605a      	str	r2, [r3, #4]
+    }
+    if (flags & State::k_flag_sub_wave) {
+     aa6:	0738      	lsls	r0, r7, #28
+     aa8:	d508      	bpl.n	abc <unit_render+0x120>
+      const uint8_t idx = params_.sub_wave;
+      state_.sub_wave = wavesA[params_.sub_wave];
+     aaa:	4b47      	ldr	r3, [pc, #284]	; (bc8 <unit_render+0x22c>)
+     aac:	4a47      	ldr	r2, [pc, #284]	; (bcc <unit_render+0x230>)
+     aae:	447b      	add	r3, pc
+     ab0:	58a2      	ldr	r2, [r4, r2]
+     ab2:	f893 1056 	ldrb.w	r1, [r3, #86]	; 0x56
+     ab6:	f852 2021 	ldr.w	r2, [r2, r1, lsl #2]
+     aba:	609a      	str	r2, [r3, #8]
+      if (flags & State::k_flag_reset)
+     abc:	0679      	lsls	r1, r7, #25
+     abe:	d503      	bpl.n	ac8 <unit_render+0x12c>
+        s.Reset();
+     ac0:	4843      	ldr	r0, [pc, #268]	; (bd0 <unit_render+0x234>)
+     ac2:	4478      	add	r0, pc
+     ac4:	f000 fb9c 	bl	1200 <_ZN5Waves5State5ResetEv@plt>
+      s.lfo = q31_to_f32(ctxt->shape_lfo);
+     ac8:	ed96 7a00 	vldr	s14, [r6]
+      if (flags & State::k_flag_bit_crush) {
+     acc:	06ba      	lsls	r2, r7, #26
+      s.lfo = q31_to_f32(ctxt->shape_lfo);
+     ace:	4b41      	ldr	r3, [pc, #260]	; (bd4 <unit_render+0x238>)
+     ad0:	eeba 7ae0 	vcvt.f32.s32	s14, s14, #31
+     ad4:	447b      	add	r3, pc
+     ad6:	ed83 7a09 	vstr	s14, [r3, #36]	; 0x24
+      if (flags & State::k_flag_bit_crush) {
+     ada:	d529      	bpl.n	b30 <unit_render+0x194>
+        s.dither = p.bit_crush * 2e-008f;
+     adc:	edd3 7a12 	vldr	s15, [r3, #72]	; 0x48
+     ae0:	eddf 6a2c 	vldr	s13, [pc, #176]	; b94 <unit_render+0x1f8>
+   * @note       Fractional bit depth, exponentially mapped, 1 to 24 bits.
+   */
+  static fast_inline float osc_bitresf(float x) {
+    const float xf = x * k_bitres_size;
+    const uint32_t xi = (uint32_t)xf;
+    const float y0 = bitres_lut_f[xi];
+     ae4:	4a3c      	ldr	r2, [pc, #240]	; (bd8 <unit_render+0x23c>)
+     ae6:	ee67 6aa6 	vmul.f32	s13, s15, s13
+     aea:	edc3 6a0b 	vstr	s13, [r3, #44]	; 0x2c
+    const float xf = x * k_bitres_size;
+     aee:	eddf 6a2a 	vldr	s13, [pc, #168]	; b98 <unit_render+0x1fc>
+    const float y0 = bitres_lut_f[xi];
+     af2:	58a2      	ldr	r2, [r4, r2]
+    const float xf = x * k_bitres_size;
+     af4:	ee67 7aa6 	vmul.f32	s15, s15, s13
+    const uint32_t xi = (uint32_t)xf;
+     af8:	eefc 6ae7 	vcvt.u32.f32	s13, s15
+     afc:	ee16 1a90 	vmov	r1, s13
+    const float y1 = bitres_lut_f[xi+1];
+    return linintf(xf - xi, y0, y1);
+     b00:	ee06 1a10 	vmov	s12, r1
+    const float y0 = bitres_lut_f[xi];
+     b04:	eb02 0081 	add.w	r0, r2, r1, lsl #2
+    return linintf(xf - xi, y0, y1);
+     b08:	eeb8 6a46 	vcvt.f32.u32	s12, s12
+    const float y0 = bitres_lut_f[xi];
+     b0c:	edd0 6a00 	vldr	s13, [r0]
+    return linintf(xf - xi, y0, y1);
+     b10:	ee77 7ac6 	vsub.f32	s15, s15, s12
+     b14:	ed90 6a01 	vldr	s12, [r0, #4]
+     b18:	ee36 6a66 	vsub.f32	s12, s12, s13
+     b1c:	eee7 6a86 	vfma.f32	s13, s15, s12
+        s.bit_res_recip = 1.f / s.bit_res;
+     b20:	eeb7 6a00 	vmov.f32	s12, #112	; 0x3f800000  1.0
+     b24:	eec6 7a26 	vdiv.f32	s15, s12, s13
+        s.bit_res = osc_bitresf(p.bit_crush);
+     b28:	edc3 6a0c 	vstr	s13, [r3, #48]	; 0x30
+        s.bit_res_recip = 1.f / s.bit_res;
+     b2c:	edc3 7a0d 	vstr	s15, [r3, #52]	; 0x34
+    float phi_a = s.phi_a;
+     b30:	4b2a      	ldr	r3, [pc, #168]	; (bdc <unit_render+0x240>)
+    const float lfo_inc = (s.lfo - lfoz) / frames;
+     b32:	ee07 8a90 	vmov	s15, r8
+     b36:	eddf ba19 	vldr	s23, [pc, #100]	; b9c <unit_render+0x200>
+    const float * y_e = y + frames;
+     b3a:	eb05 0888 	add.w	r8, r5, r8, lsl #2
+    float phi_a = s.phi_a;
+     b3e:	447b      	add	r3, pc
+    const float lfo_inc = (s.lfo - lfoz) / frames;
+     b40:	eef8 7a67 	vcvt.f32.u32	s15, s15
+      const float wave_mix = clip01f(p.shape+lfoz);
+     b44:	4c26      	ldr	r4, [pc, #152]	; (be0 <unit_render+0x244>)
+    float lfoz = s.lfoz;
+     b46:	ed93 aa0a 	vldr	s20, [r3, #40]	; 0x28
+    const float sub_mix = p.sub_mix * 0.5011872336272722f;
+     b4a:	edd3 aa10 	vldr	s21, [r3, #64]	; 0x40
+      const float wave_mix = clip01f(p.shape+lfoz);
+     b4e:	447c      	add	r4, pc
+    const float lfo_inc = (s.lfo - lfoz) / frames;
+     b50:	ee37 7a4a 	vsub.f32	s14, s14, s20
+    const float ring_mix = p.ring_mix;
+     b54:	ed93 ca11 	vldr	s24, [r3, #68]	; 0x44
+    float phi_a = s.phi_a;
+     b58:	edd3 9a03 	vldr	s19, [r3, #12]
+    float phi_b = s.phi_b;
+     b5c:	ee2c da2b 	vmul.f32	s26, s24, s23
+     b60:	ed93 9a04 	vldr	s18, [r3, #16]
+    const float lfo_inc = (s.lfo - lfoz) / frames;
+     b64:	eec7 ca27 	vdiv.f32	s25, s14, s15
+    const float sub_mix = p.sub_mix * 0.5011872336272722f;
+     b68:	eddf 7a0d 	vldr	s15, [pc, #52]	; ba0 <unit_render+0x204>
+    float phi_sub = s.phi_sub;
+     b6c:	edd3 8a05 	vldr	s17, [r3, #20]
+    const float sub_mix = p.sub_mix * 0.5011872336272722f;
+     b70:	eddf da0c 	vldr	s27, [pc, #48]	; ba4 <unit_render+0x208>
+    const float x0f = p * k_waves_size;
+     b74:	ed9f ba08 	vldr	s22, [pc, #32]	; b98 <unit_render+0x1fc>
+     b78:	ee6a aaa7 	vmul.f32	s21, s21, s15
+     b7c:	e032      	b.n	be4 <unit_render+0x248>
+     b7e:	bf00      	nop
+     b80:	3b808081 	.word	0x3b808081
+     b84:	36aec33e 	.word	0x36aec33e
+     b88:	46b8ff49 	.word	0x46b8ff49
+     b8c:	37aec33e 	.word	0x37aec33e
+     b90:	3651b717 	.word	0x3651b717
+     b94:	32abcc77 	.word	0x32abcc77
+     b98:	43000000 	.word	0x43000000
+     b9c:	3fb4ce08 	.word	0x3fb4ce08
+     ba0:	3f004dce 	.word	0x3f004dce
+     ba4:	00000000 	.word	0x00000000
+     ba8:	00000caa 	.word	0x00000caa
+     bac:	00000c4c 	.word	0x00000c4c
+     bb0:	00000044 	.word	0x00000044
+     bb4:	0000003c 	.word	0x0000003c
+     bb8:	00000bd4 	.word	0x00000bd4
+     bbc:	00000bca 	.word	0x00000bca
+     bc0:	00000030 	.word	0x00000030
+     bc4:	00000baa 	.word	0x00000baa
+     bc8:	00000b9e 	.word	0x00000b9e
+     bcc:	00000034 	.word	0x00000034
+     bd0:	00000b8a 	.word	0x00000b8a
+     bd4:	00000b78 	.word	0x00000b78
+     bd8:	00000020 	.word	0x00000020
+     bdc:	00000b0e 	.word	0x00000b0e
+     be0:	00000afe 	.word	0x00000afe
+    for (; y != y_e; ) {
+     be4:	45a8      	cmp	r8, r5
+     be6:	f000 8115 	beq.w	e14 <unit_render+0x478>
+    const float p = x - (uint32_t)x;
+     bea:	eebc 7ae9 	vcvt.u32.f32	s14, s19
+      float sig = (1.f - wave_mix) * osc_wave_scanf(s.wave_a, phi_a);
+     bee:	6822      	ldr	r2, [r4, #0]
+      const float wave_mix = clip01f(p.shape+lfoz);
+     bf0:	edd4 7a13 	vldr	s15, [r4, #76]	; 0x4c
+     bf4:	eeb7 6a00 	vmov.f32	s12, #112	; 0x3f800000  1.0
+     *
+     * @return Output sample
+     */
+    inline __attribute__((optimize("Ofast"),always_inline))
+    float process_fo(const float xn) {
+      float acc = mCoeffs.ff0 * xn + mZ1;
+     bf8:	ed94 8a1b 	vldr	s16, [r4, #108]	; 0x6c
+     bfc:	eeb8 7a47 	vcvt.f32.u32	s14, s14
+      sig += s.dither * osc_white();
+     c00:	ed94 ea0b 	vldr	s28, [r4, #44]	; 0x2c
+      const float wave_mix = clip01f(p.shape+lfoz);
+     c04:	ee7a 7a27 	vadd.f32	s15, s20, s15
+      lfoz += lfo_inc;
+     c08:	ee3a aa2c 	vadd.f32	s20, s20, s25
+     c0c:	ee39 7ac7 	vsub.f32	s14, s19, s14
+     c10:	eef5 7ac0 	vcmpe.f32	s15, #0.0
+    const float x0f = p * k_waves_size;
+     c14:	ee27 7a0b 	vmul.f32	s14, s14, s22
+     c18:	eef1 fa10 	vmrs	APSR_nzcv, fpscr
+    const uint32_t x0 = ((uint32_t)x0f) & k_waves_mask;
+     c1c:	eefc 5ac7 	vcvt.u32.f32	s11, s14
+     c20:	bfb8      	it	lt
+     c22:	eef0 7a6d 	vmovlt.f32	s15, s27
+     c26:	ee15 3a90 	vmov	r3, s11
+    return linintf(x0f - (uint32_t)x0f, w[x0], w[x1]);
+     c2a:	eef8 5a65 	vcvt.f32.u32	s11, s11
+     c2e:	eef4 7ac6 	vcmpe.f32	s15, s12
+    const uint32_t x0 = ((uint32_t)x0f) & k_waves_mask;
+     c32:	f003 037f 	and.w	r3, r3, #127	; 0x7f
+    return linintf(x0f - (uint32_t)x0f, w[x0], w[x1]);
+     c36:	ee37 7a65 	vsub.f32	s14, s14, s11
+     c3a:	eb02 0183 	add.w	r1, r2, r3, lsl #2
+    const uint32_t x1 = (x0 + 1) & k_waves_mask;
+     c3e:	3301      	adds	r3, #1
+     c40:	eef1 fa10 	vmrs	APSR_nzcv, fpscr
+     c44:	f003 037f 	and.w	r3, r3, #127	; 0x7f
+    return linintf(x0f - (uint32_t)x0f, w[x0], w[x1]);
+     c48:	edd1 6a00 	vldr	s13, [r1]
+     c4c:	eb02 0383 	add.w	r3, r2, r3, lsl #2
+      sig += wave_mix * osc_wave_scanf(s.wave_b, phi_b);
+     c50:	6862      	ldr	r2, [r4, #4]
+     c52:	bf88      	it	hi
+     c54:	eef0 7a46 	vmovhi.f32	s15, s12
+     c58:	edd3 5a00 	vldr	s11, [r3]
+     c5c:	ee75 5ae6 	vsub.f32	s11, s11, s13
+     c60:	eee7 6a25 	vfma.f32	s13, s14, s11
+    const float p = x - (uint32_t)x;
+     c64:	eebc 7ac9 	vcvt.u32.f32	s14, s18
+     c68:	eeb8 7a47 	vcvt.f32.u32	s14, s14
+     c6c:	ee39 7a47 	vsub.f32	s14, s18, s14
+    const float x0f = p * k_waves_size;
+     c70:	ee27 7a0b 	vmul.f32	s14, s14, s22
+    const uint32_t x0 = ((uint32_t)x0f) & k_waves_mask;
+     c74:	eebc 5ac7 	vcvt.u32.f32	s10, s14
+     c78:	ee15 3a10 	vmov	r3, s10
+    return linintf(x0f - (uint32_t)x0f, w[x0], w[x1]);
+     c7c:	eeb8 5a45 	vcvt.f32.u32	s10, s10
+    const uint32_t x0 = ((uint32_t)x0f) & k_waves_mask;
+     c80:	f003 037f 	and.w	r3, r3, #127	; 0x7f
+    return linintf(x0f - (uint32_t)x0f, w[x0], w[x1]);
+     c84:	ee37 7a45 	vsub.f32	s14, s14, s10
+     c88:	eb02 0183 	add.w	r1, r2, r3, lsl #2
+    const uint32_t x1 = (x0 + 1) & k_waves_mask;
+     c8c:	3301      	adds	r3, #1
+     c8e:	f003 037f 	and.w	r3, r3, #127	; 0x7f
+    return linintf(x0f - (uint32_t)x0f, w[x0], w[x1]);
+     c92:	edd1 5a00 	vldr	s11, [r1]
+     c96:	eb02 0383 	add.w	r3, r2, r3, lsl #2
+      const float sub_sig = osc_wave_scanf(s.sub_wave, phi_sub);
+     c9a:	68a2      	ldr	r2, [r4, #8]
+     c9c:	ed93 5a00 	vldr	s10, [r3]
+     ca0:	ee35 5a65 	vsub.f32	s10, s10, s11
+     ca4:	eee7 5a05 	vfma.f32	s11, s14, s10
+      float sig = (1.f - wave_mix) * osc_wave_scanf(s.wave_a, phi_a);
+     ca8:	ee36 7a67 	vsub.f32	s14, s12, s15
+  return x * (27.f + xx) / (27.f + 9.f * xx);
+     cac:	eeb2 5a02 	vmov.f32	s10, #34	; 0x41100000  9.0
+      sig += wave_mix * osc_wave_scanf(s.wave_b, phi_b);
+     cb0:	ee67 7aa5 	vmul.f32	s15, s15, s11
+     cb4:	eee7 7a26 	vfma.f32	s15, s14, s13
+    const float p = x - (uint32_t)x;
+     cb8:	eefc 6ae8 	vcvt.u32.f32	s13, s17
+     cbc:	eef8 6a66 	vcvt.f32.u32	s13, s13
+     cc0:	ee78 6ae6 	vsub.f32	s13, s17, s13
+    const float x0f = p * k_waves_size;
+     cc4:	ee66 6a8b 	vmul.f32	s13, s13, s22
+    const uint32_t x0 = ((uint32_t)x0f) & k_waves_mask;
+     cc8:	eefc 5ae6 	vcvt.u32.f32	s11, s13
+     ccc:	ee15 3a90 	vmov	r3, s11
+    return linintf(x0f - (uint32_t)x0f, w[x0], w[x1]);
+     cd0:	eef8 5a65 	vcvt.f32.u32	s11, s11
+    const uint32_t x0 = ((uint32_t)x0f) & k_waves_mask;
+     cd4:	f003 037f 	and.w	r3, r3, #127	; 0x7f
+    return linintf(x0f - (uint32_t)x0f, w[x0], w[x1]);
+     cd8:	ee76 6ae5 	vsub.f32	s13, s13, s11
+     cdc:	eb02 0183 	add.w	r1, r2, r3, lsl #2
+    const uint32_t x1 = (x0 + 1) & k_waves_mask;
+     ce0:	3301      	adds	r3, #1
+     ce2:	f003 037f 	and.w	r3, r3, #127	; 0x7f
+    return linintf(x0f - (uint32_t)x0f, w[x0], w[x1]);
+     ce6:	ed91 7a00 	vldr	s14, [r1]
+     cea:	eb02 0383 	add.w	r3, r2, r3, lsl #2
+  return x0 + fr * (x1 - x0);
+     cee:	edd3 5a00 	vldr	s11, [r3]
+     cf2:	ee75 5ac7 	vsub.f32	s11, s11, s14
+     cf6:	eea6 7aa5 	vfma.f32	s14, s13, s11
+      sig = (1.f - ring_mix) * sig + ring_mix * 1.4125375446227544f * (sub_sig * sig);
+     cfa:	ee76 6a4c 	vsub.f32	s13, s12, s24
+     cfe:	eee7 6a0d 	vfma.f32	s13, s14, s26
+      sig += sub_mix * sub_sig;
+     d02:	ee2a 7a87 	vmul.f32	s14, s21, s14
+     d06:	eea7 7aa6 	vfma.f32	s14, s15, s13
+      sig *= 1.4125375446227544f;
+     d0a:	ee67 7a2b 	vmul.f32	s15, s14, s23
+  return x * (27.f + xx) / (27.f + 9.f * xx);
+     d0e:	eeb3 7a0b 	vmov.f32	s14, #59	; 0x41d80000  27.0
+  const float xx = x * x;
+     d12:	ee67 5aa7 	vmul.f32	s11, s15, s15
+  return x * (27.f + xx) / (27.f + 9.f * xx);
+     d16:	ee75 6a87 	vadd.f32	s13, s11, s14
+     d1a:	eea5 7a85 	vfma.f32	s14, s11, s10
+     d1e:	ee66 7aa7 	vmul.f32	s15, s13, s15
+     d22:	eef0 6a47 	vmov.f32	s13, s14
+     d26:	ee87 7aa6 	vdiv.f32	s14, s15, s13
+      mZ1 = mCoeffs.ff1 * xn;
+      mZ1 -= mCoeffs.fb1 * acc;
+     d2a:	edd4 6a17 	vldr	s13, [r4, #92]	; 0x5c
+     d2e:	eeff 7a00 	vmov.f32	s15, #240	; 0xbf800000 -1.0
+     d32:	eeb4 7ae7 	vcmpe.f32	s14, s15
+     d36:	eef1 fa10 	vmrs	APSR_nzcv, fpscr
+     d3a:	bfb8      	it	lt
+     d3c:	eeb0 7a67 	vmovlt.f32	s14, s15
+      float acc = mCoeffs.ff0 * xn + mZ1;
+     d40:	edd4 7a16 	vldr	s15, [r4, #88]	; 0x58
+     d44:	eeb4 7ac6 	vcmpe.f32	s14, s12
+     d48:	eef1 fa10 	vmrs	APSR_nzcv, fpscr
+     d4c:	bf88      	it	hi
+     d4e:	eeb0 7a46 	vmovhi.f32	s14, s12
+     d52:	eea7 8a27 	vfma.f32	s16, s14, s15
+      mZ1 -= mCoeffs.fb1 * acc;
+     d56:	edd4 7a19 	vldr	s15, [r4, #100]	; 0x64
+     d5a:	ee67 7ac8 	vnmul.f32	s15, s15, s16
+     d5e:	eee7 7a26 	vfma.f32	s15, s14, s13
+     d62:	edc4 7a1b 	vstr	s15, [r4, #108]	; 0x6c
+      sig += s.dither * osc_white();
+     d66:	f000 fa3b 	bl	11e0 <osc_white@plt>
+     d6a:	eeae 8a00 	vfma.f32	s16, s28, s0
+      sig = si_roundf(sig * s.bit_res) * s.bit_res_recip;
+     d6e:	edd4 7a0c 	vldr	s15, [r4, #48]	; 0x30
+     d72:	ed94 7a0d 	vldr	s14, [r4, #52]	; 0x34
+      float acc = mCoeffs.ff0 * xn + mZ1;
+     d76:	edd4 6a22 	vldr	s13, [r4, #136]	; 0x88
+      mZ1 -= mCoeffs.fb1 * acc;
+     d7a:	ed94 6a1e 	vldr	s12, [r4, #120]	; 0x78
+     d7e:	ee28 8a27 	vmul.f32	s16, s16, s15
+  xs.i |= ys.i & 0x80000000;
+     d82:	ee18 3a10 	vmov	r3, s16
+     d86:	f003 4300 	and.w	r3, r3, #2147483648	; 0x80000000
+     d8a:	f043 537c 	orr.w	r3, r3, #1056964608	; 0x3f000000
+     d8e:	ee07 3a90 	vmov	s15, r3
+  return (float)((int32_t)(x + si_copysignf(0.5f,x)));
+     d92:	ee78 7a27 	vadd.f32	s15, s16, s15
+     d96:	eefd 7ae7 	vcvt.s32.f32	s15, s15
+     d9a:	eef8 7ae7 	vcvt.f32.s32	s15, s15
+     d9e:	ee67 7a87 	vmul.f32	s15, s15, s14
+      float acc = mCoeffs.ff0 * xn + mZ1;
+     da2:	ed94 7a1d 	vldr	s14, [r4, #116]	; 0x74
+     da6:	eee7 6a87 	vfma.f32	s13, s15, s14
+      mZ1 -= mCoeffs.fb1 * acc;
+     daa:	ed94 7a20 	vldr	s14, [r4, #128]	; 0x80
+     dae:	ee27 7a66 	vnmul.f32	s14, s14, s13
+     db2:	eea7 7a86 	vfma.f32	s14, s15, s12
+     db6:	ed84 7a22 	vstr	s14, [r4, #136]	; 0x88
+      *(y++) = sig;
+     dba:	ece5 6a01 	vstmia	r5!, {s13}
+      phi_a += s.w0_a;
+     dbe:	edd4 7a06 	vldr	s15, [r4, #24]
+     dc2:	ee79 9aa7 	vadd.f32	s19, s19, s15
+      phi_a -= (uint32_t)phi_a;
+     dc6:	eefc 7ae9 	vcvt.u32.f32	s15, s19
+     dca:	eef8 7a67 	vcvt.f32.u32	s15, s15
+     dce:	ee79 9ae7 	vsub.f32	s19, s19, s15
+      phi_b += s.w0_b;
+     dd2:	edd4 7a07 	vldr	s15, [r4, #28]
+     dd6:	ee39 9a27 	vadd.f32	s18, s18, s15
+      phi_b -= (uint32_t)phi_b;
+     dda:	eefc 7ac9 	vcvt.u32.f32	s15, s18
+     dde:	eef8 7a67 	vcvt.f32.u32	s15, s15
+     de2:	ee39 9a67 	vsub.f32	s18, s18, s15
+      phi_sub += s.w0_sub;
+     de6:	edd4 7a08 	vldr	s15, [r4, #32]
+     dea:	ee78 8aa7 	vadd.f32	s17, s17, s15
+      phi_sub -= (uint32_t)phi_sub;
+     dee:	eefc 7ae8 	vcvt.u32.f32	s15, s17
+     df2:	eef8 7a67 	vcvt.f32.u32	s15, s15
+     df6:	ee78 8ae7 	vsub.f32	s17, s17, s15
+    for (; y != y_e; ) {
+     dfa:	e6f3      	b.n	be4 <unit_render+0x248>
+        idx -= k_b_thr;
+     dfc:	3b20      	subs	r3, #32
+        table = wavesC;
+     dfe:	4a0c      	ldr	r2, [pc, #48]	; (e30 <unit_render+0x494>)
+        idx -= k_b_thr;
+     e00:	b2db      	uxtb	r3, r3
+     e02:	e635      	b.n	a70 <unit_render+0xd4>
+        table = wavesA;
+     e04:	4a0b      	ldr	r2, [pc, #44]	; (e34 <unit_render+0x498>)
+     e06:	e633      	b.n	a70 <unit_render+0xd4>
+        idx -= k_e_thr;
+     e08:	3b1c      	subs	r3, #28
+        table = wavesF;
+     e0a:	4a0b      	ldr	r2, [pc, #44]	; (e38 <unit_render+0x49c>)
+        idx -= k_e_thr;
+     e0c:	b2db      	uxtb	r3, r3
+     e0e:	e644      	b.n	a9a <unit_render+0xfe>
+        table = wavesD;
+     e10:	4a0a      	ldr	r2, [pc, #40]	; (e3c <unit_render+0x4a0>)
+     e12:	e642      	b.n	a9a <unit_render+0xfe>
+    s.phi_a = phi_a;
+     e14:	4b0a      	ldr	r3, [pc, #40]	; (e40 <unit_render+0x4a4>)
+     e16:	447b      	add	r3, pc
+     e18:	edc3 9a03 	vstr	s19, [r3, #12]
+    s.phi_b = phi_b;
+     e1c:	ed83 9a04 	vstr	s18, [r3, #16]
+    s.phi_sub = phi_sub;
+     e20:	edc3 8a05 	vstr	s17, [r3, #20]
+    s.lfoz = lfoz;
+     e24:	ed83 aa0a 	vstr	s20, [r3, #40]	; 0x28
+  s_waves_instance.Process(in, out, frames);
+}
+     e28:	ecbd 8b0e 	vpop	{d8-d14}
+     e2c:	e8bd 81f0 	ldmia.w	sp!, {r4, r5, r6, r7, r8, pc}
+     e30:	00000028 	.word	0x00000028
+     e34:	00000034 	.word	0x00000034
+     e38:	00000024 	.word	0x00000024
+     e3c:	00000040 	.word	0x00000040
+     e40:	00000836 	.word	0x00000836
+
+00000e44 <unit_set_param_value>:
+
+__unit_callback void unit_set_param_value(uint8_t id, int32_t value) {
+     e44:	460a      	mov	r2, r1
+  s_waves_instance.setParameter(id, value);
+     e46:	4601      	mov	r1, r0
+     e48:	4802      	ldr	r0, [pc, #8]	; (e54 <unit_set_param_value+0x10>)
+__unit_callback void unit_set_param_value(uint8_t id, int32_t value) {
+     e4a:	b508      	push	{r3, lr}
+  s_waves_instance.setParameter(id, value);
+     e4c:	4478      	add	r0, pc
+     e4e:	f000 f9e7 	bl	1220 <_ZN5Waves12setParameterEhl@plt>
+}
+     e52:	bd08      	pop	{r3, pc}
+     e54:	00000800 	.word	0x00000800
+
+00000e58 <unit_get_param_value>:
+
+__unit_callback int32_t unit_get_param_value(uint8_t id) {
+     e58:	4601      	mov	r1, r0
+  return s_waves_instance.getParameterValue(id);
+     e5a:	4803      	ldr	r0, [pc, #12]	; (e68 <unit_get_param_value+0x10>)
+__unit_callback int32_t unit_get_param_value(uint8_t id) {
+     e5c:	b508      	push	{r3, lr}
+  return s_waves_instance.getParameterValue(id);
+     e5e:	4478      	add	r0, pc
+     e60:	f000 f9d6 	bl	1210 <_ZNK5Waves17getParameterValueEh@plt>
+}
+     e64:	bd08      	pop	{r3, pc}
+     e66:	bf00      	nop
+     e68:	000007ee 	.word	0x000007ee
+
+00000e6c <unit_get_param_str_value>:
+
+__unit_callback const char * unit_get_param_str_value(uint8_t id, int32_t value) {
+  return s_waves_instance.getParameterStrValue(id, value);
+}
+     e6c:	2000      	movs	r0, #0
+     e6e:	4770      	bx	lr
+
+00000e70 <unit_set_tempo>:
+
+__unit_callback void unit_set_tempo(uint32_t tempo) {
+  (void)tempo;
+}
+     e70:	4770      	bx	lr
+
+00000e72 <unit_tempo_4ppqn_tick>:
+     e72:	4770      	bx	lr
+
+00000e74 <unit_note_on>:
+      { return __atomic_fetch_and(&_M_i, __i, int(__m)); }
+
+      _GLIBCXX_ALWAYS_INLINE __int_type
+      fetch_or(__int_type __i,
+	       memory_order __m = memory_order_seq_cst) noexcept
+      { return __atomic_fetch_or(&_M_i, __i, int(__m)); }
+     e74:	4b07      	ldr	r3, [pc, #28]	; (e94 <unit_note_on+0x20>)
+     e76:	f3bf 8f5b 	dmb	ish
+     e7a:	447b      	add	r3, pc
+     e7c:	333c      	adds	r3, #60	; 0x3c
+     e7e:	e853 2f00 	ldrex	r2, [r3]
+     e82:	f042 0240 	orr.w	r2, r2, #64	; 0x40
+     e86:	e843 2100 	strex	r1, r2, [r3]
+     e8a:	2900      	cmp	r1, #0
+     e8c:	d1f7      	bne.n	e7e <unit_note_on+0xa>
+     e8e:	f3bf 8f5b 	dmb	ish
+  (void)counter;
+}
+
+__unit_callback void unit_note_on(uint8_t note, uint8_t velo) {
+  s_waves_instance.NoteOn(note, velo);
+}
+     e92:	4770      	bx	lr
+     e94:	000007d2 	.word	0x000007d2
+
+00000e98 <unit_note_off>:
+
+__unit_callback void unit_note_off(uint8_t note) {
+  s_waves_instance.NoteOff(note);
+}
+     e98:	4770      	bx	lr
+
+00000e9a <unit_all_note_off>:
+     e9a:	4770      	bx	lr
+
+00000e9c <unit_pitch_bend>:
+  s_waves_instance.AllNoteOff();
+}
+
+__unit_callback void unit_pitch_bend(uint16_t bend) {
+  s_waves_instance.PitchBend(bend);
+}
+     e9c:	4770      	bx	lr
+
+00000e9e <unit_channel_pressure>:
+     e9e:	4770      	bx	lr
+
+00000ea0 <unit_aftertouch>:
+  s_waves_instance.ChannelPressure(press);
+}
+
+__unit_callback void unit_aftertouch(uint8_t note, uint8_t press) {
+  s_waves_instance.AfterTouch(note, press);
+}
+     ea0:	4770      	bx	lr
+     ea2:	bf00      	nop
+
+00000ea4 <_ZN5Waves5State5ResetEv>:
+      phi_a = 0;
+     ea4:	2300      	movs	r3, #0
+     ea6:	60c3      	str	r3, [r0, #12]
+      phi_b = 0;
+     ea8:	6103      	str	r3, [r0, #16]
+      phi_sub = 0;
+     eaa:	6143      	str	r3, [r0, #20]
+      lfo = lfoz;
+     eac:	6a83      	ldr	r3, [r0, #40]	; 0x28
+     eae:	6243      	str	r3, [r0, #36]	; 0x24
+    }
+     eb0:	4770      	bx	lr
+	...
+
+00000eb4 <_ZN5WavesC1Ev>:
+  Waves(void)  { }
+     eb4:	4b25      	ldr	r3, [pc, #148]	; (f4c <_ZN5WavesC1Ev+0x98>)
+      wave_a(wavesA[0]),
+     eb6:	4a26      	ldr	r2, [pc, #152]	; (f50 <_ZN5WavesC1Ev+0x9c>)
+  Waves(void)  { }
+     eb8:	447b      	add	r3, pc
+      wave_b(wavesD[0]),
+     eba:	4926      	ldr	r1, [pc, #152]	; (f54 <_ZN5WavesC1Ev+0xa0>)
+  Waves(void)  { }
+     ebc:	b570      	push	{r4, r5, r6, lr}
+      wave_a(wavesA[0]),
+     ebe:	589a      	ldr	r2, [r3, r2]
+      flags{k_flags_none}
+     ec0:	2500      	movs	r5, #0
+      constexpr __atomic_base(__int_type __i) noexcept : _M_i (__i) { }
+     ec2:	2600      	movs	r6, #0
+  Waves(void)  { }
+     ec4:	4604      	mov	r4, r0
+      wave_a(wavesA[0]),
+     ec6:	6812      	ldr	r2, [r2, #0]
+      flags{k_flags_none}
+     ec8:	6002      	str	r2, [r0, #0]
+      wave_b(wavesD[0]),
+     eca:	585b      	ldr	r3, [r3, r1]
+      flags{k_flags_none}
+     ecc:	6245      	str	r5, [r0, #36]	; 0x24
+     ece:	681b      	ldr	r3, [r3, #0]
+     ed0:	6285      	str	r5, [r0, #40]	; 0x28
+     ed2:	62c5      	str	r5, [r0, #44]	; 0x2c
+     ed4:	63c6      	str	r6, [r0, #60]	; 0x3c
+     ed6:	e9c0 3201 	strd	r3, r2, [r0, #4]
+     eda:	4b17      	ldr	r3, [pc, #92]	; (f38 <_ZN5WavesC1Ev+0x84>)
+     edc:	6183      	str	r3, [r0, #24]
+     ede:	61c3      	str	r3, [r0, #28]
+     ee0:	4b16      	ldr	r3, [pc, #88]	; (f3c <_ZN5WavesC1Ev+0x88>)
+     ee2:	6203      	str	r3, [r0, #32]
+     ee4:	f04f 537e 	mov.w	r3, #1065353216	; 0x3f800000
+     ee8:	6303      	str	r3, [r0, #48]	; 0x30
+     eea:	6343      	str	r3, [r0, #52]	; 0x34
+      Reset();
+     eec:	f000 f988 	bl	1200 <_ZN5Waves5State5ResetEv@plt>
+      imperfection = osc_white() * 1.0417e-006f; // +/- 0.05Hz@48KHz
+     ef0:	f000 f976 	bl	11e0 <osc_white@plt>
+     ef4:	eddf 7a12 	vldr	s15, [pc, #72]	; f40 <_ZN5WavesC1Ev+0x8c>
+  struct Params {
+     ef8:	4b12      	ldr	r3, [pc, #72]	; (f44 <_ZN5WavesC1Ev+0x90>)
+  Waves(void)  { }
+     efa:	4620      	mov	r0, r4
+      imperfection = osc_white() * 1.0417e-006f; // +/- 0.05Hz@48KHz
+     efc:	ee20 0a27 	vmul.f32	s0, s0, s15
+  struct Params {
+     f00:	6465      	str	r5, [r4, #68]	; 0x44
+     f02:	6423      	str	r3, [r4, #64]	; 0x40
+     f04:	4b10      	ldr	r3, [pc, #64]	; (f48 <_ZN5WavesC1Ev+0x94>)
+      imperfection = osc_white() * 1.0417e-006f; // +/- 0.05Hz@48KHz
+     f06:	ed84 0a0e 	vstr	s0, [r4, #56]	; 0x38
+  struct Params {
+     f0a:	64a5      	str	r5, [r4, #72]	; 0x48
+     f0c:	64e5      	str	r5, [r4, #76]	; 0x4c
+     f0e:	6523      	str	r3, [r4, #80]	; 0x50
+     f10:	6566      	str	r6, [r4, #84]	; 0x54
+        fb1(0), fb2(0)
+     f12:	65a5      	str	r5, [r4, #88]	; 0x58
+     f14:	65e5      	str	r5, [r4, #92]	; 0x5c
+     f16:	6625      	str	r5, [r4, #96]	; 0x60
+     f18:	6665      	str	r5, [r4, #100]	; 0x64
+     f1a:	66a5      	str	r5, [r4, #104]	; 0x68
+    BiQuad(void) : mZ1(0), mZ2(0)
+     f1c:	66e5      	str	r5, [r4, #108]	; 0x6c
+     f1e:	6725      	str	r5, [r4, #112]	; 0x70
+        fb1(0), fb2(0)
+     f20:	6765      	str	r5, [r4, #116]	; 0x74
+     f22:	67a5      	str	r5, [r4, #120]	; 0x78
+     f24:	67e5      	str	r5, [r4, #124]	; 0x7c
+     f26:	f8c4 5080 	str.w	r5, [r4, #128]	; 0x80
+     f2a:	f8c4 5084 	str.w	r5, [r4, #132]	; 0x84
+    BiQuad(void) : mZ1(0), mZ2(0)
+     f2e:	f8c4 5088 	str.w	r5, [r4, #136]	; 0x88
+     f32:	f8c4 508c 	str.w	r5, [r4, #140]	; 0x8c
+  Waves(void)  { }
+     f36:	bd70      	pop	{r4, r5, r6, pc}
+     f38:	3c162fc9 	.word	0x3c162fc9
+     f3c:	3b962fc9 	.word	0x3b962fc9
+     f40:	358bd08a 	.word	0x358bd08a
+     f44:	3d4ccccd 	.word	0x3d4ccccd
+     f48:	3fa00000 	.word	0x3fa00000
+     f4c:	0000074c 	.word	0x0000074c
+     f50:	00000034 	.word	0x00000034
+     f54:	00000040 	.word	0x00000040
+
+00000f58 <_ZN5Waves12setParameterEhl>:
+    switch (index) {
+     f58:	2907      	cmp	r1, #7
+     f5a:	f200 80b6 	bhi.w	10ca <_ZN5Waves12setParameterEhl+0x172>
+     f5e:	e8df f001 	tbb	[pc, r1]
+     f62:	1604      	.short	0x1604
+     f64:	634e3c28 	.word	0x634e3c28
+     f68:	a880      	.short	0xa880
+      p.shape = 0.005f + param_10bit_to_f32(value) * 0.99f;
+     f6a:	b293      	uxth	r3, r2
+     f6c:	ed9f 7a57 	vldr	s14, [pc, #348]	; 10cc <_ZN5Waves12setParameterEhl+0x174>
+     f70:	eddf 6a57 	vldr	s13, [pc, #348]	; 10d0 <_ZN5Waves12setParameterEhl+0x178>
+     f74:	ee07 3a90 	vmov	s15, r3
+     f78:	eef8 7ae7 	vcvt.f32.s32	s15, s15
+     f7c:	ee67 7a87 	vmul.f32	s15, s15, s14
+     f80:	ed9f 7a54 	vldr	s14, [pc, #336]	; 10d4 <_ZN5Waves12setParameterEhl+0x17c>
+     f84:	eea7 7aa6 	vfma.f32	s14, s15, s13
+     f88:	ed80 7a13 	vstr	s14, [r0, #76]	; 0x4c
+      break;
+     f8c:	4770      	bx	lr
+      p.sub_mix = 0.05f + param_10bit_to_f32(value) * 0.90f;
+     f8e:	b293      	uxth	r3, r2
+     f90:	ed9f 7a4e 	vldr	s14, [pc, #312]	; 10cc <_ZN5Waves12setParameterEhl+0x174>
+     f94:	eddf 6a50 	vldr	s13, [pc, #320]	; 10d8 <_ZN5Waves12setParameterEhl+0x180>
+     f98:	ee07 3a90 	vmov	s15, r3
+     f9c:	eef8 7ae7 	vcvt.f32.s32	s15, s15
+     fa0:	ee67 7a87 	vmul.f32	s15, s15, s14
+     fa4:	ed9f 7a4d 	vldr	s14, [pc, #308]	; 10dc <_ZN5Waves12setParameterEhl+0x184>
+     fa8:	eea7 7aa6 	vfma.f32	s14, s15, s13
+     fac:	ed80 7a10 	vstr	s14, [r0, #64]	; 0x40
+      break;
+     fb0:	4770      	bx	lr
+      p.wave_a = value % WAVE_A_CNT;
+     fb2:	232e      	movs	r3, #46	; 0x2e
+      { return __atomic_fetch_or(&_M_i, __i, int(__m)); }
+     fb4:	303c      	adds	r0, #60	; 0x3c
+     fb6:	fb92 f1f3 	sdiv	r1, r2, r3
+     fba:	fb03 2211 	mls	r2, r3, r1, r2
+     fbe:	7602      	strb	r2, [r0, #24]
+     fc0:	f3bf 8f5b 	dmb	ish
+     fc4:	e850 3f00 	ldrex	r3, [r0]
+     fc8:	f043 0302 	orr.w	r3, r3, #2
+     fcc:	e840 3200 	strex	r2, r3, [r0]
+     fd0:	2a00      	cmp	r2, #0
+     fd2:	d1f7      	bne.n	fc4 <_ZN5Waves12setParameterEhl+0x6c>
+     fd4:	f3bf 8f5b 	dmb	ish
+  }
+     fd8:	4770      	bx	lr
+      p.wave_b = value % WAVE_B_CNT;
+     fda:	232c      	movs	r3, #44	; 0x2c
+     fdc:	303c      	adds	r0, #60	; 0x3c
+     fde:	fb92 f1f3 	sdiv	r1, r2, r3
+     fe2:	fb03 2211 	mls	r2, r3, r1, r2
+     fe6:	7642      	strb	r2, [r0, #25]
+     fe8:	f3bf 8f5b 	dmb	ish
+     fec:	e850 3f00 	ldrex	r3, [r0]
+     ff0:	f043 0304 	orr.w	r3, r3, #4
+     ff4:	e840 3200 	strex	r2, r3, [r0]
+     ff8:	2a00      	cmp	r2, #0
+     ffa:	d0eb      	beq.n	fd4 <_ZN5Waves12setParameterEhl+0x7c>
+     ffc:	e7f6      	b.n	fec <_ZN5Waves12setParameterEhl+0x94>
+      p.sub_wave = value % SUB_WAVE_CNT;
+     ffe:	4253      	negs	r3, r2
+    1000:	f002 020f 	and.w	r2, r2, #15
+    1004:	f100 003c 	add.w	r0, r0, #60	; 0x3c
+    1008:	f003 030f 	and.w	r3, r3, #15
+    100c:	bf58      	it	pl
+    100e:	425a      	negpl	r2, r3
+    1010:	7682      	strb	r2, [r0, #26]
+    1012:	f3bf 8f5b 	dmb	ish
+    1016:	e850 3f00 	ldrex	r3, [r0]
+    101a:	f043 0308 	orr.w	r3, r3, #8
+    101e:	e840 3200 	strex	r2, r3, [r0]
+    1022:	2a00      	cmp	r2, #0
+    1024:	d0d6      	beq.n	fd4 <_ZN5Waves12setParameterEhl+0x7c>
+    1026:	e7f6      	b.n	1016 <_ZN5Waves12setParameterEhl+0xbe>
+      p.ring_mix = clip01f(value * 0.001f);
+    1028:	ee07 2a90 	vmov	s15, r2
+    102c:	ed9f 7a2c 	vldr	s14, [pc, #176]	; 10e0 <_ZN5Waves12setParameterEhl+0x188>
+    1030:	eef8 7ae7 	vcvt.f32.s32	s15, s15
+    1034:	ee67 7a87 	vmul.f32	s15, s15, s14
+    1038:	ed9f 7a2a 	vldr	s14, [pc, #168]	; 10e4 <_ZN5Waves12setParameterEhl+0x18c>
+    103c:	eef5 7ac0 	vcmpe.f32	s15, #0.0
+    1040:	eef1 fa10 	vmrs	APSR_nzcv, fpscr
+    1044:	bfb8      	it	lt
+    1046:	eef0 7a47 	vmovlt.f32	s15, s14
+    104a:	eeb7 7a00 	vmov.f32	s14, #112	; 0x3f800000  1.0
+    104e:	eef4 7ac7 	vcmpe.f32	s15, s14
+    1052:	eef1 fa10 	vmrs	APSR_nzcv, fpscr
+    1056:	bf88      	it	hi
+    1058:	eef0 7a47 	vmovhi.f32	s15, s14
+    105c:	edc0 7a11 	vstr	s15, [r0, #68]	; 0x44
+      break;
+    1060:	4770      	bx	lr
+      p.bit_crush = clip01f(value * 0.001f);
+    1062:	ee07 2a90 	vmov	s15, r2
+    1066:	ed9f 7a1e 	vldr	s14, [pc, #120]	; 10e0 <_ZN5Waves12setParameterEhl+0x188>
+    106a:	303c      	adds	r0, #60	; 0x3c
+    106c:	eef8 7ae7 	vcvt.f32.s32	s15, s15
+    1070:	ee67 7a87 	vmul.f32	s15, s15, s14
+    1074:	ed9f 7a1b 	vldr	s14, [pc, #108]	; 10e4 <_ZN5Waves12setParameterEhl+0x18c>
+    1078:	eef5 7ac0 	vcmpe.f32	s15, #0.0
+    107c:	eef1 fa10 	vmrs	APSR_nzcv, fpscr
+    1080:	bfb8      	it	lt
+    1082:	eef0 7a47 	vmovlt.f32	s15, s14
+    1086:	eeb7 7a00 	vmov.f32	s14, #112	; 0x3f800000  1.0
+    108a:	eef4 7ac7 	vcmpe.f32	s15, s14
+    108e:	eef1 fa10 	vmrs	APSR_nzcv, fpscr
+    1092:	bf88      	it	hi
+    1094:	eef0 7a47 	vmovhi.f32	s15, s14
+    1098:	edc0 7a03 	vstr	s15, [r0, #12]
+    109c:	f3bf 8f5b 	dmb	ish
+    10a0:	e850 3f00 	ldrex	r3, [r0]
+    10a4:	f043 0320 	orr.w	r3, r3, #32
+    10a8:	e840 3200 	strex	r2, r3, [r0]
+    10ac:	2a00      	cmp	r2, #0
+    10ae:	d091      	beq.n	fd4 <_ZN5Waves12setParameterEhl+0x7c>
+    10b0:	e7f6      	b.n	10a0 <_ZN5Waves12setParameterEhl+0x148>
+      p.drift = 1.f + value * 0.001f;
+    10b2:	ee07 2a90 	vmov	s15, r2
+    10b6:	eeb7 7a00 	vmov.f32	s14, #112	; 0x3f800000  1.0
+    10ba:	eddf 6a09 	vldr	s13, [pc, #36]	; 10e0 <_ZN5Waves12setParameterEhl+0x188>
+    10be:	eef8 7ae7 	vcvt.f32.s32	s15, s15
+    10c2:	eea7 7aa6 	vfma.f32	s14, s15, s13
+    10c6:	ed80 7a14 	vstr	s14, [r0, #80]	; 0x50
+  }
+    10ca:	4770      	bx	lr
+    10cc:	3a802008 	.word	0x3a802008
+    10d0:	3f7d70a4 	.word	0x3f7d70a4
+    10d4:	3ba3d70a 	.word	0x3ba3d70a
+    10d8:	3f666666 	.word	0x3f666666
+    10dc:	3d4ccccd 	.word	0x3d4ccccd
+    10e0:	3a83126f 	.word	0x3a83126f
+    10e4:	00000000 	.word	0x00000000
+
+000010e8 <_ZNK5Waves17getParameterValueEh>:
+    switch (index) {
+    10e8:	2907      	cmp	r1, #7
+    10ea:	d85c      	bhi.n	11a6 <_ZNK5Waves17getParameterValueEh+0xbe>
+    10ec:	e8df f001 	tbb	[pc, r1]
+    10f0:	322f2604 	.word	0x322f2604
+    10f4:	54513835 	.word	0x54513835
+      return param_f32_to_10bit((p.shape - 0.05) / 0.99f);
+    10f8:	ed90 7a13 	vldr	s14, [r0, #76]	; 0x4c
+    10fc:	eddf 7a2b 	vldr	s15, [pc, #172]	; 11ac <_ZNK5Waves17getParameterValueEh+0xc4>
+    1100:	eddf 6a2b 	vldr	s13, [pc, #172]	; 11b0 <_ZNK5Waves17getParameterValueEh+0xc8>
+    1104:	ee37 7a67 	vsub.f32	s14, s14, s15
+      return param_f32_to_10bit((p.sub_mix - 0.05f) / 0.90f);
+    1108:	eec7 7a26 	vdiv.f32	s15, s14, s13
+    110c:	ed9f 7a29 	vldr	s14, [pc, #164]	; 11b4 <_ZNK5Waves17getParameterValueEh+0xcc>
+    1110:	ee67 7a87 	vmul.f32	s15, s15, s14
+  xs.i |= ys.i & 0x80000000;
+    1114:	ee17 3a90 	vmov	r3, s15
+    1118:	f003 4300 	and.w	r3, r3, #2147483648	; 0x80000000
+    111c:	f043 537c 	orr.w	r3, r3, #1056964608	; 0x3f000000
+  return (float)((int32_t)(x + si_copysignf(0.5f,x)));
+    1120:	ee07 3a10 	vmov	s14, r3
+    1124:	ee77 7a87 	vadd.f32	s15, s15, s14
+    1128:	eefd 7ae7 	vcvt.s32.f32	s15, s15
+    112c:	eef8 7ae7 	vcvt.f32.s32	s15, s15
+    1130:	eefc 7ae7 	vcvt.u32.f32	s15, s15
+    1134:	ee17 3a90 	vmov	r3, s15
+    1138:	b298      	uxth	r0, r3
+    113a:	4770      	bx	lr
+    113c:	ed90 7a10 	vldr	s14, [r0, #64]	; 0x40
+    1140:	eddf 7a1a 	vldr	s15, [pc, #104]	; 11ac <_ZNK5Waves17getParameterValueEh+0xc4>
+    1144:	eddf 6a1c 	vldr	s13, [pc, #112]	; 11b8 <_ZNK5Waves17getParameterValueEh+0xd0>
+    1148:	ee37 7a67 	vsub.f32	s14, s14, s15
+    114c:	e7dc      	b.n	1108 <_ZNK5Waves17getParameterValueEh+0x20>
+      return p.wave_a;
+    114e:	f890 0054 	ldrb.w	r0, [r0, #84]	; 0x54
+    1152:	4770      	bx	lr
+      return p.wave_b;
+    1154:	f890 0055 	ldrb.w	r0, [r0, #85]	; 0x55
+    1158:	4770      	bx	lr
+      return p.sub_wave;
+    115a:	f890 0056 	ldrb.w	r0, [r0, #86]	; 0x56
+    115e:	4770      	bx	lr
+      return si_roundf(p.ring_mix * 1000);
+    1160:	edd0 7a11 	vldr	s15, [r0, #68]	; 0x44
+      return si_roundf((p.drift - 1.f) * 1000);
+    1164:	ed9f 7a15 	vldr	s14, [pc, #84]	; 11bc <_ZNK5Waves17getParameterValueEh+0xd4>
+    1168:	ee67 7a87 	vmul.f32	s15, s15, s14
+  xs.i |= ys.i & 0x80000000;
+    116c:	ee17 3a90 	vmov	r3, s15
+    1170:	f003 4300 	and.w	r3, r3, #2147483648	; 0x80000000
+    1174:	f043 537c 	orr.w	r3, r3, #1056964608	; 0x3f000000
+  return (float)((int32_t)(x + si_copysignf(0.5f,x)));
+    1178:	ee07 3a10 	vmov	s14, r3
+    117c:	ee77 7a87 	vadd.f32	s15, s15, s14
+    1180:	eefd 7ae7 	vcvt.s32.f32	s15, s15
+    1184:	eef8 7ae7 	vcvt.f32.s32	s15, s15
+    1188:	eefd 7ae7 	vcvt.s32.f32	s15, s15
+    118c:	ee17 0a90 	vmov	r0, s15
+    1190:	4770      	bx	lr
+      return si_roundf(p.bit_crush * 1000);
+    1192:	edd0 7a12 	vldr	s15, [r0, #72]	; 0x48
+    1196:	e7e5      	b.n	1164 <_ZNK5Waves17getParameterValueEh+0x7c>
+      return si_roundf((p.drift - 1.f) * 1000);
+    1198:	eeb7 7a00 	vmov.f32	s14, #112	; 0x3f800000  1.0
+    119c:	edd0 7a14 	vldr	s15, [r0, #80]	; 0x50
+    11a0:	ee77 7ac7 	vsub.f32	s15, s15, s14
+    11a4:	e7de      	b.n	1164 <_ZNK5Waves17getParameterValueEh+0x7c>
+    switch (index) {
+    11a6:	f04f 4000 	mov.w	r0, #2147483648	; 0x80000000
+  }
+    11aa:	4770      	bx	lr
+    11ac:	3d4ccccd 	.word	0x3d4ccccd
+    11b0:	3f7d70a4 	.word	0x3f7d70a4
+    11b4:	447fc000 	.word	0x447fc000
+    11b8:	3f666666 	.word	0x3f666666
+    11bc:	447a0000 	.word	0x447a0000
+
+000011c0 <_GLOBAL__sub_I_unit.cc>:
+static Waves s_waves_instance; // In this case, actual instance of custom osc object.
+    11c0:	4802      	ldr	r0, [pc, #8]	; (11cc <_GLOBAL__sub_I_unit.cc+0xc>)
+}
+    11c2:	b508      	push	{r3, lr}
+static Waves s_waves_instance; // In this case, actual instance of custom osc object.
+    11c4:	4478      	add	r0, pc
+    11c6:	f000 f813 	bl	11f0 <_ZN5WavesC1Ev@plt>
+}
+    11ca:	bd08      	pop	{r3, pc}
+    11cc:	00000488 	.word	0x00000488
+
+Disassembly of section .plt:
+
+000011d0 <.plt>:
+    11d0:	b500      	push	{lr}
+    11d2:	f8df e008 	ldr.w	lr, [pc, #8]	; 11dc <.plt+0xc>
+    11d6:	44fe      	add	lr, pc
+    11d8:	f85e ff08 	ldr.w	pc, [lr, #8]!
+    11dc:	0000042c 	.word	0x0000042c
+
+000011e0 <osc_white@plt>:
+    11e0:	f240 4c28 	movw	ip, #1064	; 0x428
+    11e4:	f2c0 0c00 	movt	ip, #0
+    11e8:	44fc      	add	ip, pc
+    11ea:	f8dc f000 	ldr.w	pc, [ip]
+    11ee:	e7fc      	b.n	11ea <osc_white@plt+0xa>
+
+000011f0 <_ZN5WavesC1Ev@plt>:
+    11f0:	f240 4c1c 	movw	ip, #1052	; 0x41c
+    11f4:	f2c0 0c00 	movt	ip, #0
+    11f8:	44fc      	add	ip, pc
+    11fa:	f8dc f000 	ldr.w	pc, [ip]
+    11fe:	e7fc      	b.n	11fa <_ZN5WavesC1Ev@plt+0xa>
+
+00001200 <_ZN5Waves5State5ResetEv@plt>:
+    1200:	f240 4c10 	movw	ip, #1040	; 0x410
+    1204:	f2c0 0c00 	movt	ip, #0
+    1208:	44fc      	add	ip, pc
+    120a:	f8dc f000 	ldr.w	pc, [ip]
+    120e:	e7fc      	b.n	120a <_ZN5Waves5State5ResetEv@plt+0xa>
+
+00001210 <_ZNK5Waves17getParameterValueEh@plt>:
+    1210:	f240 4c04 	movw	ip, #1028	; 0x404
+    1214:	f2c0 0c00 	movt	ip, #0
+    1218:	44fc      	add	ip, pc
+    121a:	f8dc f000 	ldr.w	pc, [ip]
+    121e:	e7fc      	b.n	121a <_ZNK5Waves17getParameterValueEh@plt+0xa>
+
+00001220 <_ZN5Waves12setParameterEhl@plt>:
+    1220:	f240 3cf8 	movw	ip, #1016	; 0x3f8
+    1224:	f2c0 0c00 	movt	ip, #0
+    1228:	44fc      	add	ip, pc
+    122a:	f8dc f000 	ldr.w	pc, [ip]
+    122e:	e7fc      	b.n	122a <_ZN5Waves12setParameterEhl@plt+0xa>

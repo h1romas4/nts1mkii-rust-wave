@@ -1,0 +1,173 @@
+
+/home/hiromasa/devel/korg/logue-sdk/platform/nts-1_mkii/waves//build/waves.elf:     file format elf32-littlearm
+/home/hiromasa/devel/korg/logue-sdk/platform/nts-1_mkii/waves//build/waves.elf
+architecture: armv7e-m, flags 0x00000150:
+HAS_SYMS, DYNAMIC, D_PAGED
+start address 0x00000000
+
+Program Header:
+    PHDR off    0x00000034 vaddr 0x00000034 paddr 0x00000034 align 2**2
+         filesz 0x000000a0 memsz 0x000000a0 flags r--
+    LOAD off    0x00000000 vaddr 0x00000000 paddr 0x00000000 align 2**7
+         filesz 0x00001230 memsz 0x00001230 flags r-x
+    LOAD off    0x00001230 vaddr 0x00001230 paddr 0x00001230 align 2**7
+         filesz 0x00000330 memsz 0x00000330 flags r--
+    LOAD off    0x00001560 vaddr 0x00001560 paddr 0x00001560 align 2**7
+         filesz 0x000000f0 memsz 0x000001a4 flags rw-
+ DYNAMIC off    0x00001568 vaddr 0x00001568 paddr 0x00001568 align 2**3
+         filesz 0x000000a0 memsz 0x000000a0 flags rw-
+
+Dynamic Section:
+  INIT_ARRAY           0x00001560
+  INIT_ARRAYSZ         0x00000004
+  HASH                 0x000000d4
+  STRTAB               0x00000558
+  SYMTAB               0x00000238
+  STRSZ                0x00000277
+  SYMENT               0x00000010
+  PLTGOT               0x00001608
+  PLTRELSZ             0x00000028
+  PLTREL               0x00000011
+  JMPREL               0x00000828
+  REL                  0x000007d0
+  RELSZ                0x00000058
+  RELENT               0x00000008
+  RELCOUNT             0x00000001
+private flags = 0x5000400: [Version5 EABI] [hard-float ABI]
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .hash         00000164  000000d4  000000d4  000000d4  2**2
+                  CONTENTS, ALLOC, LOAD, READONLY, DATA
+  1 .dynsym       00000320  00000238  00000238  00000238  2**2
+                  CONTENTS, ALLOC, LOAD, READONLY, DATA
+  2 .dynstr       00000277  00000558  00000558  00000558  2**2
+                  CONTENTS, ALLOC, LOAD, READONLY, DATA
+  3 .rel.plt      00000028  00000828  00000828  00000828  2**2
+                  CONTENTS, ALLOC, LOAD, READONLY, DATA
+  4 .text         00000980  00000850  00000850  00000850  2**2
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  5 .plt          00000060  000011d0  000011d0  000011d0  2**2
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  6 .unit_header  00000330  00001230  00001230  00001230  2**3
+                  CONTENTS, ALLOC, LOAD, READONLY, DATA
+  7 .preinit_array 00000000  00001560  00001650  00001650  2**2
+                  CONTENTS, ALLOC, LOAD, DATA
+  8 .init_array   00000004  00001560  00001560  00001560  2**2
+                  CONTENTS, ALLOC, LOAD, DATA
+  9 .dynamic      000000a0  00001568  00001568  00001568  2**3
+                  CONTENTS, ALLOC, LOAD, DATA
+ 10 .got          00000048  00001608  00001608  00001608  2**2
+                  CONTENTS, ALLOC, LOAD, DATA
+ 11 .data         00000000  00001650  00001650  00001650  2**2
+                  CONTENTS, ALLOC, LOAD, DATA
+ 12 .bss          000000b0  00001650  00001650  00001650  2**2
+                  ALLOC
+ 13 .stack        00000004  00001700  00001700  00001650  2**4
+                  ALLOC
+ 14 .debug_info   00005956  00000000  00000000  00001650  2**0
+                  CONTENTS, READONLY, DEBUGGING, OCTETS
+ 15 .debug_abbrev 00000c57  00000000  00000000  00006fa6  2**0
+                  CONTENTS, READONLY, DEBUGGING, OCTETS
+ 16 .debug_aranges 00000080  00000000  00000000  00007bfd  2**0
+                  CONTENTS, READONLY, DEBUGGING, OCTETS
+ 17 .debug_line   000016e0  00000000  00000000  00007c7d  2**0
+                  CONTENTS, READONLY, DEBUGGING, OCTETS
+ 18 .debug_str    00002c8f  00000000  00000000  0000935d  2**0
+                  CONTENTS, READONLY, DEBUGGING, OCTETS
+ 19 .comment      00000049  00000000  00000000  0000bfec  2**0
+                  CONTENTS, READONLY
+ 20 .ARM.attributes 00000034  00000000  00000000  0000c035  2**0
+                  CONTENTS, READONLY
+ 21 .rel.dyn      00000058  000007d0  000007d0  000007d0  2**2
+                  CONTENTS, ALLOC, LOAD, READONLY, DATA
+ 22 .debug_loc    00001825  00000000  00000000  0000c069  2**0
+                  CONTENTS, READONLY, DEBUGGING, OCTETS
+ 23 .debug_frame  00000328  00000000  00000000  0000d890  2**2
+                  CONTENTS, READONLY, DEBUGGING, OCTETS
+ 24 .debug_ranges 00000660  00000000  00000000  0000dbb8  2**0
+                  CONTENTS, READONLY, DEBUGGING, OCTETS
+SYMBOL TABLE:
+000000d4 l    d  .hash	00000000 .hash
+00000238 l    d  .dynsym	00000000 .dynsym
+00000558 l    d  .dynstr	00000000 .dynstr
+00000828 l    d  .rel.plt	00000000 .rel.plt
+00000850 l    d  .text	00000000 .text
+000011d0 l    d  .plt	00000000 .plt
+00001230 l    d  .unit_header	00000000 .unit_header
+00001560 l    d  .preinit_array	00000000 .preinit_array
+00001560 l    d  .init_array	00000000 .init_array
+00001568 l    d  .dynamic	00000000 .dynamic
+00001608 l    d  .got	00000000 .got
+00001650 l    d  .data	00000000 .data
+00001650 l    d  .bss	00000000 .bss
+00001700 l    d  .stack	00000000 .stack
+00000000 l    d  .debug_info	00000000 .debug_info
+00000000 l    d  .debug_abbrev	00000000 .debug_abbrev
+00000000 l    d  .debug_aranges	00000000 .debug_aranges
+00000000 l    d  .debug_line	00000000 .debug_line
+00000000 l    d  .debug_str	00000000 .debug_str
+00000000 l    d  .comment	00000000 .comment
+00000000 l    d  .ARM.attributes	00000000 .ARM.attributes
+000007d0 l    d  .rel.dyn	00000000 .rel.dyn
+00000000 l    d  .debug_loc	00000000 .debug_loc
+00000000 l    d  .debug_frame	00000000 .debug_frame
+00000000 l    d  .debug_ranges	00000000 .debug_ranges
+00000000 l    df *ABS*	00000000 header.c
+00000000 l    df *ABS*	00000000 _unit_base.c
+00000000 l    df *ABS*	00000000 unit.cc
+00000986 l     F .text	00000012 unit_reset.localalias
+000011c0 l     F .text	00000010 _GLOBAL__sub_I_unit.cc
+00001650 l     O .bss	000000b0 _ZL16s_waves_instance
+00000000 l    df *ABS*	00000000 
+00001568 l     O *ABS*	00000000 _DYNAMIC
+00001608 l     O *ABS*	00000000 _GLOBAL_OFFSET_TABLE_
+00001700 g       .stack	00000000 __HEAP
+0000087c g     F .text	00000108 unit_init
+00001650 g       .data	00000000 __data_start__
+00000986 g     F .text	00000012 unit_reset
+00000000         *UND*	00000000 bitres_lut_f
+00000000         *UND*	00000000 osc_white
+00000e9a g     F .text	00000002 unit_all_note_off
+00000eb4  w    F .text	000000a4 _ZN5WavesC2Ev
+00000e58 g     F .text	00000014 unit_get_param_value
+00000ea0 g     F .text	00000002 unit_aftertouch
+00001700 g       .stack	00000000 _stack_addr
+00000000 g       *ABS*	00000000 __stack_size
+00000000         *UND*	00000000 wavesF
+00000000         *UND*	00000000 wavesC
+00000e74 g     F .text	00000024 unit_note_on
+00001650 g       .bss	00000000 __bss_start__
+00000eb4  w    F .text	000000a4 _ZN5WavesC1Ev
+00000e6c g     F .text	00000004 unit_get_param_str_value
+00000000         *UND*	00000000 tanpi_lut_f
+00000e72 g     F .text	00000002 unit_tempo_4ppqn_tick
+00000e44 g     F .text	00000014 unit_set_param_value
+00000998 g     F .text	00000002 unit_resume
+00000ea4  w    F .text	0000000e _ZN5Waves5State5ResetEv
+00000000 g       *ABS*	00000000 __heap_size
+00001700 g       .stack	00000000 end
+00001650 g       .data	00000000 __data_end__
+00001700 g       .bss	00000000 __bss_end__
+00000000         *UND*	00000000 wavesE
+00001700 g       .stack	00000000 __SP_INIT
+00000e98 g     F .text	00000002 unit_note_off
+0000099a g     F .text	00000002 unit_suspend
+000010e8  w    F .text	000000d8 _ZNK5Waves17getParameterValueEh
+0000099c g     F .text	000004a8 unit_render
+00001700 g       .stack	00000000 _stack_end
+00000e9e g     F .text	00000002 unit_channel_pressure
+00000000         *UND*	00000000 wavesA
+00000f58  w    F .text	00000190 _ZN5Waves12setParameterEhl
+00000e9c g     F .text	00000002 unit_pitch_bend
+00001230 g     O .unit_header	00000198 unit_header
+00000984 g     F .text	00000002 unit_teardown
+00001700 g       .stack	00000000 __stack
+00000e70 g     F .text	00000002 unit_set_tempo
+00001700 g       .stack	00000000 _end
+00000000         *UND*	00000000 wavesB
+00000000         *UND*	00000000 wavesD
+00000000         *UND*	00000000 midi_to_hz_lut_f
+00001700 g       .stack	00000000 __HEAP_END
+
+
