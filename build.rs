@@ -23,6 +23,7 @@ fn bindgen() {
         .clang_arg("-Icomponents/logue-sdk/platform/ext/CMSIS/CMSIS/Include")
         .clang_arg("-Wno-unknown-attributes")
         .clang_arg("-Wno-implicit-function-declaration")
+        .clang_arg("-DSTM32H725xE")
         .clang_arg("-DARM_MATH_CM7")
         .clang_arg("-D__FPU_PRESENT")
         .clang_arg("-DCORTEX_USE_FPU=TRUE")
