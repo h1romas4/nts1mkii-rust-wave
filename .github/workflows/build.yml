@@ -47,4 +47,6 @@ jobs:
     - name: Build Sound unit
       run: |
         WITH_LOGUE_SDK_BINDGEN=true cargo build --release
-        readelf -a target/thumbv7em-none-eabihf/release/nts1mkii-rust-wave
+        TARGET=target/thumbv7em-none-eabihf/release/nts1mkii-rust-wave
+        readelf -a ${TARGET}
+        toolchain/gcc-arm-none-eabi/bin/arm-none-eabi-objdump -d ${TARGET}
