@@ -6,10 +6,9 @@ target = "thumbv7em-none-eabihf"
 # $(rustc --print sysroot)/lib/rustlib/x86_64-unknown-linux-gnu/bin/gcc-ld/ld.lld --help
 # linker = "toolchain/gcc-arm-none-eabi/bin/arm-none-eabi-ld"
 rustflags = [
-    "-C", "target-cpu=cortex-m7",
-    # "-C", "target-feature=+vfp4d16sp",
     "-C", "relocation-model=pic",
-    "-C", "link-arg=-z max-page-size=128",
+    "-C", "target-cpu=cortex-m7",
+    # "-C", "target-feature=+thumb-mode,+v7,+vfp4d16sp",
     "-C", "link-arg=--Map=dist/nts1mkii-rust-wave.map",
     "-C", "link-arg=--cref",
     "-C", "link-arg=--no-warn-mismatch",
