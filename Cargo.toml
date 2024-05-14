@@ -9,6 +9,8 @@ crate-type = ["bin"]
 [profile.release]
 panic = "abort"
 opt-level = "s"
+# https://doc.rust-lang.org/cargo/reference/profiles.html#lto
+# Should it be set to `off`?
 lto = false
 
 [build-dependencies]
