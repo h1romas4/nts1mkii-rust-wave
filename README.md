@@ -19,7 +19,7 @@ pub extern "C" fn unit_note_on(_arg1: u8, _arg2: u8) {
 }
 ```
 
-Rust ver:
+Rust ver: Does not work
 
 ```asm
 00000600 <__ThumbV7PILongThunk_osc_white>:
@@ -29,7 +29,7 @@ Rust ver:
  60a:   4760            bx      ip
 ```
 
-Original louge-sdk ver:
+Original louge-sdk ver: Good work
 
 ```asm
 000011e0 <osc_white@plt>:
