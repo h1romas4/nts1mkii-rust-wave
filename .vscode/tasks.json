@@ -6,7 +6,7 @@
             "type": "shell",
             "command": "toolchain/gcc-arm-none-eabi/bin/arm-none-eabi-objdump",
             "args": [
-                "-d",
+                "-D",
                 "target/thumbv7em-none-eabihf/release/nts1mkii-rust-wave",
                 "|",
                 "tee",
