@@ -21,7 +21,7 @@ pub extern "C" fn unit_note_on(_arg1: u8, _arg2: u8) {
 }
 ```
 
-Rust ver: Does not work
+Rust & lld ver: Does not work
 
 ```asm
 00000600 <__ThumbV7PILongThunk_osc_white>:
@@ -31,7 +31,19 @@ Rust ver: Does not work
  60a:   4760            bx      ip
 ```
 
-Original louge-sdk ver: Good work
+Rust & arm-none-eabi-ld ver: Does not work
+
+```asm
+000005c0 <osc_white@plt>:
+ 5c0:   0000            movs    r0, r0
+ 5c2:   0000            movs    r0, r0
+ 5c4:   f240 2c1c       movw    ip, #540        ; 0x21c
+ 5c8:   f2c0 0c00       movt    ip, #0
+ 5cc:   44fc            add     ip, pc
+ 5ce:   Address 0x00000000000005ce is out of bounds.
+```
+
+Original louge-sdk gcc & arm-none-eabi-ld ver: Good work
 
 ```asm
 000011e0 <osc_white@plt>:
