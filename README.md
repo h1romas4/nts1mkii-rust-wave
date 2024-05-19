@@ -27,14 +27,14 @@ Rust & lld ver: Does not work
 00000600 <__ThumbV7PILongThunk_osc_white>:
  600:   f240 0c24       movw    ip, #36 ; 0x24
  604:   f2c0 0c00       movt    ip, #0
- 608:   44fc            add     ip, pc
- 60a:   4760            bx      ip
+ 608:   44fc            add     ip, pc               ; 0x608 + 4 = 0x60c
+ 60a:   4760            bx      ip                   ; 0x24 + 0x60c = 0x630
 
 00000610 <.plt>:
  ; snip
  630:	e28fc600 	add	ip, pc, #0, 12
  634:	e28cca00 	add	ip, ip, #0, 20
- 638:	e5bcf21c 	ldr	pc, [ip, #540]!	; 0x21c ; ? 0x638 + 8 + 540 = 0x7c4
+ 638:	e5bcf21c 	ldr	pc, [ip, #540]!	; 0x21c      ; ? 0x638 + 8 + 540 = 0x7c4
  63c:	d4d4d4d4 	ldrble	sp, [r4], #1236	; 0x4d4
 ```
 
