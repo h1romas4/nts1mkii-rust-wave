@@ -40,20 +40,20 @@ Rust & lld ver: Does not work
  628:	d4d4d4d4 	ldrble	sp, [r4], #1236	; 0x4d4
  62c:	d4d4d4d4 	ldrble	sp, [r4], #1236	; 0x4d4
  ;; 0x630 <--
- 630:	e28fc600 	add	ip, pc, #0, 12
+ 630:	e28fc600 	add	ip, pc, #0, 12               ; 0x630 + 8 = 0x638
  634:	e28cca00 	add	ip, ip, #0, 20
- 638:	e5bcf21c 	ldr	pc, [ip, #540]!	; 0x21c      ; ? 0x638 + 8 + 540 = 0x7c4 (???)
+ 638:	e5bcf21c 	ldr	pc, [ip, #540]!	; 0x21c      ; 0x638 + 540 = 0x854
  63c:	d4d4d4d4 	ldrble	sp, [r4], #1236	; 0x4d4
 
 000005cc <.rel.plt>:
- 5cc:	00000854 	andeq	r0, r0, r4, asr r8
+ 5cc:	00000854 	andeq	r0, r0, r4, asr r8       ; 0x854
  5d0:	00001316 	andeq	r1, r0, r6, lsl r3
 
 Disassembly of section .got:
 
 00000848 <.got>:
 	...
- 854:	00000610 	andeq	r0, r0, r0, lsl r6
+ 854:	00000610 	andeq	r0, r0, r0, lsl r6       ; 0x854
 ```
 
 Rust & arm-none-eabi-ld ver: Does not work
