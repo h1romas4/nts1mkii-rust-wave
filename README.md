@@ -35,10 +35,12 @@ Rust & lld ver: Does not work
  60a:   4760            bx      ip                   ; 0x24 + 0x60c = 0x630 -->
 
 00000610 <.plt>:
+ ;; 0x610 <--
  610:	e52de004 	push	{lr}		; (str lr, [sp, #-4]!)
  614:	e28fe600 	add	lr, pc, #0, 12
  618:	e28eea00 	add	lr, lr, #0, 20
- 61c:	e5bef234 	ldr	pc, [lr, #564]!	; 0x234
+ 61c:	e5bef234 	ldr	pc, [lr, #564]!	; 0x234      ; ?? 0x614 + 8 + 564 = 0x850 ??
+ ;;
  620:	d4d4d4d4 	ldrble	sp, [r4], #1236	; 0x4d4
  624:	d4d4d4d4 	ldrble	sp, [r4], #1236	; 0x4d4
  628:	d4d4d4d4 	ldrble	sp, [r4], #1236	; 0x4d4
@@ -53,7 +55,7 @@ Disassembly of section .got:
 
 00000848 <.got>:
 	...
- 854:	00000610 	andeq	r0, r0, r0, lsl r6       ; 0x854
+ 854:	00000610 	andeq	r0, r0, r0, lsl r6       ; 0x610 -->
 ```
 
 Rust & arm-none-eabi-ld ver: Does not work
