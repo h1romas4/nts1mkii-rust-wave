@@ -28,14 +28,32 @@ Rust & lld ver: Does not work
  600:   f240 0c24       movw    ip, #36 ; 0x24
  604:   f2c0 0c00       movt    ip, #0
  608:   44fc            add     ip, pc               ; 0x608 + 4 = 0x60c
- 60a:   4760            bx      ip                   ; 0x24 + 0x60c = 0x630
+ 60a:   4760            bx      ip                   ; 0x24 + 0x60c = 0x630 -->
 
 00000610 <.plt>:
- ; snip
+ 610:	e52de004 	push	{lr}		; (str lr, [sp, #-4]!)
+ 614:	e28fe600 	add	lr, pc, #0, 12
+ 618:	e28eea00 	add	lr, lr, #0, 20
+ 61c:	e5bef234 	ldr	pc, [lr, #564]!	; 0x234
+ 620:	d4d4d4d4 	ldrble	sp, [r4], #1236	; 0x4d4
+ 624:	d4d4d4d4 	ldrble	sp, [r4], #1236	; 0x4d4
+ 628:	d4d4d4d4 	ldrble	sp, [r4], #1236	; 0x4d4
+ 62c:	d4d4d4d4 	ldrble	sp, [r4], #1236	; 0x4d4
+ ;; 0x630 <--
  630:	e28fc600 	add	ip, pc, #0, 12
  634:	e28cca00 	add	ip, ip, #0, 20
- 638:	e5bcf21c 	ldr	pc, [ip, #540]!	; 0x21c      ; ? 0x638 + 8 + 540 = 0x7c4
+ 638:	e5bcf21c 	ldr	pc, [ip, #540]!	; 0x21c      ; ? 0x638 + 8 + 540 = 0x7c4 (???)
  63c:	d4d4d4d4 	ldrble	sp, [r4], #1236	; 0x4d4
+
+000005cc <.rel.plt>:
+ 5cc:	00000854 	andeq	r0, r0, r4, asr r8
+ 5d0:	00001316 	andeq	r1, r0, r6, lsl r3
+
+Disassembly of section .got:
+
+00000848 <.got>:
+	...
+ 854:	00000610 	andeq	r0, r0, r0, lsl r6
 ```
 
 Rust & arm-none-eabi-ld ver: Does not work
