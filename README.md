@@ -34,7 +34,7 @@ Rust & lld ver: Does not work
  ; snip
  630:	e28fc600 	add	ip, pc, #0, 12
  634:	e28cca00 	add	ip, ip, #0, 20
- 638:	e5bcf21c 	ldr	pc, [ip, #540]!	; 0x21c ; ? 0x638 + 8 + 540 = 0x7C4
+ 638:	e5bcf21c 	ldr	pc, [ip, #540]!	; 0x21c ; ? 0x638 + 8 + 540 = 0x7c4
  63c:	d4d4d4d4 	ldrble	sp, [r4], #1236	; 0x4d4
 ```
 
