@@ -24,6 +24,10 @@ pub extern "C" fn unit_note_on(_arg1: u8, _arg2: u8) {
 Rust & lld ver: Does not work
 
 ```asm
+000005cc <.rel.plt>:
+ 5cc:	00000854 	andeq	r0, r0, r4, asr r8       ; 0x854
+ 5d0:	00001316 	andeq	r1, r0, r6, lsl r3
+
 00000600 <__ThumbV7PILongThunk_osc_white>:
  600:   f240 0c24       movw    ip, #36 ; 0x24
  604:   f2c0 0c00       movt    ip, #0
@@ -44,10 +48,6 @@ Rust & lld ver: Does not work
  634:	e28cca00 	add	ip, ip, #0, 20
  638:	e5bcf21c 	ldr	pc, [ip, #540]!	; 0x21c      ; 0x638 + 540 = 0x854
  63c:	d4d4d4d4 	ldrble	sp, [r4], #1236	; 0x4d4
-
-000005cc <.rel.plt>:
- 5cc:	00000854 	andeq	r0, r0, r4, asr r8       ; 0x854
- 5d0:	00001316 	andeq	r1, r0, r6, lsl r3
 
 Disassembly of section .got:
 
