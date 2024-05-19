@@ -31,7 +31,7 @@ Rust & lld ver: Does not work
  60a:   4760            bx      ip
 
 00000610 <.plt>:
- # snip
+ ; snip
  630:	e28fc600 	add	ip, pc, #0, 12
  634:	e28cca00 	add	ip, ip, #0, 20
  638:	e5bcf21c 	ldr	pc, [ip, #540]!	; 0x21c
