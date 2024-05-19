@@ -29,6 +29,13 @@ Rust & lld ver: Does not work
  604:   f2c0 0c00       movt    ip, #0
  608:   44fc            add     ip, pc
  60a:   4760            bx      ip
+
+00000610 <.plt>:
+ # 略
+ 630:	e28fc600 	add	ip, pc, #0, 12
+ 634:	e28cca00 	add	ip, ip, #0, 20
+ 638:	e5bcf21c 	ldr	pc, [ip, #540]!	; 0x21c
+ 63c:	d4d4d4d4 	ldrble	sp, [r4], #1236	; 0x4d4
 ```
 
 Rust & arm-none-eabi-ld ver: Does not work
