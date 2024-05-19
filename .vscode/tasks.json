@@ -26,6 +26,17 @@
                 "dist/nts1mkii-rust-wave.readelf.txt"
             ],
             "problemMatcher": []
-    }
+        },
+        {
+            "label": "upload",
+            "type": "shell",
+            "command": "cp",
+            "args": [
+                "-p",
+                "target/thumbv7em-none-eabihf/release/nts1mkii-rust-wave",
+                "/mnt/c/Users/${env:USER}/Downloads/nts1mkii-rust-wave.nts1mkiiunit",
+            ],
+            "problemMatcher": []
+        },
     ]
 }
