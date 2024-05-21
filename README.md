@@ -21,7 +21,7 @@ pub extern "C" fn unit_note_on(_arg1: u8, _arg2: u8) {
 }
 ```
 
-Rust & lld ver: Does not work
+Rust & lld ver: Does not work (Is the code of the function that jumps from the Arm-mode .plt in the destination code in Thumb mode?)
 
 ```asm
 000005cc <.rel.plt>:
