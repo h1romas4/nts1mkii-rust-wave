@@ -162,11 +162,18 @@ pub extern "C" fn unit_tempo_4ppqn_tick(_arg1: u32) {
 ///
 #[no_mangle]
 pub extern "C" fn unit_note_on(_arg1: u8, _arg2: u8) {
+    // Relocation section '.rel.dyn' at offset 0x5e8 contains 1 entry:
+    // Offset     Info    Type            Sym.Value  Sym. Name
+    // 000008a0  00001415 R_ARM_GLOB_DAT    00000000   wavesA
+    // unsafe {
+    //     let _wave_a = core::ptr::read_volatile(wavesA[0]);
+    // }
+
     // TODO: The problem is that it freezes.
     // Relocation section '.rel.plt' at offset 0x5cc contains 1 entry:
     // Offset     Info    Type            Sym.Value  Sym. Name
     // 00000854  00001316 R_ARM_JUMP_SLOT   00000000   osc_white
-    unsafe { osc_white() };
+    unsafe { osc_white(); };
 }
 
 ///
