@@ -20,6 +20,8 @@ rustflags = [
     "-C", "link-arg=--entry=0",
     "-C", "link-arg=-z",
     "-C", "link-arg=max-page-size=128",
+    # for arm-none-eabi-ld osc_white@plt Address 0x00000000000005ce is out of bounds. (?)
+    # "-C", "link-arg=--long-plt",
     "-lnosys",
     "-lc_nano",
     "-lm"
