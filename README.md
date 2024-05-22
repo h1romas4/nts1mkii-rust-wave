@@ -75,6 +75,17 @@ For some reason, it becomes out of bounds. Late binaries are overwritten in the 
  5ce:   Address 0x00000000000005ce is out of bounds.
 ```
 
+Also, if the `0x7`th byte of the ELF header is not 0x0 (OS/ABI: UNIX - System V) instead of 0x61, KORG KONTROL will not transfer it as ELF invalid.
+
+```
+ELF Header:
+  Magic:   7f 45 4c 46 01 01 01 61 00 00 00 00 00 00 00 00
+  Class:                             ELF32
+  Data:                              2's complement, little endian
+  Version:                           1 (current)
+  OS/ABI:                            ARM
+```
+
 ### Original louge-sdk gcc & arm-none-eabi-ld ver
 
 Good work.
