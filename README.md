@@ -8,7 +8,7 @@ This repository is a Rust ported build of the WAVE(osc) synthesizer for the NTS-
 
 ## WIP: This repository is not yet working!
 
-I have limited knowledge of ELF loaders and linkers.. (help wanted)
+I have limited knowledge of ELF loaders and linkers..
 
 ```rust
 #[no_mangle]
@@ -21,7 +21,7 @@ pub extern "C" fn unit_note_on(_arg1: u8, _arg2: u8) {
 }
 ```
 
-Rust & lld ver: Does not work (Is the code of the function that jumps from the Arm-mode .plt in the destination code in Thumb mode?)
+Rust & lld ver: Does not work (Probably the PLT code freezes because it moves the pc to the address of the function in the Thumb code it is calling while in Arm mode)
 
 ```asm
 000005cc <.rel.plt>:
@@ -29,9 +29,11 @@ Rust & lld ver: Does not work (Is the code of the function that jumps from the A
  5d0:	00001316 	andeq	r1, r0, r6, lsl r3
 
 00000600 <__ThumbV7PILongThunk_osc_white>:
+ ;; Thumb mode
  600:   f240 0c24       movw    ip, #36 ; 0x24
  604:   f2c0 0c00       movt    ip, #0
  608:   44fc            add     ip, pc               ; 0x608 + 4 = 0x60c
+ ;; to Arm mode
  60a:   4760            bx      ip                   ; 0x24 + 0x60c = 0x630 -->
 
 00000610 <.plt>:
@@ -46,8 +48,10 @@ Rust & lld ver: Does not work (Is the code of the function that jumps from the A
  628:	d4d4d4d4 	ldrble	sp, [r4], #1236	; 0x4d4
  62c:	d4d4d4d4 	ldrble	sp, [r4], #1236	; 0x4d4
  ;; 0x630 <--
+ ;; Arm mode
  630:	e28fc600 	add	ip, pc, #0, 12               ; 0x630 + 8 = 0x638
  634:	e28cca00 	add	ip, ip, #0, 20
+ ;; Is the pc moving to Thumb code while in Arm mode?
  638:	e5bcf21c 	ldr	pc, [ip, #540]!	; 0x21c      ; 0x638 + 540 = 0x854
  63c:	d4d4d4d4 	ldrble	sp, [r4], #1236	; 0x4d4
 
