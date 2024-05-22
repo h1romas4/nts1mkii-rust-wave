@@ -8,7 +8,7 @@ This repository is a Rust ported build of the WAVE(osc) synthesizer for the NTS-
 
 ## WIP: This repository is not yet working!
 
-I have limited knowledge of ELF loaders and linkers..
+Calling system interface functions in the machine via PLT freezes. ex. `osc_white()`
 
 ```rust
 #[no_mangle]
@@ -21,7 +21,11 @@ pub extern "C" fn unit_note_on(_arg1: u8, _arg2: u8) {
 }
 ```
 
-Rust & lld ver: Does not work (Probably the PLT code freezes because it moves the pc to the address of the function in the Thumb code it is calling while in Arm mode)
+### Rust & lld ver
+
+Does not work.
+
+Probably the PLT code freezes because it moves the pc to the address of the function in the Thumb code it is calling while in Arm mode.
 
 ```asm
 000005cc <.rel.plt>:
@@ -37,16 +41,8 @@ Rust & lld ver: Does not work (Probably the PLT code freezes because it moves th
  60a:   4760            bx      ip                   ; 0x24 + 0x60c = 0x630 -->
 
 00000610 <.plt>:
- ;; 0x610 <--
- 610:	e52de004 	push	{lr}		; (str lr, [sp, #-4]!)
- 614:	e28fe600 	add	lr, pc, #0, 12
- 618:	e28eea00 	add	lr, lr, #0, 20
- 61c:	e5bef234 	ldr	pc, [lr, #564]!	; 0x234      ; ?? 0x614 + 8 + 564 = 0x850 ??
+ ;; snip..
  ;;
- 620:	d4d4d4d4 	ldrble	sp, [r4], #1236	; 0x4d4
- 624:	d4d4d4d4 	ldrble	sp, [r4], #1236	; 0x4d4
- 628:	d4d4d4d4 	ldrble	sp, [r4], #1236	; 0x4d4
- 62c:	d4d4d4d4 	ldrble	sp, [r4], #1236	; 0x4d4
  ;; 0x630 <--
  ;; Arm mode
  630:	e28fc600 	add	ip, pc, #0, 12               ; 0x630 + 8 = 0x638
@@ -62,7 +58,11 @@ Disassembly of section .got:
  854:	00000610 	andeq	r0, r0, r0, lsl r6       ; 0x610 -->
 ```
 
-Rust & arm-none-eabi-ld ver: Does not work
+### Rust & arm-none-eabi-ld ver
+
+Does not work.
+
+For some reason, it becomes out of bounds. Late binaries are overwritten in the next section. Passing the `--long-plt` option to linker fixes it, but not sure if it is correct.
 
 ```asm
 000005c0 <osc_white@plt>:
@@ -74,7 +74,9 @@ Rust & arm-none-eabi-ld ver: Does not work
  5ce:   Address 0x00000000000005ce is out of bounds.
 ```
 
-Original louge-sdk gcc & arm-none-eabi-ld ver: Good work
+### Original louge-sdk gcc & arm-none-eabi-ld ver
+
+Good work.
 
 ```asm
 000011e0 <osc_white@plt>:
