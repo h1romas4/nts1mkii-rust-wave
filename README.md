@@ -29,7 +29,7 @@ Probably the PLT code freezes because it moves the pc to the address of the func
 
 ```asm
 000005cc <.rel.plt>:
- 5cc:	00000854 	andeq	r0, r0, r4, asr r8       ; 0x854
+ 5cc:	00000854 	andeq	r0, r0, r4, asr r8       ; 0x854 Indicates the address of the GOT.
  5d0:	00001316 	andeq	r1, r0, r6, lsl r3
 
 00000600 <__ThumbV7PILongThunk_osc_white>:
@@ -55,7 +55,8 @@ Disassembly of section .got:
 
 00000848 <.got>:
 	...
- 854:	00000610 	andeq	r0, r0, r0, lsl r6       ; 0x610 -->
+ ;; Perhaps this is where the elf loader writes the function address
+ 854:	00000610 	andeq	r0, r0, r0, lsl r6
 ```
 
 ### Rust & arm-none-eabi-ld ver
