@@ -133,6 +133,11 @@ pub const __int_fast16_t_defined: u32 = 1;
 pub const __int_fast32_t_defined: u32 = 1;
 pub const __int_fast64_t_defined: u32 = 1;
 pub const WINT_MIN: u32 = 0;
+pub const __CM7_CMSIS_VERSION_MAIN: u32 = 4;
+pub const __CM7_CMSIS_VERSION_SUB: u32 = 30;
+pub const __CM7_CMSIS_VERSION: u32 = 262174;
+pub const __CORTEX_M: u32 = 7;
+pub const __FPU_USED: u32 = 1;
 pub const __NEWLIB_H__: u32 = 1;
 pub const _WANT_IO_C99_FORMATS: u32 = 1;
 pub const _WANT_IO_LONG_LONG: u32 = 1;
@@ -213,28 +218,6 @@ pub const M_SQRTPI: f64 = 1.772453850905516;
 pub const M_SQRT3: f64 = 1.7320508075688772;
 pub const M_IVLN10: f64 = 0.4342944819032518;
 pub const M_LOG2_E: f64 = 0.6931471805599453;
-pub const M_4_PI: f64 = 1.2732395447351628;
-pub const M_1_TWOPI: f64 = 0.15915494309189535;
-pub const M_4_PI2: f64 = 0.4052847345693511;
-pub const M_1_SQRT2: f64 = 0.7071067811865475;
-pub const F32_FRAC_MASK: u32 = 8388607;
-pub const F32_EXP_MASK: u32 = 4286578688;
-pub const F32_SIGN_MASK: u32 = 2147483648;
-pub const UNIT_TARGET_PLATFORM_MASK: u32 = 32512;
-pub const UNIT_TARGET_MODULE_MASK: u32 = 127;
-pub const UNIT_API_MAJOR_MASK: u32 = 8323072;
-pub const UNIT_API_MINOR_MASK: u32 = 32512;
-pub const UNIT_API_PATCH_MASK: u32 = 127;
-pub const UNIT_MAX_PARAM_COUNT: u32 = 11;
-pub const UNIT_PARAM_NAME_LEN: u32 = 21;
-pub const UNIT_PARAM_NAME_SIZE: u32 = 22;
-pub const UNIT_NAME_LEN: u32 = 19;
-pub const UNIT_NAME_SIZE: u32 = 20;
-pub const __CM7_CMSIS_VERSION_MAIN: u32 = 4;
-pub const __CM7_CMSIS_VERSION_SUB: u32 = 30;
-pub const __CM7_CMSIS_VERSION: u32 = 262174;
-pub const __CORTEX_M: u32 = 7;
-pub const __FPU_USED: u32 = 1;
 pub const DELTA_Q31: u32 = 256;
 pub const DELTA_Q15: u32 = 5;
 pub const INDEX_MASK: u32 = 63;
@@ -258,6 +241,23 @@ pub const M_TWOPI_Q3_28: u32 = 1686629713;
 pub const M_1OVER48K_Q31: u32 = 44739;
 pub const M_1OVER44K_Q31: u32 = 48696;
 pub const M_1OVER22K_Q31: u32 = 97392;
+pub const M_4_PI: f64 = 1.2732395447351628;
+pub const M_1_TWOPI: f64 = 0.15915494309189535;
+pub const M_4_PI2: f64 = 0.4052847345693511;
+pub const M_1_SQRT2: f64 = 0.7071067811865475;
+pub const F32_FRAC_MASK: u32 = 8388607;
+pub const F32_EXP_MASK: u32 = 4286578688;
+pub const F32_SIGN_MASK: u32 = 2147483648;
+pub const UNIT_TARGET_PLATFORM_MASK: u32 = 32512;
+pub const UNIT_TARGET_MODULE_MASK: u32 = 127;
+pub const UNIT_API_MAJOR_MASK: u32 = 8323072;
+pub const UNIT_API_MINOR_MASK: u32 = 32512;
+pub const UNIT_API_PATCH_MASK: u32 = 127;
+pub const UNIT_MAX_PARAM_COUNT: u32 = 11;
+pub const UNIT_PARAM_NAME_LEN: u32 = 21;
+pub const UNIT_PARAM_NAME_SIZE: u32 = 22;
+pub const UNIT_NAME_LEN: u32 = 19;
+pub const UNIT_NAME_SIZE: u32 = 20;
 pub const k_samplerate: u32 = 48000;
 pub const k_midi_to_hz_size: u32 = 152;
 pub const k_note_mod_fscale: f64 = 0.00392156862745098;
@@ -1936,6 +1936,343 @@ extern "C" {
 extern "C" {
     pub fn _reclaim_reent(arg1: *mut _reent);
 }
+pub type locale_t = *mut __locale_t;
+extern "C" {
+    pub fn bcmp(
+        arg1: *const core::ffi::c_void,
+        arg2: *const core::ffi::c_void,
+        arg3: core::ffi::c_uint,
+    ) -> core::ffi::c_int;
+}
+extern "C" {
+    pub fn bcopy(arg1: *const core::ffi::c_void, arg2: *mut core::ffi::c_void, arg3: usize);
+}
+extern "C" {
+    pub fn bzero(arg1: *mut core::ffi::c_void, arg2: core::ffi::c_uint);
+}
+extern "C" {
+    pub fn explicit_bzero(arg1: *mut core::ffi::c_void, arg2: usize);
+}
+extern "C" {
+    pub fn ffs(arg1: core::ffi::c_int) -> core::ffi::c_int;
+}
+extern "C" {
+    pub fn ffsl(arg1: core::ffi::c_long) -> core::ffi::c_int;
+}
+extern "C" {
+    pub fn ffsll(arg1: core::ffi::c_longlong) -> core::ffi::c_int;
+}
+extern "C" {
+    pub fn fls(arg1: core::ffi::c_int) -> core::ffi::c_int;
+}
+extern "C" {
+    pub fn flsl(arg1: core::ffi::c_long) -> core::ffi::c_int;
+}
+extern "C" {
+    pub fn flsll(arg1: core::ffi::c_longlong) -> core::ffi::c_int;
+}
+extern "C" {
+    pub fn index(arg1: *const core::ffi::c_char, arg2: core::ffi::c_int) -> *mut core::ffi::c_char;
+}
+extern "C" {
+    pub fn rindex(arg1: *const core::ffi::c_char, arg2: core::ffi::c_int)
+        -> *mut core::ffi::c_char;
+}
+extern "C" {
+    pub fn strcasecmp(
+        arg1: *const core::ffi::c_char,
+        arg2: *const core::ffi::c_char,
+    ) -> core::ffi::c_int;
+}
+extern "C" {
+    pub fn strncasecmp(
+        arg1: *const core::ffi::c_char,
+        arg2: *const core::ffi::c_char,
+        arg3: core::ffi::c_uint,
+    ) -> core::ffi::c_int;
+}
+extern "C" {
+    pub fn strcasecmp_l(
+        arg1: *const core::ffi::c_char,
+        arg2: *const core::ffi::c_char,
+        arg3: locale_t,
+    ) -> core::ffi::c_int;
+}
+extern "C" {
+    pub fn strncasecmp_l(
+        arg1: *const core::ffi::c_char,
+        arg2: *const core::ffi::c_char,
+        arg3: usize,
+        arg4: locale_t,
+    ) -> core::ffi::c_int;
+}
+extern "C" {
+    pub fn memchr(
+        arg1: *const core::ffi::c_void,
+        arg2: core::ffi::c_int,
+        arg3: core::ffi::c_uint,
+    ) -> *mut core::ffi::c_void;
+}
+extern "C" {
+    pub fn memcmp(
+        arg1: *const core::ffi::c_void,
+        arg2: *const core::ffi::c_void,
+        arg3: core::ffi::c_uint,
+    ) -> core::ffi::c_int;
+}
+extern "C" {
+    pub fn memcpy(
+        arg1: *mut core::ffi::c_void,
+        arg2: *const core::ffi::c_void,
+        arg3: core::ffi::c_uint,
+    ) -> *mut core::ffi::c_void;
+}
+extern "C" {
+    pub fn memmove(
+        arg1: *mut core::ffi::c_void,
+        arg2: *const core::ffi::c_void,
+        arg3: core::ffi::c_uint,
+    ) -> *mut core::ffi::c_void;
+}
+extern "C" {
+    pub fn memset(
+        arg1: *mut core::ffi::c_void,
+        arg2: core::ffi::c_int,
+        arg3: core::ffi::c_uint,
+    ) -> *mut core::ffi::c_void;
+}
+extern "C" {
+    pub fn strcat(
+        arg1: *mut core::ffi::c_char,
+        arg2: *const core::ffi::c_char,
+    ) -> *mut core::ffi::c_char;
+}
+extern "C" {
+    pub fn strchr(arg1: *const core::ffi::c_char, arg2: core::ffi::c_int)
+        -> *mut core::ffi::c_char;
+}
+extern "C" {
+    pub fn strcmp(
+        arg1: *const core::ffi::c_char,
+        arg2: *const core::ffi::c_char,
+    ) -> core::ffi::c_int;
+}
+extern "C" {
+    pub fn strcoll(
+        arg1: *const core::ffi::c_char,
+        arg2: *const core::ffi::c_char,
+    ) -> core::ffi::c_int;
+}
+extern "C" {
+    pub fn strcpy(
+        arg1: *mut core::ffi::c_char,
+        arg2: *const core::ffi::c_char,
+    ) -> *mut core::ffi::c_char;
+}
+extern "C" {
+    pub fn strcspn(
+        arg1: *const core::ffi::c_char,
+        arg2: *const core::ffi::c_char,
+    ) -> core::ffi::c_uint;
+}
+extern "C" {
+    pub fn strerror(arg1: core::ffi::c_int) -> *mut core::ffi::c_char;
+}
+extern "C" {
+    pub fn strlen(arg1: *const core::ffi::c_char) -> core::ffi::c_uint;
+}
+extern "C" {
+    pub fn strncat(
+        arg1: *mut core::ffi::c_char,
+        arg2: *const core::ffi::c_char,
+        arg3: core::ffi::c_uint,
+    ) -> *mut core::ffi::c_char;
+}
+extern "C" {
+    pub fn strncmp(
+        arg1: *const core::ffi::c_char,
+        arg2: *const core::ffi::c_char,
+        arg3: core::ffi::c_uint,
+    ) -> core::ffi::c_int;
+}
+extern "C" {
+    pub fn strncpy(
+        arg1: *mut core::ffi::c_char,
+        arg2: *const core::ffi::c_char,
+        arg3: core::ffi::c_uint,
+    ) -> *mut core::ffi::c_char;
+}
+extern "C" {
+    pub fn strpbrk(
+        arg1: *const core::ffi::c_char,
+        arg2: *const core::ffi::c_char,
+    ) -> *mut core::ffi::c_char;
+}
+extern "C" {
+    pub fn strrchr(
+        arg1: *const core::ffi::c_char,
+        arg2: core::ffi::c_int,
+    ) -> *mut core::ffi::c_char;
+}
+extern "C" {
+    pub fn strspn(
+        arg1: *const core::ffi::c_char,
+        arg2: *const core::ffi::c_char,
+    ) -> core::ffi::c_uint;
+}
+extern "C" {
+    pub fn strstr(
+        arg1: *const core::ffi::c_char,
+        arg2: *const core::ffi::c_char,
+    ) -> *mut core::ffi::c_char;
+}
+extern "C" {
+    pub fn strtok(
+        arg1: *mut core::ffi::c_char,
+        arg2: *const core::ffi::c_char,
+    ) -> *mut core::ffi::c_char;
+}
+extern "C" {
+    pub fn strxfrm(
+        arg1: *mut core::ffi::c_char,
+        arg2: *const core::ffi::c_char,
+        arg3: core::ffi::c_uint,
+    ) -> core::ffi::c_uint;
+}
+extern "C" {
+    pub fn strcoll_l(
+        arg1: *const core::ffi::c_char,
+        arg2: *const core::ffi::c_char,
+        arg3: locale_t,
+    ) -> core::ffi::c_int;
+}
+extern "C" {
+    pub fn strerror_l(arg1: core::ffi::c_int, arg2: locale_t) -> *mut core::ffi::c_char;
+}
+extern "C" {
+    pub fn strxfrm_l(
+        arg1: *mut core::ffi::c_char,
+        arg2: *const core::ffi::c_char,
+        arg3: usize,
+        arg4: locale_t,
+    ) -> usize;
+}
+extern "C" {
+    pub fn strtok_r(
+        arg1: *mut core::ffi::c_char,
+        arg2: *const core::ffi::c_char,
+        arg3: *mut *mut core::ffi::c_char,
+    ) -> *mut core::ffi::c_char;
+}
+extern "C" {
+    pub fn timingsafe_bcmp(
+        arg1: *const core::ffi::c_void,
+        arg2: *const core::ffi::c_void,
+        arg3: usize,
+    ) -> core::ffi::c_int;
+}
+extern "C" {
+    pub fn timingsafe_memcmp(
+        arg1: *const core::ffi::c_void,
+        arg2: *const core::ffi::c_void,
+        arg3: usize,
+    ) -> core::ffi::c_int;
+}
+extern "C" {
+    pub fn memccpy(
+        arg1: *mut core::ffi::c_void,
+        arg2: *const core::ffi::c_void,
+        arg3: core::ffi::c_int,
+        arg4: core::ffi::c_uint,
+    ) -> *mut core::ffi::c_void;
+}
+extern "C" {
+    pub fn stpcpy(
+        arg1: *mut core::ffi::c_char,
+        arg2: *const core::ffi::c_char,
+    ) -> *mut core::ffi::c_char;
+}
+extern "C" {
+    pub fn stpncpy(
+        arg1: *mut core::ffi::c_char,
+        arg2: *const core::ffi::c_char,
+        arg3: core::ffi::c_uint,
+    ) -> *mut core::ffi::c_char;
+}
+extern "C" {
+    pub fn strdup(arg1: *const core::ffi::c_char) -> *mut core::ffi::c_char;
+}
+extern "C" {
+    pub fn _strdup_r(arg1: *mut _reent, arg2: *const core::ffi::c_char) -> *mut core::ffi::c_char;
+}
+extern "C" {
+    pub fn strndup(
+        arg1: *const core::ffi::c_char,
+        arg2: core::ffi::c_uint,
+    ) -> *mut core::ffi::c_char;
+}
+extern "C" {
+    pub fn _strndup_r(
+        arg1: *mut _reent,
+        arg2: *const core::ffi::c_char,
+        arg3: usize,
+    ) -> *mut core::ffi::c_char;
+}
+extern "C" {
+    #[link_name = "\u{1}__xpg_strerror_r"]
+    pub fn strerror_r(
+        arg1: core::ffi::c_int,
+        arg2: *mut core::ffi::c_char,
+        arg3: usize,
+    ) -> core::ffi::c_int;
+}
+extern "C" {
+    pub fn _strerror_r(
+        arg1: *mut _reent,
+        arg2: core::ffi::c_int,
+        arg3: core::ffi::c_int,
+        arg4: *mut core::ffi::c_int,
+    ) -> *mut core::ffi::c_char;
+}
+extern "C" {
+    pub fn strlcat(
+        arg1: *mut core::ffi::c_char,
+        arg2: *const core::ffi::c_char,
+        arg3: usize,
+    ) -> usize;
+}
+extern "C" {
+    pub fn strlcpy(
+        arg1: *mut core::ffi::c_char,
+        arg2: *const core::ffi::c_char,
+        arg3: usize,
+    ) -> usize;
+}
+extern "C" {
+    pub fn strnlen(arg1: *const core::ffi::c_char, arg2: usize) -> usize;
+}
+extern "C" {
+    pub fn strsep(
+        arg1: *mut *mut core::ffi::c_char,
+        arg2: *const core::ffi::c_char,
+    ) -> *mut core::ffi::c_char;
+}
+extern "C" {
+    pub fn strnstr(
+        arg1: *const core::ffi::c_char,
+        arg2: *const core::ffi::c_char,
+        arg3: usize,
+    ) -> *mut core::ffi::c_char;
+}
+extern "C" {
+    pub fn strlwr(arg1: *mut core::ffi::c_char) -> *mut core::ffi::c_char;
+}
+extern "C" {
+    pub fn strupr(arg1: *mut core::ffi::c_char) -> *mut core::ffi::c_char;
+}
+extern "C" {
+    pub fn strsignal(__signo: core::ffi::c_int) -> *mut core::ffi::c_char;
+}
 extern "C" {
     pub fn atan(arg1: f64) -> f64;
 }
@@ -2564,1065 +2901,6 @@ extern "C" {
 }
 extern "C" {
     pub fn __signgam() -> *mut core::ffi::c_int;
-}
-#[doc = " @name    Types\n @{"]
-#[repr(C)]
-#[derive(Copy, Clone)]
-pub union f32_t {
-    pub f: f32,
-    pub i: u32,
-}
-#[test]
-fn bindgen_test_layout_f32_t() {
-    const UNINIT: ::core::mem::MaybeUninit<f32_t> = ::core::mem::MaybeUninit::uninit();
-    let ptr = UNINIT.as_ptr();
-    assert_eq!(
-        ::core::mem::size_of::<f32_t>(),
-        4usize,
-        concat!("Size of: ", stringify!(f32_t))
-    );
-    assert_eq!(
-        ::core::mem::align_of::<f32_t>(),
-        4usize,
-        concat!("Alignment of ", stringify!(f32_t))
-    );
-    assert_eq!(
-        unsafe { ::core::ptr::addr_of!((*ptr).f) as usize - ptr as usize },
-        0usize,
-        concat!("Offset of field: ", stringify!(f32_t), "::", stringify!(f))
-    );
-    assert_eq!(
-        unsafe { ::core::ptr::addr_of!((*ptr).i) as usize - ptr as usize },
-        0usize,
-        concat!("Offset of field: ", stringify!(f32_t), "::", stringify!(i))
-    );
-}
-#[repr(C)]
-#[derive(Debug, Copy, Clone)]
-pub struct f32pair_t {
-    pub a: f32,
-    pub b: f32,
-}
-#[test]
-fn bindgen_test_layout_f32pair_t() {
-    const UNINIT: ::core::mem::MaybeUninit<f32pair_t> = ::core::mem::MaybeUninit::uninit();
-    let ptr = UNINIT.as_ptr();
-    assert_eq!(
-        ::core::mem::size_of::<f32pair_t>(),
-        8usize,
-        concat!("Size of: ", stringify!(f32pair_t))
-    );
-    assert_eq!(
-        ::core::mem::align_of::<f32pair_t>(),
-        4usize,
-        concat!("Alignment of ", stringify!(f32pair_t))
-    );
-    assert_eq!(
-        unsafe { ::core::ptr::addr_of!((*ptr).a) as usize - ptr as usize },
-        0usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(f32pair_t),
-            "::",
-            stringify!(a)
-        )
-    );
-    assert_eq!(
-        unsafe { ::core::ptr::addr_of!((*ptr).b) as usize - ptr as usize },
-        4usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(f32pair_t),
-            "::",
-            stringify!(b)
-        )
-    );
-}
-#[doc = " Dummy category, may be used in future."]
-pub const k_unit_module_global: _bindgen_ty_1 = 0;
-#[doc = " Modulation effects"]
-pub const k_unit_module_modfx: _bindgen_ty_1 = 1;
-#[doc = " Delay effects"]
-pub const k_unit_module_delfx: _bindgen_ty_1 = 2;
-#[doc = " Reverb effects"]
-pub const k_unit_module_revfx: _bindgen_ty_1 = 3;
-#[doc = " Oscillators"]
-pub const k_unit_module_osc: _bindgen_ty_1 = 4;
-#[doc = " Synth voices"]
-pub const k_unit_module_synth: _bindgen_ty_1 = 5;
-#[doc = " Master effects"]
-pub const k_unit_module_masterfx: _bindgen_ty_1 = 6;
-#[doc = " Master effects"]
-pub const k_num_unit_modules: _bindgen_ty_1 = 7;
-#[doc = " Unit module categories."]
-pub type _bindgen_ty_1 = core::ffi::c_uint;
-pub const k_unit_target_prologue: _bindgen_ty_2 = 256;
-pub const k_unit_target_prologue_global: _bindgen_ty_2 = 256;
-pub const k_unit_target_prologue_modfx: _bindgen_ty_2 = 257;
-pub const k_unit_target_prologue_delfx: _bindgen_ty_2 = 258;
-pub const k_unit_target_prologue_revfx: _bindgen_ty_2 = 259;
-pub const k_unit_target_prologue_osc: _bindgen_ty_2 = 260;
-#[doc = " prologue specific platform/module pairs.\n Passed to user code via initialization callback."]
-pub type _bindgen_ty_2 = core::ffi::c_uint;
-pub const k_unit_target_miniloguexd: _bindgen_ty_3 = 512;
-pub const k_unit_target_miniloguexd_global: _bindgen_ty_3 = 512;
-pub const k_unit_target_miniloguexd_modfx: _bindgen_ty_3 = 513;
-pub const k_unit_target_miniloguexd_delfx: _bindgen_ty_3 = 514;
-pub const k_unit_target_miniloguexd_revfx: _bindgen_ty_3 = 515;
-pub const k_unit_target_miniloguexd_osc: _bindgen_ty_3 = 516;
-#[doc = " minilogue-xd specific platform/module pairs.\n Passed to user code via initialization callback."]
-pub type _bindgen_ty_3 = core::ffi::c_uint;
-pub const k_unit_target_nutektdigital: _bindgen_ty_4 = 768;
-pub const k_unit_target_nutektdigital_global: _bindgen_ty_4 = 768;
-pub const k_unit_target_nutektdigital_modfx: _bindgen_ty_4 = 769;
-pub const k_unit_target_nutektdigital_delfx: _bindgen_ty_4 = 770;
-pub const k_unit_target_nutektdigital_revfx: _bindgen_ty_4 = 771;
-pub const k_unit_target_nutektdigital_osc: _bindgen_ty_4 = 772;
-#[doc = " Nu:Tekt NTS-1 digital specific platform/module pairs.\n Passed to user code via initialization callback."]
-pub type _bindgen_ty_4 = core::ffi::c_uint;
-pub const k_unit_target_nts1: _bindgen_ty_5 = 768;
-pub const k_unit_target_nts1_global: _bindgen_ty_5 = 768;
-pub const k_unit_target_nts1_modfx: _bindgen_ty_5 = 769;
-pub const k_unit_target_nts1_delfx: _bindgen_ty_5 = 770;
-pub const k_unit_target_nts1_revfx: _bindgen_ty_5 = 771;
-pub const k_unit_target_nts1_osc: _bindgen_ty_5 = 772;
-#[doc = " Aliases for Nu:Tekt NTS-1 digital specific platform/module pairs."]
-pub type _bindgen_ty_5 = core::ffi::c_uint;
-pub const k_unit_target_drumlogue: _bindgen_ty_6 = 1024;
-pub const k_unit_target_drumlogue_delfx: _bindgen_ty_6 = 1026;
-pub const k_unit_target_drumlogue_revfx: _bindgen_ty_6 = 1027;
-pub const k_unit_target_drumlogue_synth: _bindgen_ty_6 = 1029;
-pub const k_unit_target_drumlogue_masterfx: _bindgen_ty_6 = 1030;
-#[doc = " drumlogue specific platform/module pairs.\n Passed to user code via initialization callback."]
-pub type _bindgen_ty_6 = core::ffi::c_uint;
-pub const k_unit_target_nts1_mkii: _bindgen_ty_7 = 1280;
-pub const k_unit_target_nts1_mkii_global: _bindgen_ty_7 = 1280;
-pub const k_unit_target_nts1_mkii_modfx: _bindgen_ty_7 = 1281;
-pub const k_unit_target_nts1_mkii_delfx: _bindgen_ty_7 = 1282;
-pub const k_unit_target_nts1_mkii_revfx: _bindgen_ty_7 = 1283;
-pub const k_unit_target_nts1_mkii_osc: _bindgen_ty_7 = 1284;
-#[doc = " Nu:Tekt NTS-1 digital MKII specific platform/module pairs.\n Passed to user code via initialization callback."]
-pub type _bindgen_ty_7 = core::ffi::c_uint;
-pub const k_unit_api_1_0_0: _bindgen_ty_8 = 65536;
-pub const k_unit_api_1_1_0: _bindgen_ty_8 = 65792;
-pub const k_unit_api_2_0_0: _bindgen_ty_8 = 131072;
-#[doc = " Valid API versions.\n  Major: breaking changes (7bits, cap to 99)\n  Minor: additions only   (7bits, cap to 99)\n  Sub:   bugfixes only    (7bits, cap to 99)"]
-pub type _bindgen_ty_8 = core::ffi::c_uint;
-#[doc = " Base type for runtime contexts.\n Currently void as there are no common contextual fields accross unit types."]
-pub type unit_runtime_base_context_t = core::ffi::c_void;
-#[doc = " SDRAM allocator callback type\n\n The callback is used to allocate memory in a given unit runtime's dedicated SDRAM area.\n \\param size Size in bytes of desired memory allocation.\n \\return     Pointer to allocated memory area, or NULL if unsucessful."]
-pub type unit_runtime_sdram_alloc_ptr =
-    ::core::option::Option<unsafe extern "C" fn(size: usize) -> *mut u8>;
-#[doc = " SDRAM deallocation callback type\n\n The callback is used to deallocate memory from the runtime's dedicated SDRAM area.\n \\param mem Pointer to memory area previously allocated via a corresponsding unit_runtime_sdram_alloc_ptr callback."]
-pub type unit_runtime_sdram_free_ptr = ::core::option::Option<unsafe extern "C" fn(mem: *const u8)>;
-#[doc = " SDRAM allocation availability callback type\n\n The callback is used to verify the amount of allocatable memory in the runtime's dedicated SDRAM area.\n \\return Size in bytes of the allocatable memory."]
-pub type unit_runtime_sdram_avail_ptr = ::core::option::Option<unsafe extern "C" fn() -> usize>;
-#[doc = " Runtime hooks.\n Passed from the unit runtime to the unit during initialization to provide access to runtime APIs that are not known at compile time.\n Note: Member fields will vary from platform to platform"]
-#[repr(C)]
-#[derive(Debug, Copy, Clone)]
-pub struct unit_runtime_hooks {
-    pub runtime_context: *const unit_runtime_base_context_t,
-    #[doc = " Ref. to contextual data exposed by the runtime. (Req. cast to appropriate module-specific type)"]
-    pub sdram_alloc: unit_runtime_sdram_alloc_ptr,
-    #[doc = " SDRAM allocation callback."]
-    pub sdram_free: unit_runtime_sdram_free_ptr,
-    #[doc = " SDRAM deallocation callback."]
-    pub sdram_avail: unit_runtime_sdram_avail_ptr,
-}
-#[test]
-fn bindgen_test_layout_unit_runtime_hooks() {
-    const UNINIT: ::core::mem::MaybeUninit<unit_runtime_hooks> = ::core::mem::MaybeUninit::uninit();
-    let ptr = UNINIT.as_ptr();
-    assert_eq!(
-        ::core::mem::size_of::<unit_runtime_hooks>(),
-        16usize,
-        concat!("Size of: ", stringify!(unit_runtime_hooks))
-    );
-    assert_eq!(
-        ::core::mem::align_of::<unit_runtime_hooks>(),
-        4usize,
-        concat!("Alignment of ", stringify!(unit_runtime_hooks))
-    );
-    assert_eq!(
-        unsafe { ::core::ptr::addr_of!((*ptr).runtime_context) as usize - ptr as usize },
-        0usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(unit_runtime_hooks),
-            "::",
-            stringify!(runtime_context)
-        )
-    );
-    assert_eq!(
-        unsafe { ::core::ptr::addr_of!((*ptr).sdram_alloc) as usize - ptr as usize },
-        4usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(unit_runtime_hooks),
-            "::",
-            stringify!(sdram_alloc)
-        )
-    );
-    assert_eq!(
-        unsafe { ::core::ptr::addr_of!((*ptr).sdram_free) as usize - ptr as usize },
-        8usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(unit_runtime_hooks),
-            "::",
-            stringify!(sdram_free)
-        )
-    );
-    assert_eq!(
-        unsafe { ::core::ptr::addr_of!((*ptr).sdram_avail) as usize - ptr as usize },
-        12usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(unit_runtime_hooks),
-            "::",
-            stringify!(sdram_avail)
-        )
-    );
-}
-#[doc = " Runtime hooks.\n Passed from the unit runtime to the unit during initialization to provide access to runtime APIs that are not known at compile time.\n Note: Member fields will vary from platform to platform"]
-pub type unit_runtime_hooks_t = unit_runtime_hooks;
-#[repr(C, packed)]
-#[derive(Debug, Copy, Clone)]
-pub struct unit_runtime_desc {
-    pub target: u32,
-    #[doc = " Target platform/module pair corresponding to runtime."]
-    pub api: u32,
-    #[doc = " API version used by runtime."]
-    pub samplerate: u32,
-    #[doc = " Sample rate used by runtime."]
-    pub frames_per_buffer: u16,
-    #[doc = " Frames per buffer used by runtime in render calls."]
-    pub input_channels: u8,
-    #[doc = " Number of input channels in render calls."]
-    pub output_channels: u8,
-    #[doc = " Number of output channels in render calls."]
-    pub hooks: unit_runtime_hooks_t,
-}
-#[test]
-fn bindgen_test_layout_unit_runtime_desc() {
-    const UNINIT: ::core::mem::MaybeUninit<unit_runtime_desc> = ::core::mem::MaybeUninit::uninit();
-    let ptr = UNINIT.as_ptr();
-    assert_eq!(
-        ::core::mem::size_of::<unit_runtime_desc>(),
-        32usize,
-        concat!("Size of: ", stringify!(unit_runtime_desc))
-    );
-    assert_eq!(
-        ::core::mem::align_of::<unit_runtime_desc>(),
-        1usize,
-        concat!("Alignment of ", stringify!(unit_runtime_desc))
-    );
-    assert_eq!(
-        unsafe { ::core::ptr::addr_of!((*ptr).target) as usize - ptr as usize },
-        0usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(unit_runtime_desc),
-            "::",
-            stringify!(target)
-        )
-    );
-    assert_eq!(
-        unsafe { ::core::ptr::addr_of!((*ptr).api) as usize - ptr as usize },
-        4usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(unit_runtime_desc),
-            "::",
-            stringify!(api)
-        )
-    );
-    assert_eq!(
-        unsafe { ::core::ptr::addr_of!((*ptr).samplerate) as usize - ptr as usize },
-        8usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(unit_runtime_desc),
-            "::",
-            stringify!(samplerate)
-        )
-    );
-    assert_eq!(
-        unsafe { ::core::ptr::addr_of!((*ptr).frames_per_buffer) as usize - ptr as usize },
-        12usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(unit_runtime_desc),
-            "::",
-            stringify!(frames_per_buffer)
-        )
-    );
-    assert_eq!(
-        unsafe { ::core::ptr::addr_of!((*ptr).input_channels) as usize - ptr as usize },
-        14usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(unit_runtime_desc),
-            "::",
-            stringify!(input_channels)
-        )
-    );
-    assert_eq!(
-        unsafe { ::core::ptr::addr_of!((*ptr).output_channels) as usize - ptr as usize },
-        15usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(unit_runtime_desc),
-            "::",
-            stringify!(output_channels)
-        )
-    );
-    assert_eq!(
-        unsafe { ::core::ptr::addr_of!((*ptr).hooks) as usize - ptr as usize },
-        16usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(unit_runtime_desc),
-            "::",
-            stringify!(hooks)
-        )
-    );
-}
-pub type unit_runtime_desc_t = unit_runtime_desc;
-pub const k_unit_param_type_none: _bindgen_ty_9 = 0;
-#[doc = " Describes a typeless value. The value will be displayed as is, while taking into account the fractional part."]
-pub const k_unit_param_type_percent: _bindgen_ty_9 = 1;
-#[doc = " Describe a percent value."]
-pub const k_unit_param_type_db: _bindgen_ty_9 = 2;
-#[doc = " Describes a decibel value."]
-pub const k_unit_param_type_cents: _bindgen_ty_9 = 3;
-#[doc = " Describes a pitch cents value."]
-pub const k_unit_param_type_semi: _bindgen_ty_9 = 4;
-#[doc = " Describes a pitch semitone value."]
-pub const k_unit_param_type_oct: _bindgen_ty_9 = 5;
-#[doc = " Describes an octave offset value."]
-pub const k_unit_param_type_hertz: _bindgen_ty_9 = 6;
-#[doc = " Describes a Hertz value."]
-pub const k_unit_param_type_khertz: _bindgen_ty_9 = 7;
-#[doc = " Describes a kilo Hertz value."]
-pub const k_unit_param_type_bpm: _bindgen_ty_9 = 8;
-#[doc = " Describes a beat per minute value."]
-pub const k_unit_param_type_msec: _bindgen_ty_9 = 9;
-#[doc = " Describes a milliseconds value."]
-pub const k_unit_param_type_sec: _bindgen_ty_9 = 10;
-#[doc = " Describes a seconds value."]
-pub const k_unit_param_type_enum: _bindgen_ty_9 = 11;
-#[doc = " Describes a numerical enumeration value. If the value minimum is set to 0, the value will be incremented by 1 when displayed."]
-pub const k_unit_param_type_strings: _bindgen_ty_9 = 12;
-#[doc = " Describes a value with custom string representation. The numerical value will be passed in a call to unit_get_param_str_value(..) in order to obtain the string representation."]
-pub const k_unit_param_type_reserved0: _bindgen_ty_9 = 13;
-#[doc = " Reserved value unused on this platform."]
-pub const k_unit_param_type_drywet: _bindgen_ty_9 = 14;
-#[doc = " Describes a dry/wet value. Negative values will be prepended with D for dry, positive values with W for wet, and zero value replaced with BALN to indicate a balanced mix."]
-pub const k_unit_param_type_pan: _bindgen_ty_9 = 15;
-#[doc = " Describes a stereo pan value. Negative values will be prepended with L for left, positive values with R for right, and zero value replaced with CNTR to indicate centered panning."]
-pub const k_unit_param_type_spread: _bindgen_ty_9 = 16;
-#[doc = " Describes a stereo spread value. Negative values will be prepended with L for left, positive values with R for right, and zero value replaced with CNTR to indicate no stereo spread."]
-pub const k_unit_param_type_onoff: _bindgen_ty_9 = 17;
-#[doc = " Describes an on/off toggle value. 0 will be displayed as off, and 1 will be displayed as on."]
-pub const k_unit_param_type_midi_note: _bindgen_ty_9 = 18;
-#[doc = " Describes a MIDI note value. The numerical note value will be displayed as musical pitches (e.g.: C0, A3)."]
-pub const k_unit_param_type_count: _bindgen_ty_9 = 19;
-#[doc = " Valid parameter value types.\n Influences how the value is displayed, but can be limited by the display technology used for the current target platform."]
-pub type _bindgen_ty_9 = core::ffi::c_uint;
-pub const k_unit_param_frac_mode_fixed: _bindgen_ty_10 = 0;
-pub const k_unit_param_frac_mode_decimal: _bindgen_ty_10 = 1;
-#[doc = " Fractional value interpretations."]
-pub type _bindgen_ty_10 = core::ffi::c_uint;
-#[repr(C, packed)]
-#[derive(Debug, Copy, Clone)]
-pub struct unit_param {
-    pub min: i16,
-    #[doc = " Minimum value."]
-    pub max: i16,
-    #[doc = " Maximum value."]
-    pub center: i16,
-    #[doc = " Logical center value."]
-    pub init: i16,
-    #[doc = " Initial/default value."]
-    pub type_: u8,
-    pub _bitfield_align_1: [u8; 0],
-    pub _bitfield_1: __BindgenBitfieldUnit<[u8; 1usize]>,
-    #[doc = " Reserved bits. Keep to zero."]
-    pub name: [core::ffi::c_char; 22usize],
-}
-#[test]
-fn bindgen_test_layout_unit_param() {
-    const UNINIT: ::core::mem::MaybeUninit<unit_param> = ::core::mem::MaybeUninit::uninit();
-    let ptr = UNINIT.as_ptr();
-    assert_eq!(
-        ::core::mem::size_of::<unit_param>(),
-        32usize,
-        concat!("Size of: ", stringify!(unit_param))
-    );
-    assert_eq!(
-        ::core::mem::align_of::<unit_param>(),
-        1usize,
-        concat!("Alignment of ", stringify!(unit_param))
-    );
-    assert_eq!(
-        unsafe { ::core::ptr::addr_of!((*ptr).min) as usize - ptr as usize },
-        0usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(unit_param),
-            "::",
-            stringify!(min)
-        )
-    );
-    assert_eq!(
-        unsafe { ::core::ptr::addr_of!((*ptr).max) as usize - ptr as usize },
-        2usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(unit_param),
-            "::",
-            stringify!(max)
-        )
-    );
-    assert_eq!(
-        unsafe { ::core::ptr::addr_of!((*ptr).center) as usize - ptr as usize },
-        4usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(unit_param),
-            "::",
-            stringify!(center)
-        )
-    );
-    assert_eq!(
-        unsafe { ::core::ptr::addr_of!((*ptr).init) as usize - ptr as usize },
-        6usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(unit_param),
-            "::",
-            stringify!(init)
-        )
-    );
-    assert_eq!(
-        unsafe { ::core::ptr::addr_of!((*ptr).type_) as usize - ptr as usize },
-        8usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(unit_param),
-            "::",
-            stringify!(type_)
-        )
-    );
-    assert_eq!(
-        unsafe { ::core::ptr::addr_of!((*ptr).name) as usize - ptr as usize },
-        10usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(unit_param),
-            "::",
-            stringify!(name)
-        )
-    );
-}
-impl unit_param {
-    #[inline]
-    pub fn frac(&self) -> u8 {
-        unsafe { ::core::mem::transmute(self._bitfield_1.get(0usize, 4u8) as u8) }
-    }
-    #[inline]
-    pub fn set_frac(&mut self, val: u8) {
-        unsafe {
-            let val: u8 = ::core::mem::transmute(val);
-            self._bitfield_1.set(0usize, 4u8, val as u64)
-        }
-    }
-    #[inline]
-    pub fn frac_mode(&self) -> u8 {
-        unsafe { ::core::mem::transmute(self._bitfield_1.get(4usize, 1u8) as u8) }
-    }
-    #[inline]
-    pub fn set_frac_mode(&mut self, val: u8) {
-        unsafe {
-            let val: u8 = ::core::mem::transmute(val);
-            self._bitfield_1.set(4usize, 1u8, val as u64)
-        }
-    }
-    #[inline]
-    pub fn reserved(&self) -> u8 {
-        unsafe { ::core::mem::transmute(self._bitfield_1.get(5usize, 3u8) as u8) }
-    }
-    #[inline]
-    pub fn set_reserved(&mut self, val: u8) {
-        unsafe {
-            let val: u8 = ::core::mem::transmute(val);
-            self._bitfield_1.set(5usize, 3u8, val as u64)
-        }
-    }
-    #[inline]
-    pub fn new_bitfield_1(
-        frac: u8,
-        frac_mode: u8,
-        reserved: u8,
-    ) -> __BindgenBitfieldUnit<[u8; 1usize]> {
-        let mut __bindgen_bitfield_unit: __BindgenBitfieldUnit<[u8; 1usize]> = Default::default();
-        __bindgen_bitfield_unit.set(0usize, 4u8, {
-            let frac: u8 = unsafe { ::core::mem::transmute(frac) };
-            frac as u64
-        });
-        __bindgen_bitfield_unit.set(4usize, 1u8, {
-            let frac_mode: u8 = unsafe { ::core::mem::transmute(frac_mode) };
-            frac_mode as u64
-        });
-        __bindgen_bitfield_unit.set(5usize, 3u8, {
-            let reserved: u8 = unsafe { ::core::mem::transmute(reserved) };
-            reserved as u64
-        });
-        __bindgen_bitfield_unit
-    }
-}
-pub type unit_param_t = unit_param;
-#[doc = " Unit initialization callback type\n\n The callback is called to initialize units immediately after loading them into the runtime.\n \\param desc Pointer to the runtime descriptor. @see unit_runtime_desc_t.\n \\return 0 shall be returned upon successful inialization, otherwise an error code shall be returned. See k_unit_err_* definitions."]
-pub type unit_init_func =
-    ::core::option::Option<unsafe extern "C" fn(desc: *const unit_runtime_desc_t) -> i8>;
-#[doc = " Unit teardown callback type\n\n The callback is called before the unit is unloaded from the runtime environment."]
-pub type unit_teardown_func = ::core::option::Option<unsafe extern "C" fn()>;
-#[doc = " Unit reset callback type"]
-pub type unit_reset_func = ::core::option::Option<unsafe extern "C" fn()>;
-#[doc = " Unit resume rendering callback type\n\n The callback is called when the unit shall exit suspended state and be ready for its render callback to be called."]
-pub type unit_resume_func = ::core::option::Option<unsafe extern "C" fn()>;
-#[doc = " Unit suspend rendering callback type\n\n The callback is called when the unit shall enter suspended state."]
-pub type unit_suspend_func = ::core::option::Option<unsafe extern "C" fn()>;
-#[doc = " Unit render callback type\n\n After initialization, and after exiting suspended state, the render callback is called at each audio processing cycle.\n Note that input and output buffers either overlap completely or not at all.\n Input/output channel geometry is determined by the runtime descriptor passed via the initialization callback.\n @see unit_init_func\n @see unit_runtime_desc_t\n\n \\param in     Input audio data buffer pointer.\n \\param out    Output audio data buffer pointer.\n \\param frames Number of audio frames in input and output buffers."]
-pub type unit_render_func =
-    ::core::option::Option<unsafe extern "C" fn(in_: *const f32, out: *mut f32, frames: u32)>;
-#[doc = " Unit get parameter value callback type\n\n After initialization, the callback may be called at any time to obtain the current value of the given parameter.\n\n \\param param_id Parameter identifier.\n \\return Current value of parameter according to value range and format defined in the parameter's descriptor."]
-pub type unit_get_param_value_func =
-    ::core::option::Option<unsafe extern "C" fn(param_id: u8) -> i32>;
-#[doc = " Unit get parameter string value callback type\n\n After initialization, the callback may be called at any time to convert a k_unit_param_type_strings typed parameter's numerical value into a string representation.\n It can be assumed that the string data will have been used or cached by the runtime before the callback is called again.\n\n \\param param_id Parameter identifier.\n \\param value    Numerical value of parameter according to range defined in the parameter's descriptor.\n \\return String representation of value."]
-pub type unit_get_param_str_value_func = ::core::option::Option<
-    unsafe extern "C" fn(param_id: u8, value: i32) -> *const core::ffi::c_char,
->;
-#[doc = " Unit set parameter value callback type\n\n After initialization, the callback may be called at any time to set the current value of the given parameter.\n\n \\param param_id Parameter identifier.\n \\param value    Value of parameter according to value range and format defined in the parameter's descriptor."]
-pub type unit_set_param_value_func =
-    ::core::option::Option<unsafe extern "C" fn(param_id: u8, value: i32)>;
-#[doc = " Unit set tempo callback type\n\n After initialization, the callback may be called at any time to notify the unit of the current master tempo.\n\n \\param tempo Current tempo in UQ16.16 representation (i.e.: fractional part in lower 16 bits)."]
-pub type unit_set_tempo_func = ::core::option::Option<unsafe extern "C" fn(tempo: u32)>;
-#[doc = " Unit tempo 4ppqn tick callback type\n\n After initialization, the callback may be called at any time to notify the unit of a clock event (4PPQN interval, ie: 16th notes with regards to tempo).\n\n \\param counter Clock event counter since last transport reset."]
-pub type unit_tempo_4ppqn_tick_func = ::core::option::Option<unsafe extern "C" fn(counter: u32)>;
-#[doc = " Unit note on callback type\n\n After initialization, the callback may be called at any time to notify the unit of a note on event.\n TODO: clarify whether ever called velocity == 0 meaning note off or not\n\n \\param note      Note number following MIDI note numbering semantics.\n \\param velocity  Velocity following MIDI note on message semantics."]
-pub type unit_note_on_func = ::core::option::Option<unsafe extern "C" fn(note: u8, velocity: u8)>;
-#[doc = " Unit note off callback type\n\n After initialization, the callback may be called at any time to notify the unit of a note off event.\n\n \\param note      Note number following MIDI note numbering semantics."]
-pub type unit_note_off_func = ::core::option::Option<unsafe extern "C" fn(arg1: u8)>;
-#[doc = " Unit all note off callback type\n\n After initialization, the callback may be called at any time to notify the terminate any pending active notes."]
-pub type unit_all_note_off_func = ::core::option::Option<unsafe extern "C" fn()>;
-#[doc = " Unit note off callback type\n\n After initialization, the callback may be called at any time to notify the unit of a pitch bend event.\n\n \\param bend  14-bit MIDI pitch bend value with neutral center at 0x2000. Sensitivity is left at the discretion of the unit."]
-pub type unit_pitch_bend_func = ::core::option::Option<unsafe extern "C" fn(bend: u16)>;
-#[doc = " Unit channel pressure callback type\n\n After initialization, the callback may be called at any time to notify the unit of a channel pressure event.\n\n \\param pressure 7-bit value pressure amount."]
-pub type unit_channel_pressure_func = ::core::option::Option<unsafe extern "C" fn(pressure: u8)>;
-#[doc = " Unit channel pressure callback type\n\n After initialization, the callback may be called at any time to notify the unit of an aftertouch event.\n\n \\param note       Note number following MIDI note numbering semantics.\n \\param aftertouch 7-bit value aftertouch amount."]
-pub type unit_aftertouch_func =
-    ::core::option::Option<unsafe extern "C" fn(note: u8, aftertouch: u8)>;
-#[repr(C, packed)]
-#[derive(Debug, Copy, Clone)]
-pub struct unit_header {
-    pub header_size: u32,
-    #[doc = " Size of the header."]
-    pub target: u32,
-    #[doc = " Platform and module pair the unit is targeted for"]
-    pub api: u32,
-    #[doc = " API version for which the unit was built. See k_unit_api_* above."]
-    pub dev_id: u32,
-    #[doc = " Developer ID. See https://github.com/korginc/logue-sdk/blob/master/developer_ids.md"]
-    pub unit_id: u32,
-    #[doc = " ID for this unit. Scoped within the context of a given dev_id."]
-    pub version: u32,
-    #[doc = " The unit's version following the same major.minor.patch format and rules as the API version"]
-    pub name: [core::ffi::c_char; 20usize],
-    #[doc = " Unit name."]
-    pub reserved0: u32,
-    #[doc = " Reserved for future use."]
-    pub reserved1: u32,
-    #[doc = " Reserved for future use."]
-    pub num_params: u32,
-    #[doc = " Number of valid parameter descriptors."]
-    pub params: [unit_param_t; 11usize],
-}
-#[test]
-fn bindgen_test_layout_unit_header() {
-    const UNINIT: ::core::mem::MaybeUninit<unit_header> = ::core::mem::MaybeUninit::uninit();
-    let ptr = UNINIT.as_ptr();
-    assert_eq!(
-        ::core::mem::size_of::<unit_header>(),
-        408usize,
-        concat!("Size of: ", stringify!(unit_header))
-    );
-    assert_eq!(
-        ::core::mem::align_of::<unit_header>(),
-        1usize,
-        concat!("Alignment of ", stringify!(unit_header))
-    );
-    assert_eq!(
-        unsafe { ::core::ptr::addr_of!((*ptr).header_size) as usize - ptr as usize },
-        0usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(unit_header),
-            "::",
-            stringify!(header_size)
-        )
-    );
-    assert_eq!(
-        unsafe { ::core::ptr::addr_of!((*ptr).target) as usize - ptr as usize },
-        4usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(unit_header),
-            "::",
-            stringify!(target)
-        )
-    );
-    assert_eq!(
-        unsafe { ::core::ptr::addr_of!((*ptr).api) as usize - ptr as usize },
-        8usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(unit_header),
-            "::",
-            stringify!(api)
-        )
-    );
-    assert_eq!(
-        unsafe { ::core::ptr::addr_of!((*ptr).dev_id) as usize - ptr as usize },
-        12usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(unit_header),
-            "::",
-            stringify!(dev_id)
-        )
-    );
-    assert_eq!(
-        unsafe { ::core::ptr::addr_of!((*ptr).unit_id) as usize - ptr as usize },
-        16usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(unit_header),
-            "::",
-            stringify!(unit_id)
-        )
-    );
-    assert_eq!(
-        unsafe { ::core::ptr::addr_of!((*ptr).version) as usize - ptr as usize },
-        20usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(unit_header),
-            "::",
-            stringify!(version)
-        )
-    );
-    assert_eq!(
-        unsafe { ::core::ptr::addr_of!((*ptr).name) as usize - ptr as usize },
-        24usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(unit_header),
-            "::",
-            stringify!(name)
-        )
-    );
-    assert_eq!(
-        unsafe { ::core::ptr::addr_of!((*ptr).reserved0) as usize - ptr as usize },
-        44usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(unit_header),
-            "::",
-            stringify!(reserved0)
-        )
-    );
-    assert_eq!(
-        unsafe { ::core::ptr::addr_of!((*ptr).reserved1) as usize - ptr as usize },
-        48usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(unit_header),
-            "::",
-            stringify!(reserved1)
-        )
-    );
-    assert_eq!(
-        unsafe { ::core::ptr::addr_of!((*ptr).num_params) as usize - ptr as usize },
-        52usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(unit_header),
-            "::",
-            stringify!(num_params)
-        )
-    );
-    assert_eq!(
-        unsafe { ::core::ptr::addr_of!((*ptr).params) as usize - ptr as usize },
-        56usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(unit_header),
-            "::",
-            stringify!(params)
-        )
-    );
-}
-pub type unit_header_t = unit_header;
-pub const k_unit_err_none: _bindgen_ty_11 = 0;
-pub const k_unit_err_target: _bindgen_ty_11 = -1;
-pub const k_unit_err_api_version: _bindgen_ty_11 = -2;
-pub const k_unit_err_samplerate: _bindgen_ty_11 = -4;
-pub const k_unit_err_geometry: _bindgen_ty_11 = -8;
-pub const k_unit_err_memory: _bindgen_ty_11 = -16;
-pub const k_unit_err_undef: _bindgen_ty_11 = -32;
-#[doc = " Result/error codes expected from initilization callback."]
-pub type _bindgen_ty_11 = core::ffi::c_int;
-extern "C" {
-    pub static unit_header: unit_header_t;
-}
-pub type locale_t = *mut __locale_t;
-extern "C" {
-    pub fn bcmp(
-        arg1: *const core::ffi::c_void,
-        arg2: *const core::ffi::c_void,
-        arg3: core::ffi::c_uint,
-    ) -> core::ffi::c_int;
-}
-extern "C" {
-    pub fn bcopy(arg1: *const core::ffi::c_void, arg2: *mut core::ffi::c_void, arg3: usize);
-}
-extern "C" {
-    pub fn bzero(arg1: *mut core::ffi::c_void, arg2: core::ffi::c_uint);
-}
-extern "C" {
-    pub fn explicit_bzero(arg1: *mut core::ffi::c_void, arg2: usize);
-}
-extern "C" {
-    pub fn ffs(arg1: core::ffi::c_int) -> core::ffi::c_int;
-}
-extern "C" {
-    pub fn ffsl(arg1: core::ffi::c_long) -> core::ffi::c_int;
-}
-extern "C" {
-    pub fn ffsll(arg1: core::ffi::c_longlong) -> core::ffi::c_int;
-}
-extern "C" {
-    pub fn fls(arg1: core::ffi::c_int) -> core::ffi::c_int;
-}
-extern "C" {
-    pub fn flsl(arg1: core::ffi::c_long) -> core::ffi::c_int;
-}
-extern "C" {
-    pub fn flsll(arg1: core::ffi::c_longlong) -> core::ffi::c_int;
-}
-extern "C" {
-    pub fn index(arg1: *const core::ffi::c_char, arg2: core::ffi::c_int) -> *mut core::ffi::c_char;
-}
-extern "C" {
-    pub fn rindex(arg1: *const core::ffi::c_char, arg2: core::ffi::c_int)
-        -> *mut core::ffi::c_char;
-}
-extern "C" {
-    pub fn strcasecmp(
-        arg1: *const core::ffi::c_char,
-        arg2: *const core::ffi::c_char,
-    ) -> core::ffi::c_int;
-}
-extern "C" {
-    pub fn strncasecmp(
-        arg1: *const core::ffi::c_char,
-        arg2: *const core::ffi::c_char,
-        arg3: core::ffi::c_uint,
-    ) -> core::ffi::c_int;
-}
-extern "C" {
-    pub fn strcasecmp_l(
-        arg1: *const core::ffi::c_char,
-        arg2: *const core::ffi::c_char,
-        arg3: locale_t,
-    ) -> core::ffi::c_int;
-}
-extern "C" {
-    pub fn strncasecmp_l(
-        arg1: *const core::ffi::c_char,
-        arg2: *const core::ffi::c_char,
-        arg3: usize,
-        arg4: locale_t,
-    ) -> core::ffi::c_int;
-}
-extern "C" {
-    pub fn memchr(
-        arg1: *const core::ffi::c_void,
-        arg2: core::ffi::c_int,
-        arg3: core::ffi::c_uint,
-    ) -> *mut core::ffi::c_void;
-}
-extern "C" {
-    pub fn memcmp(
-        arg1: *const core::ffi::c_void,
-        arg2: *const core::ffi::c_void,
-        arg3: core::ffi::c_uint,
-    ) -> core::ffi::c_int;
-}
-extern "C" {
-    pub fn memcpy(
-        arg1: *mut core::ffi::c_void,
-        arg2: *const core::ffi::c_void,
-        arg3: core::ffi::c_uint,
-    ) -> *mut core::ffi::c_void;
-}
-extern "C" {
-    pub fn memmove(
-        arg1: *mut core::ffi::c_void,
-        arg2: *const core::ffi::c_void,
-        arg3: core::ffi::c_uint,
-    ) -> *mut core::ffi::c_void;
-}
-extern "C" {
-    pub fn memset(
-        arg1: *mut core::ffi::c_void,
-        arg2: core::ffi::c_int,
-        arg3: core::ffi::c_uint,
-    ) -> *mut core::ffi::c_void;
-}
-extern "C" {
-    pub fn strcat(
-        arg1: *mut core::ffi::c_char,
-        arg2: *const core::ffi::c_char,
-    ) -> *mut core::ffi::c_char;
-}
-extern "C" {
-    pub fn strchr(arg1: *const core::ffi::c_char, arg2: core::ffi::c_int)
-        -> *mut core::ffi::c_char;
-}
-extern "C" {
-    pub fn strcmp(
-        arg1: *const core::ffi::c_char,
-        arg2: *const core::ffi::c_char,
-    ) -> core::ffi::c_int;
-}
-extern "C" {
-    pub fn strcoll(
-        arg1: *const core::ffi::c_char,
-        arg2: *const core::ffi::c_char,
-    ) -> core::ffi::c_int;
-}
-extern "C" {
-    pub fn strcpy(
-        arg1: *mut core::ffi::c_char,
-        arg2: *const core::ffi::c_char,
-    ) -> *mut core::ffi::c_char;
-}
-extern "C" {
-    pub fn strcspn(
-        arg1: *const core::ffi::c_char,
-        arg2: *const core::ffi::c_char,
-    ) -> core::ffi::c_uint;
-}
-extern "C" {
-    pub fn strerror(arg1: core::ffi::c_int) -> *mut core::ffi::c_char;
-}
-extern "C" {
-    pub fn strlen(arg1: *const core::ffi::c_char) -> core::ffi::c_uint;
-}
-extern "C" {
-    pub fn strncat(
-        arg1: *mut core::ffi::c_char,
-        arg2: *const core::ffi::c_char,
-        arg3: core::ffi::c_uint,
-    ) -> *mut core::ffi::c_char;
-}
-extern "C" {
-    pub fn strncmp(
-        arg1: *const core::ffi::c_char,
-        arg2: *const core::ffi::c_char,
-        arg3: core::ffi::c_uint,
-    ) -> core::ffi::c_int;
-}
-extern "C" {
-    pub fn strncpy(
-        arg1: *mut core::ffi::c_char,
-        arg2: *const core::ffi::c_char,
-        arg3: core::ffi::c_uint,
-    ) -> *mut core::ffi::c_char;
-}
-extern "C" {
-    pub fn strpbrk(
-        arg1: *const core::ffi::c_char,
-        arg2: *const core::ffi::c_char,
-    ) -> *mut core::ffi::c_char;
-}
-extern "C" {
-    pub fn strrchr(
-        arg1: *const core::ffi::c_char,
-        arg2: core::ffi::c_int,
-    ) -> *mut core::ffi::c_char;
-}
-extern "C" {
-    pub fn strspn(
-        arg1: *const core::ffi::c_char,
-        arg2: *const core::ffi::c_char,
-    ) -> core::ffi::c_uint;
-}
-extern "C" {
-    pub fn strstr(
-        arg1: *const core::ffi::c_char,
-        arg2: *const core::ffi::c_char,
-    ) -> *mut core::ffi::c_char;
-}
-extern "C" {
-    pub fn strtok(
-        arg1: *mut core::ffi::c_char,
-        arg2: *const core::ffi::c_char,
-    ) -> *mut core::ffi::c_char;
-}
-extern "C" {
-    pub fn strxfrm(
-        arg1: *mut core::ffi::c_char,
-        arg2: *const core::ffi::c_char,
-        arg3: core::ffi::c_uint,
-    ) -> core::ffi::c_uint;
-}
-extern "C" {
-    pub fn strcoll_l(
-        arg1: *const core::ffi::c_char,
-        arg2: *const core::ffi::c_char,
-        arg3: locale_t,
-    ) -> core::ffi::c_int;
-}
-extern "C" {
-    pub fn strerror_l(arg1: core::ffi::c_int, arg2: locale_t) -> *mut core::ffi::c_char;
-}
-extern "C" {
-    pub fn strxfrm_l(
-        arg1: *mut core::ffi::c_char,
-        arg2: *const core::ffi::c_char,
-        arg3: usize,
-        arg4: locale_t,
-    ) -> usize;
-}
-extern "C" {
-    pub fn strtok_r(
-        arg1: *mut core::ffi::c_char,
-        arg2: *const core::ffi::c_char,
-        arg3: *mut *mut core::ffi::c_char,
-    ) -> *mut core::ffi::c_char;
-}
-extern "C" {
-    pub fn timingsafe_bcmp(
-        arg1: *const core::ffi::c_void,
-        arg2: *const core::ffi::c_void,
-        arg3: usize,
-    ) -> core::ffi::c_int;
-}
-extern "C" {
-    pub fn timingsafe_memcmp(
-        arg1: *const core::ffi::c_void,
-        arg2: *const core::ffi::c_void,
-        arg3: usize,
-    ) -> core::ffi::c_int;
-}
-extern "C" {
-    pub fn memccpy(
-        arg1: *mut core::ffi::c_void,
-        arg2: *const core::ffi::c_void,
-        arg3: core::ffi::c_int,
-        arg4: core::ffi::c_uint,
-    ) -> *mut core::ffi::c_void;
-}
-extern "C" {
-    pub fn stpcpy(
-        arg1: *mut core::ffi::c_char,
-        arg2: *const core::ffi::c_char,
-    ) -> *mut core::ffi::c_char;
-}
-extern "C" {
-    pub fn stpncpy(
-        arg1: *mut core::ffi::c_char,
-        arg2: *const core::ffi::c_char,
-        arg3: core::ffi::c_uint,
-    ) -> *mut core::ffi::c_char;
-}
-extern "C" {
-    pub fn strdup(arg1: *const core::ffi::c_char) -> *mut core::ffi::c_char;
-}
-extern "C" {
-    pub fn _strdup_r(arg1: *mut _reent, arg2: *const core::ffi::c_char) -> *mut core::ffi::c_char;
-}
-extern "C" {
-    pub fn strndup(
-        arg1: *const core::ffi::c_char,
-        arg2: core::ffi::c_uint,
-    ) -> *mut core::ffi::c_char;
-}
-extern "C" {
-    pub fn _strndup_r(
-        arg1: *mut _reent,
-        arg2: *const core::ffi::c_char,
-        arg3: usize,
-    ) -> *mut core::ffi::c_char;
-}
-extern "C" {
-    #[link_name = "\u{1}__xpg_strerror_r"]
-    pub fn strerror_r(
-        arg1: core::ffi::c_int,
-        arg2: *mut core::ffi::c_char,
-        arg3: usize,
-    ) -> core::ffi::c_int;
-}
-extern "C" {
-    pub fn _strerror_r(
-        arg1: *mut _reent,
-        arg2: core::ffi::c_int,
-        arg3: core::ffi::c_int,
-        arg4: *mut core::ffi::c_int,
-    ) -> *mut core::ffi::c_char;
-}
-extern "C" {
-    pub fn strlcat(
-        arg1: *mut core::ffi::c_char,
-        arg2: *const core::ffi::c_char,
-        arg3: usize,
-    ) -> usize;
-}
-extern "C" {
-    pub fn strlcpy(
-        arg1: *mut core::ffi::c_char,
-        arg2: *const core::ffi::c_char,
-        arg3: usize,
-    ) -> usize;
-}
-extern "C" {
-    pub fn strnlen(arg1: *const core::ffi::c_char, arg2: usize) -> usize;
-}
-extern "C" {
-    pub fn strsep(
-        arg1: *mut *mut core::ffi::c_char,
-        arg2: *const core::ffi::c_char,
-    ) -> *mut core::ffi::c_char;
-}
-extern "C" {
-    pub fn strnstr(
-        arg1: *const core::ffi::c_char,
-        arg2: *const core::ffi::c_char,
-        arg3: usize,
-    ) -> *mut core::ffi::c_char;
-}
-extern "C" {
-    pub fn strlwr(arg1: *mut core::ffi::c_char) -> *mut core::ffi::c_char;
-}
-extern "C" {
-    pub fn strupr(arg1: *mut core::ffi::c_char) -> *mut core::ffi::c_char;
-}
-extern "C" {
-    pub fn strsignal(__signo: core::ffi::c_int) -> *mut core::ffi::c_char;
 }
 #[doc = "< No error"]
 pub const arm_status_ARM_MATH_SUCCESS: arm_status = 0;
@@ -10509,6 +9787,1041 @@ pub type q31_32_t = i64;
 pub type q63_0_t = i64;
 pub type uq64_t = u64;
 pub type uq64_0_t = u64;
+extern "C" {
+    #[doc = " Maximum"]
+    pub fn q15max(a: q15_t, b: q15_t) -> q15_t;
+}
+extern "C" {
+    #[doc = " Minimum"]
+    pub fn q15min(a: q15_t, b: q15_t) -> q15_t;
+}
+extern "C" {
+    #[doc = " Maximum"]
+    pub fn q15maxp(a: i32, b: i32) -> i32;
+}
+extern "C" {
+    #[doc = " Minimum"]
+    pub fn q15minp(a: i32, b: i32) -> i32;
+}
+extern "C" {
+    #[doc = " Maximum"]
+    pub fn q31max(a: q31_t, b: q31_t) -> q31_t;
+}
+extern "C" {
+    #[doc = " Minimum"]
+    pub fn q31min(a: q31_t, b: q31_t) -> q31_t;
+}
+extern "C" {
+    #[doc = " Clip upper bound of signed integer x to m (inclusive)"]
+    pub fn clipmaxi32(x: i32, m: i32) -> i32;
+}
+extern "C" {
+    #[doc = " Clip lower bound of signed integer x to m (inclusive)"]
+    pub fn clipmini32(m: i32, x: i32) -> i32;
+}
+extern "C" {
+    #[doc = " Clip signe integer x between min and max (inclusive)"]
+    pub fn clipminmaxi32(min: i32, x: i32, max: i32) -> i32;
+}
+extern "C" {
+    #[doc = " Clip upper bound of unsigned integer x to m (inclusive)"]
+    pub fn clipmaxu32(x: u32, m: u32) -> u32;
+}
+extern "C" {
+    #[doc = " Clip lower bound of unsigned integer x to m (inclusive)"]
+    pub fn clipminu32(m: u32, x: u32) -> u32;
+}
+extern "C" {
+    #[doc = " Clip unsigned integer x between min and max (inclusive)"]
+    pub fn clipminmaxu32(min: u32, x: u32, max: u32) -> u32;
+}
+extern "C" {
+    #[doc = " Compute next power of 2 greater than x"]
+    pub fn nextpow2_u32(x: u32) -> u32;
+}
+extern "C" {
+    #[doc = " Check if x is a power of 2"]
+    pub fn ispow2_u32(x: u32) -> u8;
+}
+#[doc = " @name    Types\n @{"]
+#[repr(C)]
+#[derive(Copy, Clone)]
+pub union f32_t {
+    pub f: f32,
+    pub i: u32,
+}
+#[test]
+fn bindgen_test_layout_f32_t() {
+    const UNINIT: ::core::mem::MaybeUninit<f32_t> = ::core::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::core::mem::size_of::<f32_t>(),
+        4usize,
+        concat!("Size of: ", stringify!(f32_t))
+    );
+    assert_eq!(
+        ::core::mem::align_of::<f32_t>(),
+        4usize,
+        concat!("Alignment of ", stringify!(f32_t))
+    );
+    assert_eq!(
+        unsafe { ::core::ptr::addr_of!((*ptr).f) as usize - ptr as usize },
+        0usize,
+        concat!("Offset of field: ", stringify!(f32_t), "::", stringify!(f))
+    );
+    assert_eq!(
+        unsafe { ::core::ptr::addr_of!((*ptr).i) as usize - ptr as usize },
+        0usize,
+        concat!("Offset of field: ", stringify!(f32_t), "::", stringify!(i))
+    );
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct f32pair_t {
+    pub a: f32,
+    pub b: f32,
+}
+#[test]
+fn bindgen_test_layout_f32pair_t() {
+    const UNINIT: ::core::mem::MaybeUninit<f32pair_t> = ::core::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::core::mem::size_of::<f32pair_t>(),
+        8usize,
+        concat!("Size of: ", stringify!(f32pair_t))
+    );
+    assert_eq!(
+        ::core::mem::align_of::<f32pair_t>(),
+        4usize,
+        concat!("Alignment of ", stringify!(f32pair_t))
+    );
+    assert_eq!(
+        unsafe { ::core::ptr::addr_of!((*ptr).a) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(f32pair_t),
+            "::",
+            stringify!(a)
+        )
+    );
+    assert_eq!(
+        unsafe { ::core::ptr::addr_of!((*ptr).b) as usize - ptr as usize },
+        4usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(f32pair_t),
+            "::",
+            stringify!(b)
+        )
+    );
+}
+extern "C" {
+    #[doc = " Make a float pair."]
+    pub fn f32pair(a: f32, b: f32) -> f32pair_t;
+}
+extern "C" {
+    #[doc = " FSEL construct"]
+    pub fn fsel(a: f32, b: f32, c: f32) -> f32;
+}
+extern "C" {
+    #[doc = " FSEL boolean construct"]
+    pub fn fselb(a: f32) -> u8;
+}
+extern "C" {
+    #[doc = " Sign bit check."]
+    pub fn float_is_neg(f: f32_t) -> u8;
+}
+extern "C" {
+    #[doc = " Obtain mantissa"]
+    pub fn float_mantissa(f: f32_t) -> i32;
+}
+extern "C" {
+    #[doc = " Obtain exponent"]
+    pub fn float_exponent(f: f32_t) -> i32;
+}
+extern "C" {
+    #[doc = " Pair-wise addition"]
+    pub fn f32pair_add(p0: f32pair_t, p1: f32pair_t) -> f32pair_t;
+}
+extern "C" {
+    #[doc = " Pair-wise subtraction"]
+    pub fn f32pair_sub(p0: f32pair_t, p1: f32pair_t) -> f32pair_t;
+}
+extern "C" {
+    #[doc = " Pair-wise scalar addition"]
+    pub fn f32pair_addscal(p: f32pair_t, scl: f32) -> f32pair_t;
+}
+extern "C" {
+    #[doc = " Pair-wise product"]
+    pub fn f32pair_mul(p0: f32pair_t, p1: f32pair_t) -> f32pair_t;
+}
+extern "C" {
+    #[doc = " Pair-wise scalar product"]
+    pub fn f32pair_mulscal(p: f32pair_t, scl: f32) -> f32pair_t;
+}
+extern "C" {
+    #[doc = " Pair-wise linear interpolation"]
+    pub fn f32pair_linint(fr: f32, p0: f32pair_t, p1: f32pair_t) -> f32pair_t;
+}
+extern "C" {
+    #[doc = " Return x with sign of y applied"]
+    pub fn si_copysignf(x: f32, y: f32) -> f32;
+}
+extern "C" {
+    #[doc = " Absolute value"]
+    pub fn si_fabsf(x: f32) -> f32;
+}
+extern "C" {
+    #[doc = " Floor function"]
+    pub fn si_floorf(x: f32) -> f32;
+}
+extern "C" {
+    #[doc = " Ceiling function"]
+    pub fn si_ceilf(x: f32) -> f32;
+}
+extern "C" {
+    #[doc = " Round to nearest integer."]
+    pub fn si_roundf(x: f32) -> f32;
+}
+extern "C" {
+    pub fn clampfsel(min: f32, x: f32, max: f32) -> f32;
+}
+extern "C" {
+    pub fn clampminfsel(min: f32, x: f32) -> f32;
+}
+extern "C" {
+    pub fn clampmaxfsel(x: f32, max: f32) -> f32;
+}
+extern "C" {
+    #[doc = " Clip upper bound of x to m (inclusive)"]
+    pub fn clipmaxf(x: f32, m: f32) -> f32;
+}
+extern "C" {
+    #[doc = " Clip lower bound of x to m (inclusive)"]
+    pub fn clipminf(m: f32, x: f32) -> f32;
+}
+extern "C" {
+    #[doc = " Clip x to min and max (inclusive)"]
+    pub fn clipminmaxf(min: f32, x: f32, max: f32) -> f32;
+}
+extern "C" {
+    #[doc = " Clip lower bound of x to 0.f (inclusive)"]
+    pub fn clip0f(x: f32) -> f32;
+}
+extern "C" {
+    #[doc = " Clip upper bound of x to 1.f (inclusive)"]
+    pub fn clip1f(x: f32) -> f32;
+}
+extern "C" {
+    #[doc = " Clip x to [0.f, 1.f] (inclusive)"]
+    pub fn clip01f(x: f32) -> f32;
+}
+extern "C" {
+    #[doc = " Clip lower bound of x to -1.f (inclusive)"]
+    pub fn clipm1f(x: f32) -> f32;
+}
+extern "C" {
+    #[doc = " Clip x to [-1.f, 1.f] (inclusive)"]
+    pub fn clip1m1f(x: f32) -> f32;
+}
+extern "C" {
+    #[doc = " \"Fast\" sine approximation, valid for x in [-M_PI, M_PI]\n @note Adapted from Paul Mineiro's FastFloat"]
+    pub fn fastsinf(x: f32) -> f32;
+}
+extern "C" {
+    #[doc = " \"Faster\" sine approximation, valid for x in [-M_PI, M_PI]\n @note Adapted from Paul Mineiro's FastFloat\n @note Warning: can be slower than libc version!"]
+    pub fn fastersinf(x: f32) -> f32;
+}
+extern "C" {
+    #[doc = " \"Fast\" sine approximation, valid on full x domain\n @note Adapted from Paul Mineiro's FastFloat"]
+    pub fn fastsinfullf(x: f32) -> f32;
+}
+extern "C" {
+    #[doc = " \"Faster\" sine approximation, valid on full x domain\n @note Adapted from Paul Mineiro's FastFloat"]
+    pub fn fastersinfullf(x: f32) -> f32;
+}
+extern "C" {
+    #[doc = " \"Fast\" cosine approximation, valid for x in [-M_PI, M_PI]\n @note Adapted from Paul Mineiro's FastFloat"]
+    pub fn fastcosf(x: f32) -> f32;
+}
+extern "C" {
+    #[doc = " \"Faster\" cosine approximation, valid for x in [-M_PI, M_PI]\n @note Adapted from Paul Mineiro's FastFloat"]
+    pub fn fastercosf(x: f32) -> f32;
+}
+extern "C" {
+    #[doc = " \"Fast\" cosine approximation, valid on full x domain\n @note Adapted from Paul Mineiro's FastFloat\n @note Warning: can be slower than libc version!"]
+    pub fn fastcosfullf(x: f32) -> f32;
+}
+extern "C" {
+    #[doc = " \"Faster\" cosine approximation, valid on full x domain\n @note Adapted from Paul Mineiro's FastFloat"]
+    pub fn fastercosfullf(x: f32) -> f32;
+}
+extern "C" {
+    #[doc = " \"Fast\" tangent approximation, valid for x in [-M_PI_2, M_PI_2]\n @note Adapted from Paul Mineiro's FastFloat"]
+    pub fn fasttanf(x: f32) -> f32;
+}
+extern "C" {
+    #[doc = " \"Faster\" tangent approximation, valid for x in [-M_PI_2, M_PI_2]\n @note Adapted from Paul Mineiro's FastFloat"]
+    pub fn fastertanf(x: f32) -> f32;
+}
+extern "C" {
+    #[doc = " \"Fast\" tangent approximation, valid on full x domain, except where tangent diverges.\n @note Adapted from Paul Mineiro's FastFloat\n @note Warning: can be slower than libc version!"]
+    pub fn fasttanfullf(x: f32) -> f32;
+}
+extern "C" {
+    #[doc = " \"Faster\" tangent approximation, valid on full x domain, except where tangent diverges.\n @note Adapted from Paul Mineiro's FastFloat"]
+    pub fn fastertanfullf(x: f32) -> f32;
+}
+extern "C" {
+    #[doc = " \"Fast\" log base 2 approximation, valid for positive x as precision allows.\n @note Adapted from Paul Mineiro's FastFloat"]
+    pub fn fastlog2f(x: f32) -> f32;
+}
+extern "C" {
+    #[doc = " \"Faster\" log base 2 approximation, valid for positive x as precision allows.\n @note Adapted from Paul Mineiro's FastFloat"]
+    pub fn fasterlog2f(x: f32) -> f32;
+}
+extern "C" {
+    #[doc = " \"Fast\" natural logarithm approximation, valid for positive x as precision allows.\n @note Adapted from Paul Mineiro's FastFloat"]
+    pub fn fastlogf(x: f32) -> f32;
+}
+extern "C" {
+    #[doc = " \"Fast\" natural logarithm approximation, valid for positive x as precision allows.\n @note Adapted from Paul Mineiro's FastFloat"]
+    pub fn fasterlogf(x: f32) -> f32;
+}
+extern "C" {
+    #[doc = " \"Fast\" power of 2 approximation, valid for x in [ -126, ... as precision allows.\n @note Adapted from Paul Mineiro's FastFloat"]
+    pub fn fastpow2f(p: f32) -> f32;
+}
+extern "C" {
+    #[doc = " \"Faster\" power of 2 approximation, valid for x in [ -126, ... as precision allows.\n @note Adapted from Paul Mineiro's FastFloat"]
+    pub fn fasterpow2f(p: f32) -> f32;
+}
+extern "C" {
+    #[doc = " \"Fast\" x to the power of p approximation\n @note Adapted from Paul Mineiro's FastFloat\n @note Warning: Seems to have divergent segments with discontinuities for some base/exponent combinations"]
+    pub fn fastpowf(x: f32, p: f32) -> f32;
+}
+extern "C" {
+    #[doc = " \"Faster\" x to the power of p approximation\n @note Adapted from Paul Mineiro's FastFloat"]
+    pub fn fasterpowf(x: f32, p: f32) -> f32;
+}
+extern "C" {
+    #[doc = " \"Fast\" exponential approximation, valid for x in [ ~ -87, ... as precision allows.\n @note Adapted from Paul Mineiro's FastFloat"]
+    pub fn fastexpf(p: f32) -> f32;
+}
+extern "C" {
+    #[doc = " \"Faster\" exponential approximation, valid for x in [ ~ -87, ... as precision allows.\n @note Adapted from Paul Mineiro's FastFloat"]
+    pub fn fasterexpf(p: f32) -> f32;
+}
+extern "C" {
+    #[doc = " atan2 approximation\n @note Adapted from http://dspguru.com/dsp/tricks/fixed-point-atan2-with-self-normalization"]
+    pub fn fasteratan2f(y: f32, x: f32) -> f32;
+}
+extern "C" {
+    #[doc = " Hyperbolic tangent approximation\n @note Adapted from http://math.stackexchange.com/questions/107292/rapid-approximation-of-tanhx"]
+    pub fn fastertanhf(x: f32) -> f32;
+}
+extern "C" {
+    #[doc = " Another Hyperbolic tangent approximation\n @note Starts diverging from -1,1 beyond ~[-pi, pi]"]
+    pub fn fastertanh2f(x: f32) -> f32;
+}
+extern "C" {
+    #[doc = " Amplitude to dB\n @note Will remove low boundary check in future version"]
+    pub fn ampdbf(amp: f32) -> f32;
+}
+extern "C" {
+    #[doc = " \"Faster\" Amplitude to dB"]
+    pub fn fasterampdbf(amp: f32) -> f32;
+}
+extern "C" {
+    #[doc = " dB to ampltitude"]
+    pub fn dbampf(db: f32) -> f32;
+}
+extern "C" {
+    #[doc = " \"Faster\" dB to ampltitude"]
+    pub fn fasterdbampf(db: f32) -> f32;
+}
+extern "C" {
+    #[doc = " Linear interpolation"]
+    pub fn linintf(fr: f32, x0: f32, x1: f32) -> f32;
+}
+extern "C" {
+    #[doc = " Cosine interpolation"]
+    pub fn cosintf(fr: f32, x0: f32, x1: f32) -> f32;
+}
+extern "C" {
+    #[doc = " Buffer-wise Q31 to float conversion"]
+    pub fn buf_q31_to_f32(q31: *const q31_t, flt: *mut f32, len: usize);
+}
+extern "C" {
+    #[doc = " Buffer-wise float to Q31 conversion"]
+    pub fn buf_f32_to_q31(flt: *const f32, q31: *mut q31_t, len: usize);
+}
+extern "C" {
+    #[doc = " Buffer clear (float version)"]
+    pub fn buf_clr_f32(ptr: *mut f32, len: u32);
+}
+extern "C" {
+    #[doc = " Buffer clear (32bit unsigned integer version)."]
+    pub fn buf_clr_u32(ptr: *mut u32, len: usize);
+}
+extern "C" {
+    #[doc = " Buffer copy (float version)."]
+    pub fn buf_cpy_f32(src: *const f32, dst: *mut f32, len: usize);
+}
+extern "C" {
+    #[doc = " Buffer copy (32bit unsigned integer version)."]
+    pub fn buf_cpy_u32(src: *const u32, dst: *mut u32, len: usize);
+}
+#[doc = " Dummy category, may be used in future."]
+pub const k_unit_module_global: _bindgen_ty_1 = 0;
+#[doc = " Modulation effects"]
+pub const k_unit_module_modfx: _bindgen_ty_1 = 1;
+#[doc = " Delay effects"]
+pub const k_unit_module_delfx: _bindgen_ty_1 = 2;
+#[doc = " Reverb effects"]
+pub const k_unit_module_revfx: _bindgen_ty_1 = 3;
+#[doc = " Oscillators"]
+pub const k_unit_module_osc: _bindgen_ty_1 = 4;
+#[doc = " Synth voices"]
+pub const k_unit_module_synth: _bindgen_ty_1 = 5;
+#[doc = " Master effects"]
+pub const k_unit_module_masterfx: _bindgen_ty_1 = 6;
+#[doc = " Master effects"]
+pub const k_num_unit_modules: _bindgen_ty_1 = 7;
+#[doc = " Unit module categories."]
+pub type _bindgen_ty_1 = core::ffi::c_uint;
+pub const k_unit_target_prologue: _bindgen_ty_2 = 256;
+pub const k_unit_target_prologue_global: _bindgen_ty_2 = 256;
+pub const k_unit_target_prologue_modfx: _bindgen_ty_2 = 257;
+pub const k_unit_target_prologue_delfx: _bindgen_ty_2 = 258;
+pub const k_unit_target_prologue_revfx: _bindgen_ty_2 = 259;
+pub const k_unit_target_prologue_osc: _bindgen_ty_2 = 260;
+#[doc = " prologue specific platform/module pairs.\n Passed to user code via initialization callback."]
+pub type _bindgen_ty_2 = core::ffi::c_uint;
+pub const k_unit_target_miniloguexd: _bindgen_ty_3 = 512;
+pub const k_unit_target_miniloguexd_global: _bindgen_ty_3 = 512;
+pub const k_unit_target_miniloguexd_modfx: _bindgen_ty_3 = 513;
+pub const k_unit_target_miniloguexd_delfx: _bindgen_ty_3 = 514;
+pub const k_unit_target_miniloguexd_revfx: _bindgen_ty_3 = 515;
+pub const k_unit_target_miniloguexd_osc: _bindgen_ty_3 = 516;
+#[doc = " minilogue-xd specific platform/module pairs.\n Passed to user code via initialization callback."]
+pub type _bindgen_ty_3 = core::ffi::c_uint;
+pub const k_unit_target_nutektdigital: _bindgen_ty_4 = 768;
+pub const k_unit_target_nutektdigital_global: _bindgen_ty_4 = 768;
+pub const k_unit_target_nutektdigital_modfx: _bindgen_ty_4 = 769;
+pub const k_unit_target_nutektdigital_delfx: _bindgen_ty_4 = 770;
+pub const k_unit_target_nutektdigital_revfx: _bindgen_ty_4 = 771;
+pub const k_unit_target_nutektdigital_osc: _bindgen_ty_4 = 772;
+#[doc = " Nu:Tekt NTS-1 digital specific platform/module pairs.\n Passed to user code via initialization callback."]
+pub type _bindgen_ty_4 = core::ffi::c_uint;
+pub const k_unit_target_nts1: _bindgen_ty_5 = 768;
+pub const k_unit_target_nts1_global: _bindgen_ty_5 = 768;
+pub const k_unit_target_nts1_modfx: _bindgen_ty_5 = 769;
+pub const k_unit_target_nts1_delfx: _bindgen_ty_5 = 770;
+pub const k_unit_target_nts1_revfx: _bindgen_ty_5 = 771;
+pub const k_unit_target_nts1_osc: _bindgen_ty_5 = 772;
+#[doc = " Aliases for Nu:Tekt NTS-1 digital specific platform/module pairs."]
+pub type _bindgen_ty_5 = core::ffi::c_uint;
+pub const k_unit_target_drumlogue: _bindgen_ty_6 = 1024;
+pub const k_unit_target_drumlogue_delfx: _bindgen_ty_6 = 1026;
+pub const k_unit_target_drumlogue_revfx: _bindgen_ty_6 = 1027;
+pub const k_unit_target_drumlogue_synth: _bindgen_ty_6 = 1029;
+pub const k_unit_target_drumlogue_masterfx: _bindgen_ty_6 = 1030;
+#[doc = " drumlogue specific platform/module pairs.\n Passed to user code via initialization callback."]
+pub type _bindgen_ty_6 = core::ffi::c_uint;
+pub const k_unit_target_nts1_mkii: _bindgen_ty_7 = 1280;
+pub const k_unit_target_nts1_mkii_global: _bindgen_ty_7 = 1280;
+pub const k_unit_target_nts1_mkii_modfx: _bindgen_ty_7 = 1281;
+pub const k_unit_target_nts1_mkii_delfx: _bindgen_ty_7 = 1282;
+pub const k_unit_target_nts1_mkii_revfx: _bindgen_ty_7 = 1283;
+pub const k_unit_target_nts1_mkii_osc: _bindgen_ty_7 = 1284;
+#[doc = " Nu:Tekt NTS-1 digital MKII specific platform/module pairs.\n Passed to user code via initialization callback."]
+pub type _bindgen_ty_7 = core::ffi::c_uint;
+pub const k_unit_api_1_0_0: _bindgen_ty_8 = 65536;
+pub const k_unit_api_1_1_0: _bindgen_ty_8 = 65792;
+pub const k_unit_api_2_0_0: _bindgen_ty_8 = 131072;
+#[doc = " Valid API versions.\n  Major: breaking changes (7bits, cap to 99)\n  Minor: additions only   (7bits, cap to 99)\n  Sub:   bugfixes only    (7bits, cap to 99)"]
+pub type _bindgen_ty_8 = core::ffi::c_uint;
+#[doc = " Base type for runtime contexts.\n Currently void as there are no common contextual fields accross unit types."]
+pub type unit_runtime_base_context_t = core::ffi::c_void;
+#[doc = " SDRAM allocator callback type\n\n The callback is used to allocate memory in a given unit runtime's dedicated SDRAM area.\n \\param size Size in bytes of desired memory allocation.\n \\return     Pointer to allocated memory area, or NULL if unsucessful."]
+pub type unit_runtime_sdram_alloc_ptr =
+    ::core::option::Option<unsafe extern "C" fn(size: usize) -> *mut u8>;
+#[doc = " SDRAM deallocation callback type\n\n The callback is used to deallocate memory from the runtime's dedicated SDRAM area.\n \\param mem Pointer to memory area previously allocated via a corresponsding unit_runtime_sdram_alloc_ptr callback."]
+pub type unit_runtime_sdram_free_ptr = ::core::option::Option<unsafe extern "C" fn(mem: *const u8)>;
+#[doc = " SDRAM allocation availability callback type\n\n The callback is used to verify the amount of allocatable memory in the runtime's dedicated SDRAM area.\n \\return Size in bytes of the allocatable memory."]
+pub type unit_runtime_sdram_avail_ptr = ::core::option::Option<unsafe extern "C" fn() -> usize>;
+#[doc = " Runtime hooks.\n Passed from the unit runtime to the unit during initialization to provide access to runtime APIs that are not known at compile time.\n Note: Member fields will vary from platform to platform"]
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct unit_runtime_hooks {
+    pub runtime_context: *const unit_runtime_base_context_t,
+    #[doc = " Ref. to contextual data exposed by the runtime. (Req. cast to appropriate module-specific type)"]
+    pub sdram_alloc: unit_runtime_sdram_alloc_ptr,
+    #[doc = " SDRAM allocation callback."]
+    pub sdram_free: unit_runtime_sdram_free_ptr,
+    #[doc = " SDRAM deallocation callback."]
+    pub sdram_avail: unit_runtime_sdram_avail_ptr,
+}
+#[test]
+fn bindgen_test_layout_unit_runtime_hooks() {
+    const UNINIT: ::core::mem::MaybeUninit<unit_runtime_hooks> = ::core::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::core::mem::size_of::<unit_runtime_hooks>(),
+        16usize,
+        concat!("Size of: ", stringify!(unit_runtime_hooks))
+    );
+    assert_eq!(
+        ::core::mem::align_of::<unit_runtime_hooks>(),
+        4usize,
+        concat!("Alignment of ", stringify!(unit_runtime_hooks))
+    );
+    assert_eq!(
+        unsafe { ::core::ptr::addr_of!((*ptr).runtime_context) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(unit_runtime_hooks),
+            "::",
+            stringify!(runtime_context)
+        )
+    );
+    assert_eq!(
+        unsafe { ::core::ptr::addr_of!((*ptr).sdram_alloc) as usize - ptr as usize },
+        4usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(unit_runtime_hooks),
+            "::",
+            stringify!(sdram_alloc)
+        )
+    );
+    assert_eq!(
+        unsafe { ::core::ptr::addr_of!((*ptr).sdram_free) as usize - ptr as usize },
+        8usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(unit_runtime_hooks),
+            "::",
+            stringify!(sdram_free)
+        )
+    );
+    assert_eq!(
+        unsafe { ::core::ptr::addr_of!((*ptr).sdram_avail) as usize - ptr as usize },
+        12usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(unit_runtime_hooks),
+            "::",
+            stringify!(sdram_avail)
+        )
+    );
+}
+#[doc = " Runtime hooks.\n Passed from the unit runtime to the unit during initialization to provide access to runtime APIs that are not known at compile time.\n Note: Member fields will vary from platform to platform"]
+pub type unit_runtime_hooks_t = unit_runtime_hooks;
+#[repr(C, packed)]
+#[derive(Debug, Copy, Clone)]
+pub struct unit_runtime_desc {
+    pub target: u32,
+    #[doc = " Target platform/module pair corresponding to runtime."]
+    pub api: u32,
+    #[doc = " API version used by runtime."]
+    pub samplerate: u32,
+    #[doc = " Sample rate used by runtime."]
+    pub frames_per_buffer: u16,
+    #[doc = " Frames per buffer used by runtime in render calls."]
+    pub input_channels: u8,
+    #[doc = " Number of input channels in render calls."]
+    pub output_channels: u8,
+    #[doc = " Number of output channels in render calls."]
+    pub hooks: unit_runtime_hooks_t,
+}
+#[test]
+fn bindgen_test_layout_unit_runtime_desc() {
+    const UNINIT: ::core::mem::MaybeUninit<unit_runtime_desc> = ::core::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::core::mem::size_of::<unit_runtime_desc>(),
+        32usize,
+        concat!("Size of: ", stringify!(unit_runtime_desc))
+    );
+    assert_eq!(
+        ::core::mem::align_of::<unit_runtime_desc>(),
+        1usize,
+        concat!("Alignment of ", stringify!(unit_runtime_desc))
+    );
+    assert_eq!(
+        unsafe { ::core::ptr::addr_of!((*ptr).target) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(unit_runtime_desc),
+            "::",
+            stringify!(target)
+        )
+    );
+    assert_eq!(
+        unsafe { ::core::ptr::addr_of!((*ptr).api) as usize - ptr as usize },
+        4usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(unit_runtime_desc),
+            "::",
+            stringify!(api)
+        )
+    );
+    assert_eq!(
+        unsafe { ::core::ptr::addr_of!((*ptr).samplerate) as usize - ptr as usize },
+        8usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(unit_runtime_desc),
+            "::",
+            stringify!(samplerate)
+        )
+    );
+    assert_eq!(
+        unsafe { ::core::ptr::addr_of!((*ptr).frames_per_buffer) as usize - ptr as usize },
+        12usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(unit_runtime_desc),
+            "::",
+            stringify!(frames_per_buffer)
+        )
+    );
+    assert_eq!(
+        unsafe { ::core::ptr::addr_of!((*ptr).input_channels) as usize - ptr as usize },
+        14usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(unit_runtime_desc),
+            "::",
+            stringify!(input_channels)
+        )
+    );
+    assert_eq!(
+        unsafe { ::core::ptr::addr_of!((*ptr).output_channels) as usize - ptr as usize },
+        15usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(unit_runtime_desc),
+            "::",
+            stringify!(output_channels)
+        )
+    );
+    assert_eq!(
+        unsafe { ::core::ptr::addr_of!((*ptr).hooks) as usize - ptr as usize },
+        16usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(unit_runtime_desc),
+            "::",
+            stringify!(hooks)
+        )
+    );
+}
+pub type unit_runtime_desc_t = unit_runtime_desc;
+pub const k_unit_param_type_none: _bindgen_ty_9 = 0;
+#[doc = " Describes a typeless value. The value will be displayed as is, while taking into account the fractional part."]
+pub const k_unit_param_type_percent: _bindgen_ty_9 = 1;
+#[doc = " Describe a percent value."]
+pub const k_unit_param_type_db: _bindgen_ty_9 = 2;
+#[doc = " Describes a decibel value."]
+pub const k_unit_param_type_cents: _bindgen_ty_9 = 3;
+#[doc = " Describes a pitch cents value."]
+pub const k_unit_param_type_semi: _bindgen_ty_9 = 4;
+#[doc = " Describes a pitch semitone value."]
+pub const k_unit_param_type_oct: _bindgen_ty_9 = 5;
+#[doc = " Describes an octave offset value."]
+pub const k_unit_param_type_hertz: _bindgen_ty_9 = 6;
+#[doc = " Describes a Hertz value."]
+pub const k_unit_param_type_khertz: _bindgen_ty_9 = 7;
+#[doc = " Describes a kilo Hertz value."]
+pub const k_unit_param_type_bpm: _bindgen_ty_9 = 8;
+#[doc = " Describes a beat per minute value."]
+pub const k_unit_param_type_msec: _bindgen_ty_9 = 9;
+#[doc = " Describes a milliseconds value."]
+pub const k_unit_param_type_sec: _bindgen_ty_9 = 10;
+#[doc = " Describes a seconds value."]
+pub const k_unit_param_type_enum: _bindgen_ty_9 = 11;
+#[doc = " Describes a numerical enumeration value. If the value minimum is set to 0, the value will be incremented by 1 when displayed."]
+pub const k_unit_param_type_strings: _bindgen_ty_9 = 12;
+#[doc = " Describes a value with custom string representation. The numerical value will be passed in a call to unit_get_param_str_value(..) in order to obtain the string representation."]
+pub const k_unit_param_type_reserved0: _bindgen_ty_9 = 13;
+#[doc = " Reserved value unused on this platform."]
+pub const k_unit_param_type_drywet: _bindgen_ty_9 = 14;
+#[doc = " Describes a dry/wet value. Negative values will be prepended with D for dry, positive values with W for wet, and zero value replaced with BALN to indicate a balanced mix."]
+pub const k_unit_param_type_pan: _bindgen_ty_9 = 15;
+#[doc = " Describes a stereo pan value. Negative values will be prepended with L for left, positive values with R for right, and zero value replaced with CNTR to indicate centered panning."]
+pub const k_unit_param_type_spread: _bindgen_ty_9 = 16;
+#[doc = " Describes a stereo spread value. Negative values will be prepended with L for left, positive values with R for right, and zero value replaced with CNTR to indicate no stereo spread."]
+pub const k_unit_param_type_onoff: _bindgen_ty_9 = 17;
+#[doc = " Describes an on/off toggle value. 0 will be displayed as off, and 1 will be displayed as on."]
+pub const k_unit_param_type_midi_note: _bindgen_ty_9 = 18;
+#[doc = " Describes a MIDI note value. The numerical note value will be displayed as musical pitches (e.g.: C0, A3)."]
+pub const k_unit_param_type_count: _bindgen_ty_9 = 19;
+#[doc = " Valid parameter value types.\n Influences how the value is displayed, but can be limited by the display technology used for the current target platform."]
+pub type _bindgen_ty_9 = core::ffi::c_uint;
+pub const k_unit_param_frac_mode_fixed: _bindgen_ty_10 = 0;
+pub const k_unit_param_frac_mode_decimal: _bindgen_ty_10 = 1;
+#[doc = " Fractional value interpretations."]
+pub type _bindgen_ty_10 = core::ffi::c_uint;
+#[repr(C, packed)]
+#[derive(Debug, Copy, Clone)]
+pub struct unit_param {
+    pub min: i16,
+    #[doc = " Minimum value."]
+    pub max: i16,
+    #[doc = " Maximum value."]
+    pub center: i16,
+    #[doc = " Logical center value."]
+    pub init: i16,
+    #[doc = " Initial/default value."]
+    pub type_: u8,
+    pub _bitfield_align_1: [u8; 0],
+    pub _bitfield_1: __BindgenBitfieldUnit<[u8; 1usize]>,
+    #[doc = " Reserved bits. Keep to zero."]
+    pub name: [core::ffi::c_char; 22usize],
+}
+#[test]
+fn bindgen_test_layout_unit_param() {
+    const UNINIT: ::core::mem::MaybeUninit<unit_param> = ::core::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::core::mem::size_of::<unit_param>(),
+        32usize,
+        concat!("Size of: ", stringify!(unit_param))
+    );
+    assert_eq!(
+        ::core::mem::align_of::<unit_param>(),
+        1usize,
+        concat!("Alignment of ", stringify!(unit_param))
+    );
+    assert_eq!(
+        unsafe { ::core::ptr::addr_of!((*ptr).min) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(unit_param),
+            "::",
+            stringify!(min)
+        )
+    );
+    assert_eq!(
+        unsafe { ::core::ptr::addr_of!((*ptr).max) as usize - ptr as usize },
+        2usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(unit_param),
+            "::",
+            stringify!(max)
+        )
+    );
+    assert_eq!(
+        unsafe { ::core::ptr::addr_of!((*ptr).center) as usize - ptr as usize },
+        4usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(unit_param),
+            "::",
+            stringify!(center)
+        )
+    );
+    assert_eq!(
+        unsafe { ::core::ptr::addr_of!((*ptr).init) as usize - ptr as usize },
+        6usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(unit_param),
+            "::",
+            stringify!(init)
+        )
+    );
+    assert_eq!(
+        unsafe { ::core::ptr::addr_of!((*ptr).type_) as usize - ptr as usize },
+        8usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(unit_param),
+            "::",
+            stringify!(type_)
+        )
+    );
+    assert_eq!(
+        unsafe { ::core::ptr::addr_of!((*ptr).name) as usize - ptr as usize },
+        10usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(unit_param),
+            "::",
+            stringify!(name)
+        )
+    );
+}
+impl unit_param {
+    #[inline]
+    pub fn frac(&self) -> u8 {
+        unsafe { ::core::mem::transmute(self._bitfield_1.get(0usize, 4u8) as u8) }
+    }
+    #[inline]
+    pub fn set_frac(&mut self, val: u8) {
+        unsafe {
+            let val: u8 = ::core::mem::transmute(val);
+            self._bitfield_1.set(0usize, 4u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn frac_mode(&self) -> u8 {
+        unsafe { ::core::mem::transmute(self._bitfield_1.get(4usize, 1u8) as u8) }
+    }
+    #[inline]
+    pub fn set_frac_mode(&mut self, val: u8) {
+        unsafe {
+            let val: u8 = ::core::mem::transmute(val);
+            self._bitfield_1.set(4usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn reserved(&self) -> u8 {
+        unsafe { ::core::mem::transmute(self._bitfield_1.get(5usize, 3u8) as u8) }
+    }
+    #[inline]
+    pub fn set_reserved(&mut self, val: u8) {
+        unsafe {
+            let val: u8 = ::core::mem::transmute(val);
+            self._bitfield_1.set(5usize, 3u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn new_bitfield_1(
+        frac: u8,
+        frac_mode: u8,
+        reserved: u8,
+    ) -> __BindgenBitfieldUnit<[u8; 1usize]> {
+        let mut __bindgen_bitfield_unit: __BindgenBitfieldUnit<[u8; 1usize]> = Default::default();
+        __bindgen_bitfield_unit.set(0usize, 4u8, {
+            let frac: u8 = unsafe { ::core::mem::transmute(frac) };
+            frac as u64
+        });
+        __bindgen_bitfield_unit.set(4usize, 1u8, {
+            let frac_mode: u8 = unsafe { ::core::mem::transmute(frac_mode) };
+            frac_mode as u64
+        });
+        __bindgen_bitfield_unit.set(5usize, 3u8, {
+            let reserved: u8 = unsafe { ::core::mem::transmute(reserved) };
+            reserved as u64
+        });
+        __bindgen_bitfield_unit
+    }
+}
+pub type unit_param_t = unit_param;
+#[doc = " Unit initialization callback type\n\n The callback is called to initialize units immediately after loading them into the runtime.\n \\param desc Pointer to the runtime descriptor. @see unit_runtime_desc_t.\n \\return 0 shall be returned upon successful inialization, otherwise an error code shall be returned. See k_unit_err_* definitions."]
+pub type unit_init_func =
+    ::core::option::Option<unsafe extern "C" fn(desc: *const unit_runtime_desc_t) -> i8>;
+#[doc = " Unit teardown callback type\n\n The callback is called before the unit is unloaded from the runtime environment."]
+pub type unit_teardown_func = ::core::option::Option<unsafe extern "C" fn()>;
+#[doc = " Unit reset callback type"]
+pub type unit_reset_func = ::core::option::Option<unsafe extern "C" fn()>;
+#[doc = " Unit resume rendering callback type\n\n The callback is called when the unit shall exit suspended state and be ready for its render callback to be called."]
+pub type unit_resume_func = ::core::option::Option<unsafe extern "C" fn()>;
+#[doc = " Unit suspend rendering callback type\n\n The callback is called when the unit shall enter suspended state."]
+pub type unit_suspend_func = ::core::option::Option<unsafe extern "C" fn()>;
+#[doc = " Unit render callback type\n\n After initialization, and after exiting suspended state, the render callback is called at each audio processing cycle.\n Note that input and output buffers either overlap completely or not at all.\n Input/output channel geometry is determined by the runtime descriptor passed via the initialization callback.\n @see unit_init_func\n @see unit_runtime_desc_t\n\n \\param in     Input audio data buffer pointer.\n \\param out    Output audio data buffer pointer.\n \\param frames Number of audio frames in input and output buffers."]
+pub type unit_render_func =
+    ::core::option::Option<unsafe extern "C" fn(in_: *const f32, out: *mut f32, frames: u32)>;
+#[doc = " Unit get parameter value callback type\n\n After initialization, the callback may be called at any time to obtain the current value of the given parameter.\n\n \\param param_id Parameter identifier.\n \\return Current value of parameter according to value range and format defined in the parameter's descriptor."]
+pub type unit_get_param_value_func =
+    ::core::option::Option<unsafe extern "C" fn(param_id: u8) -> i32>;
+#[doc = " Unit get parameter string value callback type\n\n After initialization, the callback may be called at any time to convert a k_unit_param_type_strings typed parameter's numerical value into a string representation.\n It can be assumed that the string data will have been used or cached by the runtime before the callback is called again.\n\n \\param param_id Parameter identifier.\n \\param value    Numerical value of parameter according to range defined in the parameter's descriptor.\n \\return String representation of value."]
+pub type unit_get_param_str_value_func = ::core::option::Option<
+    unsafe extern "C" fn(param_id: u8, value: i32) -> *const core::ffi::c_char,
+>;
+#[doc = " Unit set parameter value callback type\n\n After initialization, the callback may be called at any time to set the current value of the given parameter.\n\n \\param param_id Parameter identifier.\n \\param value    Value of parameter according to value range and format defined in the parameter's descriptor."]
+pub type unit_set_param_value_func =
+    ::core::option::Option<unsafe extern "C" fn(param_id: u8, value: i32)>;
+#[doc = " Unit set tempo callback type\n\n After initialization, the callback may be called at any time to notify the unit of the current master tempo.\n\n \\param tempo Current tempo in UQ16.16 representation (i.e.: fractional part in lower 16 bits)."]
+pub type unit_set_tempo_func = ::core::option::Option<unsafe extern "C" fn(tempo: u32)>;
+#[doc = " Unit tempo 4ppqn tick callback type\n\n After initialization, the callback may be called at any time to notify the unit of a clock event (4PPQN interval, ie: 16th notes with regards to tempo).\n\n \\param counter Clock event counter since last transport reset."]
+pub type unit_tempo_4ppqn_tick_func = ::core::option::Option<unsafe extern "C" fn(counter: u32)>;
+#[doc = " Unit note on callback type\n\n After initialization, the callback may be called at any time to notify the unit of a note on event.\n TODO: clarify whether ever called velocity == 0 meaning note off or not\n\n \\param note      Note number following MIDI note numbering semantics.\n \\param velocity  Velocity following MIDI note on message semantics."]
+pub type unit_note_on_func = ::core::option::Option<unsafe extern "C" fn(note: u8, velocity: u8)>;
+#[doc = " Unit note off callback type\n\n After initialization, the callback may be called at any time to notify the unit of a note off event.\n\n \\param note      Note number following MIDI note numbering semantics."]
+pub type unit_note_off_func = ::core::option::Option<unsafe extern "C" fn(arg1: u8)>;
+#[doc = " Unit all note off callback type\n\n After initialization, the callback may be called at any time to notify the terminate any pending active notes."]
+pub type unit_all_note_off_func = ::core::option::Option<unsafe extern "C" fn()>;
+#[doc = " Unit note off callback type\n\n After initialization, the callback may be called at any time to notify the unit of a pitch bend event.\n\n \\param bend  14-bit MIDI pitch bend value with neutral center at 0x2000. Sensitivity is left at the discretion of the unit."]
+pub type unit_pitch_bend_func = ::core::option::Option<unsafe extern "C" fn(bend: u16)>;
+#[doc = " Unit channel pressure callback type\n\n After initialization, the callback may be called at any time to notify the unit of a channel pressure event.\n\n \\param pressure 7-bit value pressure amount."]
+pub type unit_channel_pressure_func = ::core::option::Option<unsafe extern "C" fn(pressure: u8)>;
+#[doc = " Unit channel pressure callback type\n\n After initialization, the callback may be called at any time to notify the unit of an aftertouch event.\n\n \\param note       Note number following MIDI note numbering semantics.\n \\param aftertouch 7-bit value aftertouch amount."]
+pub type unit_aftertouch_func =
+    ::core::option::Option<unsafe extern "C" fn(note: u8, aftertouch: u8)>;
+#[repr(C, packed)]
+#[derive(Debug, Copy, Clone)]
+pub struct unit_header {
+    pub header_size: u32,
+    #[doc = " Size of the header."]
+    pub target: u32,
+    #[doc = " Platform and module pair the unit is targeted for"]
+    pub api: u32,
+    #[doc = " API version for which the unit was built. See k_unit_api_* above."]
+    pub dev_id: u32,
+    #[doc = " Developer ID. See https://github.com/korginc/logue-sdk/blob/master/developer_ids.md"]
+    pub unit_id: u32,
+    #[doc = " ID for this unit. Scoped within the context of a given dev_id."]
+    pub version: u32,
+    #[doc = " The unit's version following the same major.minor.patch format and rules as the API version"]
+    pub name: [core::ffi::c_char; 20usize],
+    #[doc = " Unit name."]
+    pub reserved0: u32,
+    #[doc = " Reserved for future use."]
+    pub reserved1: u32,
+    #[doc = " Reserved for future use."]
+    pub num_params: u32,
+    #[doc = " Number of valid parameter descriptors."]
+    pub params: [unit_param_t; 11usize],
+}
+#[test]
+fn bindgen_test_layout_unit_header() {
+    const UNINIT: ::core::mem::MaybeUninit<unit_header> = ::core::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::core::mem::size_of::<unit_header>(),
+        408usize,
+        concat!("Size of: ", stringify!(unit_header))
+    );
+    assert_eq!(
+        ::core::mem::align_of::<unit_header>(),
+        1usize,
+        concat!("Alignment of ", stringify!(unit_header))
+    );
+    assert_eq!(
+        unsafe { ::core::ptr::addr_of!((*ptr).header_size) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(unit_header),
+            "::",
+            stringify!(header_size)
+        )
+    );
+    assert_eq!(
+        unsafe { ::core::ptr::addr_of!((*ptr).target) as usize - ptr as usize },
+        4usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(unit_header),
+            "::",
+            stringify!(target)
+        )
+    );
+    assert_eq!(
+        unsafe { ::core::ptr::addr_of!((*ptr).api) as usize - ptr as usize },
+        8usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(unit_header),
+            "::",
+            stringify!(api)
+        )
+    );
+    assert_eq!(
+        unsafe { ::core::ptr::addr_of!((*ptr).dev_id) as usize - ptr as usize },
+        12usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(unit_header),
+            "::",
+            stringify!(dev_id)
+        )
+    );
+    assert_eq!(
+        unsafe { ::core::ptr::addr_of!((*ptr).unit_id) as usize - ptr as usize },
+        16usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(unit_header),
+            "::",
+            stringify!(unit_id)
+        )
+    );
+    assert_eq!(
+        unsafe { ::core::ptr::addr_of!((*ptr).version) as usize - ptr as usize },
+        20usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(unit_header),
+            "::",
+            stringify!(version)
+        )
+    );
+    assert_eq!(
+        unsafe { ::core::ptr::addr_of!((*ptr).name) as usize - ptr as usize },
+        24usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(unit_header),
+            "::",
+            stringify!(name)
+        )
+    );
+    assert_eq!(
+        unsafe { ::core::ptr::addr_of!((*ptr).reserved0) as usize - ptr as usize },
+        44usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(unit_header),
+            "::",
+            stringify!(reserved0)
+        )
+    );
+    assert_eq!(
+        unsafe { ::core::ptr::addr_of!((*ptr).reserved1) as usize - ptr as usize },
+        48usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(unit_header),
+            "::",
+            stringify!(reserved1)
+        )
+    );
+    assert_eq!(
+        unsafe { ::core::ptr::addr_of!((*ptr).num_params) as usize - ptr as usize },
+        52usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(unit_header),
+            "::",
+            stringify!(num_params)
+        )
+    );
+    assert_eq!(
+        unsafe { ::core::ptr::addr_of!((*ptr).params) as usize - ptr as usize },
+        56usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(unit_header),
+            "::",
+            stringify!(params)
+        )
+    );
+}
+pub type unit_header_t = unit_header;
+pub const k_unit_err_none: _bindgen_ty_11 = 0;
+pub const k_unit_err_target: _bindgen_ty_11 = -1;
+pub const k_unit_err_api_version: _bindgen_ty_11 = -2;
+pub const k_unit_err_samplerate: _bindgen_ty_11 = -4;
+pub const k_unit_err_geometry: _bindgen_ty_11 = -8;
+pub const k_unit_err_memory: _bindgen_ty_11 = -16;
+pub const k_unit_err_undef: _bindgen_ty_11 = -32;
+#[doc = " Result/error codes expected from initilization callback."]
+pub type _bindgen_ty_11 = core::ffi::c_int;
+extern "C" {
+    pub static unit_header: unit_header_t;
+}
 extern "C" {
     #[doc = " Current platform"]
     pub static k_osc_api_platform: u32;

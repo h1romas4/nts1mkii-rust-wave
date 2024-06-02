@@ -19,9 +19,9 @@ use crate::sound_unit_dev_id_string;
 use crate::sound_unit_string;
 
 // Constants for sound unit.
-const K_WAVES_A_CNT: i16 = (k_waves_a_cnt + k_waves_b_cnt + k_waves_c_cnt) as i16;
-const K_WAVES_B_CNT: i16 = (k_waves_d_cnt + k_waves_e_cnt + k_waves_f_cnt) as i16;
-const SUB_WAVE_CNT: i16 = k_waves_a_cnt as i16;
+pub const K_WAVES_A_CNT: i16 = (k_waves_a_cnt + k_waves_b_cnt + k_waves_c_cnt) as i16;
+pub const K_WAVES_B_CNT: i16 = (k_waves_d_cnt + k_waves_e_cnt + k_waves_f_cnt) as i16;
+pub const SUB_WAVE_CNT: i16 = k_waves_a_cnt as i16;
 
 ///
 /// The sound unit header.

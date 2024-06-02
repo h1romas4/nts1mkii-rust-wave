@@ -8,7 +8,7 @@ target = "thumbv7em-none-eabihf"
 # toolchain/gcc-arm-none-eabi/bin/arm-none-eabi-ld --help
 #  KORG KONTROL Editor wants `OS/ABI: UNIX - System V`
 #  printf '\x00' | dd of=target/thumbv7em-none-eabihf/release/nts1mkii-rust-wave bs=1 seek=7 count=1 conv=notrunc
-# linker = "toolchain/gcc-arm-none-eabi/bin/arm-none-eabi-ld"
+linker = "toolchain/gcc-arm-none-eabi/bin/arm-none-eabi-ld"
 rustflags = [
     "-C", "relocation-model=pic",
     "-C", "target-cpu=cortex-m7",
@@ -16,7 +16,7 @@ rustflags = [
     "-C", "link-arg=--Map=dist/nts1mkii-rust-wave.map",
     "-C", "link-arg=--cref",
     "-C", "link-arg=--no-warn-mismatch",
-    "-C", "link-arg=--library-path=toolchain/gcc-arm-none-eabi/arm-none-eabi/lib",
+    "-C", "link-arg=--library-path=toolchain/gcc-arm-none-eabi/arm-none-eabi/lib/thumb/v7e-m+fp/hard",
     "-C", "link-arg=--library-path=script/",
     "-C", "link-arg=--script=unit.ld",
     "-C", "link-arg=-shared",
@@ -24,7 +24,8 @@ rustflags = [
     "-C", "link-arg=-z",
     "-C", "link-arg=max-page-size=128",
     # for arm-none-eabi-ld osc_white@plt Address 0x00000000000005ce is out of bounds. (?)
-    # "-C", "link-arg=--long-plt",
+    "-C", "link-arg=--long-plt",
+    "-C", "link-arg=-Bsymbolic-functions",
     "-lnosys",
     "-lc_nano",
     "-lm"

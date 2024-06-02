@@ -146,6 +146,9 @@ Enjoy!
 Build logue-sdk: `dist/libnts1mkii.a`
 
 ```bash
+# workaround patch
+script/louge-sdk-remove-inline-patch.sh
+# build
 mkdir build && cd build
 cmake ..
 make

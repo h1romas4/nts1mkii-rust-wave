@@ -27,6 +27,8 @@ fn bindgen() {
         .clang_arg("-DARM_MATH_CM7")
         .clang_arg("-D__FPU_PRESENT")
         .clang_arg("-DCORTEX_USE_FPU=TRUE")
+        .clang_arg("-fkeep-inline-functions")
+        .generate_inline_functions(true)
         .use_core()
         .ctypes_prefix("core::ffi")
         .blocklist_function("^unit_.+$")

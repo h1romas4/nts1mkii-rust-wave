@@ -2,7 +2,8 @@
 #![no_main]
 #![allow(nonstandard_style)]
 #![allow(clippy::all)]
-use core::panic::PanicInfo;
+use core::{mem::MaybeUninit, panic::PanicInfo};
+use waves::Waves;
 
 // Include louge-sdk bindings (bindgen generated)
 include!("bindings_libnts1mkii.rs");
@@ -12,6 +13,11 @@ const k_samplerate_recipf: f64 = 2.08333333333333e-005_f64;
 
 // Define header
 mod header;
+mod waves;
+
+// Oscillator is placed in memory.
+#[used]
+static mut WAVES: MaybeUninit<Waves> = MaybeUninit::uninit();
 
 ///
 /// unit_init
@@ -28,8 +34,11 @@ mod header;
 ///
 /// Returns an `i8` indicating the result of the initialization process.
 #[no_mangle]
-pub extern "C" fn unit_init(_desc: *const unit_runtime_desc_t) -> i8 {
-    k_unit_err_none as i8
+pub extern "C" fn unit_init(desc: *const unit_runtime_desc_t) -> i8 {
+    unsafe {
+        WAVES.as_mut_ptr().write(Waves::new());
+        WAVES.assume_init_mut().init(desc)
+    }
 }
 
 ///
@@ -39,7 +48,9 @@ pub extern "C" fn unit_init(_desc: *const unit_runtime_desc_t) -> i8 {
 ///
 #[no_mangle]
 pub extern "C" fn unit_teardown() {
-
+    unsafe {
+        WAVES.assume_init_mut().teardown();
+    }
 }
 
 ///
@@ -52,7 +63,9 @@ pub extern "C" fn unit_teardown() {
 ///
 #[no_mangle]
 pub extern "C" fn unit_reset() {
-
+    unsafe {
+        WAVES.assume_init_mut().reset();
+    }
 }
 
 ///
@@ -62,7 +75,9 @@ pub extern "C" fn unit_reset() {
 ///
 #[no_mangle]
 pub extern "C" fn unit_resume() {
-
+    unsafe {
+        WAVES.assume_init_mut().resume();
+    }
 }
 
 ///
@@ -74,7 +89,9 @@ pub extern "C" fn unit_resume() {
 ///
 #[no_mangle]
 pub extern "C" fn unit_suspend() {
-
+    unsafe {
+        WAVES.assume_init_mut().suspend();
+    }
 }
 
 ///
@@ -85,7 +102,6 @@ pub extern "C" fn unit_suspend() {
 ///
 #[no_mangle]
 pub extern "C" fn unit_render(_arg1: *const f32, _arg2: *mut f32, _arg3: u32) {
-
 }
 
 ///
@@ -94,8 +110,10 @@ pub extern "C" fn unit_render(_arg1: *const f32, _arg2: *mut f32, _arg3: u32) {
 /// Called to obtain the current value of the parameter designated by the specified index.
 ///
 #[no_mangle]
-pub extern "C" fn unit_get_param_value(_arg1: u8) -> i32 {
-    0
+pub extern "C" fn unit_get_param_value(index: u8) -> i32 {
+    unsafe {
+        WAVES.assume_init_mut().get_parameter_value(index)
+    }
 }
 
 ///
@@ -109,8 +127,10 @@ pub extern "C" fn unit_get_param_value(_arg1: u8) -> i32 {
 /// and thus the same memory area can be reused across calls (if convenient).
 ///
 #[no_mangle]
-pub extern "C" fn unit_get_param_str_value(_arg1: u8, _arg2: i32) -> *const core::ffi::c_char {
-    core::ptr::null()
+pub extern "C" fn unit_get_param_str_value(index: u8, value: i32) -> *const core::ffi::c_char {
+    unsafe {
+        WAVES.assume_init_mut().get_parameter_str_value(index, value)
+    }
 }
 
 ///
@@ -122,8 +142,10 @@ pub extern "C" fn unit_get_param_str_value(_arg1: u8, _arg2: i32) -> *const core
 /// For additional safety, make sure to bound check values as per the min/max values declared in the header.
 ///
 #[no_mangle]
-pub extern "C" fn unit_set_param_value(_arg1: u8, _arg2: i32) {
-
+pub extern "C" fn unit_set_param_value(index: u8, value: i32) {
+    unsafe {
+        WAVES.assume_init_mut().set_parameter(index, value);
+    }
 }
 
 ///
@@ -340,4 +362,64 @@ macro_rules! create_unit_param_bitfield {
         unit.set(5..8, $reserved);
         unit
     }};
+}
+
+/// unit_api_is_compat
+///
+/// Checks if the provided API version is compatible with the current unit API version.
+///
+/// # Arguments
+///
+/// * `$api` - The API version to check compatibility with.
+///
+/// # Returns
+///
+/// Returns a boolean value indicating whether the provided API version is compatible with the current unit API version.
+///
+/// # Example
+///
+/// ```
+/// let is_compat = unit_api_is_compat!(crate::k_unit_api_2_0_0);
+/// ```
+///
+/// This code checks if the API version `crate::k_unit_api_2_0_0` is compatible with the current unit API version.
+/// The result is a boolean value indicating the compatibility.
+#[macro_export]
+macro_rules! unit_api_is_compat {
+    ($api:expr) => {
+        (($api & crate::UNIT_API_MAJOR_MASK) == (crate::k_unit_api_2_0_0 & crate::UNIT_API_MAJOR_MASK))
+            && (($api & crate::UNIT_API_MINOR_MASK) <= (crate::k_unit_api_2_0_0 & crate::UNIT_API_MINOR_MASK))
+    };
+}
+
+/// Converts a 10-bit parameter value to a floating-point value.
+///
+/// # Arguments
+///
+/// * `val` - The 10-bit parameter value to convert.
+///
+/// # Returns
+///
+/// The converted floating-point value.
+#[macro_export]
+macro_rules! param_10bit_to_f32 {
+    ($val:expr) => {
+        (($val as f32) * 9.77517106549365e-004_f32) as i32
+    };
+}
+
+/// Converts a floating-point value to a 10-bit parameter value.
+///
+/// # Arguments
+///
+/// * `val` - The floating-point value to convert.
+///
+/// # Returns
+///
+/// The converted 10-bit parameter value.
+#[macro_export]
+macro_rules! param_f32_to_10bit {
+    ($f32:expr) => {
+        ($f32 * 1023.0_f32) as i32
+    };
 }
