@@ -1,26 +1,13 @@
 use core::sync::atomic::AtomicU32;
 
-use crate::header:: {
-    K_WAVES_A_CNT,
-    K_WAVES_B_CNT,
-    SUB_WAVE_CNT,
-};
+use crate::header::{K_WAVES_A_CNT, K_WAVES_B_CNT, SUB_WAVE_CNT};
 use crate::{
-    k_samplerate_recipf,
-    k_unit_err_api_version,
-    k_unit_err_geometry,
-    k_unit_err_none,
-    k_unit_err_samplerate,
-    k_unit_err_target,
-    k_unit_err_undef,
-    param_10bit_to_f32,
-    unit_api_is_compat,
-    unit_header,
-    unit_runtime_desc_t,
-    osc_white,
-    wavesA,
-    wavesD,
+    k_samplerate_recipf, k_unit_err_api_version, k_unit_err_geometry, k_unit_err_none,
+    k_unit_err_samplerate, k_unit_err_target, k_unit_err_undef, osc_white, param_10bit_to_f32,
+    unit_api_is_compat, unit_header, unit_runtime_desc_t, wavesA, wavesD,
 };
+
+use crate::util::{clip01f, si_roundf};
 
 pub struct Params {
     sub_mix: f32,
@@ -274,12 +261,12 @@ impl Waves {
             i if i == ParamsIndex::K_RING_MIX as u8 => {
                 //  min, max,  center, default, type,                      frac, frac. mode, <reserved>, name
                 // {0,   1000,  0,      0,       k_unit_param_type_percent, 1,    1,          0,          {"RING MIX"}},
-                // self.params.ring_mix = unsafe { clip01f(value as f32 * 0.001_f32) };
+                self.params.ring_mix = clip01f(value as f32 * 0.001_f32);
             }
             i if i == ParamsIndex::K_BIT_CRUSH as u8 => {
                 //  min, max,  center, default, type,                      frac, frac. mode, <reserved>, name
                 // {0,   1000,  0,      0,       k_unit_param_type_percent, 1,    1,          0,          {"BIT CRUSH"}},
-                // self.params.bit_crush = unsafe { clip01f(value as f32 * 0.001_f32) };
+                self.params.bit_crush = clip01f(value as f32 * 0.001_f32);
                 self.state.flags.fetch_or(
                     StateFlags::K_FLAG_BIT_CRUSH as u32,
                     core::sync::atomic::Ordering::Relaxed,
@@ -324,20 +311,17 @@ impl Waves {
             i if i == ParamsIndex::K_RING_MIX as u8 => {
                 //  min, max,  center, default, type,                      frac, frac. mode, <reserved>, name
                 // {0,   1000,  0,      0,       k_unit_param_type_percent, 1,    1,          0,          {"RING MIX"}},
-                // return unsafe { si_roundf(self.params.ring_mix * 1000_f32) as i32 };
-                0
+                return si_roundf(self.params.ring_mix * 1000_f32) as i32;
             }
             i if i == ParamsIndex::K_BIT_CRUSH as u8 => {
                 //  min, max,  center, default, type,                      frac, frac. mode, <reserved>, name
                 // {0,   1000,  0,      0,       k_unit_param_type_percent, 1,    1,          0,          {"BIT CRUSH"}},
-                // return unsafe { si_roundf(self.params.bit_crush * 1000_f32) as i32 };
-                0
+                return si_roundf(self.params.bit_crush * 1000_f32) as i32;
             }
             i if i == ParamsIndex::K_DRIFT as u8 => {
                 //  min, max,  center, default, type,                      frac, frac. mode, <reserved>, name
                 // {0,   1000,  0,      250,     k_unit_param_type_percent, 1,    1,          0,          {"DRIFT"}},
-                // return unsafe { si_roundf((self.params.drift - 1.0_f32) * 1000_f32) as i32 };
-                0
+                return si_roundf((self.params.drift - 1.0_f32) * 1000_f32) as i32;
             }
             _ => 0,
         }
