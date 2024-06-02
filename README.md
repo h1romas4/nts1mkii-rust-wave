@@ -135,6 +135,8 @@ Build NTS-1 digital kit mkII sound unit:
 rustup target add thumbv7em-none-eabihf
 cargo build --release
 cp -p target/thumbv7em-none-eabihf/release/nts1mkii-rust-wave dist/nts1mkii-rust-wave.nts1mkiiunit
+# patch elf header
+printf '\x00' | dd of=dist/nts1mkii-rust-wave.nts1mkiiunit bs=1 seek=7 count=1 conv=notrunc
 ```
 
 Transfer `dist/nts1mkii-rust-wave.nts1mkiiunit` to NTS-1 digital kit mkII.
@@ -162,6 +164,8 @@ Build Rust with bindgen: `WITH_LOGUE_SDK_BINDGEN=true`
 WITH_LOGUE_SDK_BINDGEN=true cargo build --release
 readelf -a target/thumbv7em-none-eabihf/release/nts1mkii-rust-wave > dist/nts1mkii-rust-wave.elf.txt
 cp -p target/thumbv7em-none-eabihf/release/nts1mkii-rust-wave dist/nts1mkii-rust-wave.nts1mkiiunit
+# patch elf header
+printf '\x00' | dd of=dist/nts1mkii-rust-wave.nts1mkiiunit bs=1 seek=7 count=1 conv=notrunc
 ```
 
 ## License
