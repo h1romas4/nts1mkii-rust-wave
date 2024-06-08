@@ -2,12 +2,13 @@ use core::sync::atomic::AtomicU32;
 
 use crate::header::{K_WAVES_A_CNT, K_WAVES_B_CNT, SUB_WAVE_CNT};
 use crate::{
-    k_samplerate_recipf, k_unit_err_api_version, k_unit_err_geometry, k_unit_err_none,
-    k_unit_err_samplerate, k_unit_err_target, k_unit_err_undef, osc_white, param_10bit_to_f32,
-    unit_api_is_compat, unit_header, unit_runtime_desc_t, wavesA, wavesD,
+    clip01f, clip1m1f, fastertanh2f, k_samplerate_recipf, k_unit_err_api_version,
+    k_unit_err_geometry, k_unit_err_none, k_unit_err_samplerate, k_unit_err_target,
+    k_unit_err_undef, k_waves_a_cnt, k_waves_b_cnt, k_waves_c_cnt, k_waves_d_cnt, k_waves_e_cnt,
+    k_waves_f_cnt, osc_bitresf, osc_w0f_for_note, osc_wave_scanf, osc_white, param_10bit_to_f32,
+    q31_to_f32, si_roundf, unit_api_is_compat, unit_header, unit_runtime_desc_t,
+    unit_runtime_osc_context_t, wavesA, wavesB, wavesC, wavesD, wavesE, wavesF,
 };
-
-use crate::util::{clip01f, si_roundf};
 
 pub struct Params {
     sub_mix: f32,
@@ -60,6 +61,7 @@ impl Params {
     }
 }
 
+#[allow(unused)]
 enum StateFlags {
     K_FLAGS_NONE = 0,
     K_FLAG_WAVE_A = 1 << 1,
@@ -217,8 +219,6 @@ impl Waves {
         // Unit was deselected and the render callback will stop being called
     }
 
-    pub fn process(&mut self) {}
-
     pub fn set_parameter(&mut self, index: u8, value: i32) {
         match index {
             i if i == ParamsIndex::K_SHAPE as u8 => {
@@ -261,12 +261,12 @@ impl Waves {
             i if i == ParamsIndex::K_RING_MIX as u8 => {
                 //  min, max,  center, default, type,                      frac, frac. mode, <reserved>, name
                 // {0,   1000,  0,      0,       k_unit_param_type_percent, 1,    1,          0,          {"RING MIX"}},
-                self.params.ring_mix = clip01f(value as f32 * 0.001_f32);
+                self.params.ring_mix = unsafe { clip01f(value as f32 * 0.001_f32) };
             }
             i if i == ParamsIndex::K_BIT_CRUSH as u8 => {
                 //  min, max,  center, default, type,                      frac, frac. mode, <reserved>, name
                 // {0,   1000,  0,      0,       k_unit_param_type_percent, 1,    1,          0,          {"BIT CRUSH"}},
-                self.params.bit_crush = clip01f(value as f32 * 0.001_f32);
+                self.params.bit_crush = unsafe { clip01f(value as f32 * 0.001_f32) };
                 self.state.flags.fetch_or(
                     StateFlags::K_FLAG_BIT_CRUSH as u32,
                     core::sync::atomic::Ordering::Relaxed,
@@ -311,17 +311,17 @@ impl Waves {
             i if i == ParamsIndex::K_RING_MIX as u8 => {
                 //  min, max,  center, default, type,                      frac, frac. mode, <reserved>, name
                 // {0,   1000,  0,      0,       k_unit_param_type_percent, 1,    1,          0,          {"RING MIX"}},
-                return si_roundf(self.params.ring_mix * 1000_f32) as i32;
+                return unsafe { si_roundf(self.params.ring_mix * 1000_f32) as i32 };
             }
             i if i == ParamsIndex::K_BIT_CRUSH as u8 => {
                 //  min, max,  center, default, type,                      frac, frac. mode, <reserved>, name
                 // {0,   1000,  0,      0,       k_unit_param_type_percent, 1,    1,          0,          {"BIT CRUSH"}},
-                return si_roundf(self.params.bit_crush * 1000_f32) as i32;
+                return unsafe { si_roundf(self.params.bit_crush * 1000_f32) as i32 };
             }
             i if i == ParamsIndex::K_DRIFT as u8 => {
                 //  min, max,  center, default, type,                      frac, frac. mode, <reserved>, name
                 // {0,   1000,  0,      250,     k_unit_param_type_percent, 1,    1,          0,          {"DRIFT"}},
-                return si_roundf((self.params.drift - 1.0_f32) * 1000_f32) as i32;
+                return unsafe { si_roundf((self.params.drift - 1.0_f32) * 1000_f32) as i32 };
             }
             _ => 0,
         }
@@ -332,4 +332,163 @@ impl Waves {
             _ => core::ptr::null(),
         }
     }
+
+    pub fn note_on(&self, _note: u8, _velo: u8) {
+        // Schedule phase reset
+        self.state.flags.fetch_or(
+            StateFlags::K_FLAG_RESET as u32,
+            core::sync::atomic::Ordering::Relaxed,
+        );
+    }
+
+    pub fn process(&mut self, _input: *const f32, output: *mut f32, frames: u32) {
+        let _state = &self.state;
+        let _params: &Params = &self.params;
+        let ctxt = unsafe {
+            (*self.runtime_desc).hooks.runtime_context as *const unit_runtime_osc_context_t
+        };
+
+        // Handle events.
+        {
+            self.update_pitch(unsafe {
+                osc_w0f_for_note((((*ctxt).pitch) >> 8) as u8, (((*ctxt).pitch) & 0xff) as u8)
+                    as f32
+            });
+            let flags = self.state.flags.swap(
+                StateFlags::K_FLAGS_NONE as u32,
+                core::sync::atomic::Ordering::Relaxed,
+            );
+            self.update_waves(flags);
+
+            if flags & StateFlags::K_FLAG_RESET as u32 != 0 {
+                self.reset();
+            }
+
+            self.state.lfo = unsafe { q31_to_f32!((*ctxt).shape_lfo) };
+
+            if flags & StateFlags::K_FLAG_BIT_CRUSH as u32 != 0 {
+                self.state.dither = self.params.bit_crush * 2e-008_f32;
+                self.state.bit_res = unsafe { osc_bitresf(self.params.bit_crush) };
+                self.state.bit_res_recip = 1.0_f32 / self.state.bit_res;
+            }
+        }
+
+        // Temporaries.
+        let mut phi_a: f32 = self.state.phi_a;
+        let mut phi_b: f32 = self.state.phi_b;
+        let mut phi_sub: f32 = self.state.phi_sub;
+
+        let mut lfoz: f32 = self.state.lfoz;
+        let lfo_inc: f32 = (self.state.lfo - lfoz) / frames as f32;
+
+        let _ditheramt = self.params.bit_crush * 2e-008_f32;
+
+        let sub_mix = self.params.sub_mix * 0.5011872336272722_f32;
+        let ring_mix = self.params.ring_mix;
+
+        let mut y = output as *mut f32;
+        let y_e = unsafe { y.offset(frames as isize) };
+
+        while y != y_e {
+            let wave_mix = unsafe { clip01f(self.params.shape + lfoz) };
+
+            let mut sig =
+                (1.0_f32 - wave_mix) * unsafe { osc_wave_scanf(self.state.wave_a, phi_a) };
+            sig += wave_mix * unsafe { osc_wave_scanf(self.state.wave_b, phi_b) };
+
+            let sub_sig = unsafe { osc_wave_scanf(self.state.sub_wave, phi_sub) };
+            sig = (1.0_f32 - ring_mix) * sig + ring_mix * 1.4125375446227544_f32 * (sub_sig * sig);
+            sig += sub_mix * sub_sig;
+            sig *= 1.4125375446227544_f32;
+            sig = unsafe { clip1m1f(fastertanh2f(sig)) };
+
+            // TODO: dsp::BiQuad
+
+            // *(y++) = sig;
+            unsafe {
+                *y = sig;
+                y = y.offset(1);
+            }
+
+            phi_a += self.state.w0_a;
+            phi_a -= phi_a as i32 as f32;
+            phi_b += self.state.w0_b;
+            phi_b -= phi_b as i32 as f32;
+            phi_sub += self.state.w0_sub;
+            phi_sub -= phi_sub as i32 as f32;
+            lfoz += lfo_inc;
+        }
+
+        // Update state
+        self.state.phi_a = phi_a;
+        self.state.phi_b = phi_b;
+        self.state.phi_sub = phi_sub;
+        self.state.lfoz = lfoz;
+    }
+
+    pub fn note_off(&self, _note: u8) {}
+
+    pub fn all_note_off(&self) {}
+
+    pub fn pitch_bend(&self, _bend: u8) {}
+
+    pub fn channel_pressure(&self, _press: u8) {}
+
+    pub fn after_touch(&self, _note: u8, _press: u8) {}
+
+    fn update_pitch(&mut self, w0: f32) {
+        let w0: f32 = w0 + self.state.imperfection;
+        let drift = self.params.drift;
+        self.state.w0_a = w0;
+        // Alt. osc with slight phase drift (0.25Hz@48KHz)
+        self.state.w0_b = w0 + drift * 5.20833333333333e-006_f32;
+        // Sub one octave down, with a phase drift (0.15Hz@48KHz)
+        self.state.w0_sub = 0.5_f32 * w0 + drift * 3.125e-006_f32;
+    }
+
+    fn update_waves(&mut self, flags: u32) {
+        if flags & StateFlags::K_FLAG_WAVE_A as u32 != 0 {
+            let k_a_thr: u8 = k_waves_a_cnt as u8;
+            let k_b_thr: u8 = k_a_thr + k_waves_b_cnt as u8;
+            let _k_c_thr: u8 = k_b_thr + k_waves_c_cnt as u8;
+
+            let mut idx: u8 = self.params.wave_a;
+
+            if idx < k_a_thr {
+                self.state.wave_a = unsafe { get_waves_ptr(wavesA.as_ptr(), idx) };
+            } else if idx < k_b_thr {
+                idx -= k_a_thr;
+                self.state.wave_a = unsafe { get_waves_ptr(wavesB.as_ptr(), idx) };
+            } else {
+                idx -= k_b_thr;
+                self.state.wave_a = unsafe { get_waves_ptr(wavesC.as_ptr(), idx) };
+            }
+        }
+        if flags & StateFlags::K_FLAG_WAVE_B as u32 != 0 {
+            let k_d_thr: u8 = k_waves_d_cnt as u8;
+            let k_e_thr: u8 = k_d_thr + k_waves_e_cnt as u8;
+            let _k_f_thr: u8 = k_e_thr + k_waves_f_cnt as u8;
+
+            let mut idx: u8 = self.params.wave_b;
+
+            if idx < k_d_thr {
+                self.state.wave_b = unsafe { get_waves_ptr(wavesD.as_ptr(), idx) };
+            } else if idx < k_e_thr {
+                idx -= k_d_thr;
+                self.state.wave_b = unsafe { get_waves_ptr(wavesE.as_ptr(), idx) };
+            } else {
+                // if (idx < k_f_thr) {
+                idx -= k_e_thr;
+                self.state.wave_b = unsafe { get_waves_ptr(wavesF.as_ptr(), idx) };
+            }
+        }
+        if flags & StateFlags::K_FLAG_SUB_WAVE as u32 != 0 {
+            self.state.sub_wave = unsafe { get_waves_ptr(wavesA.as_ptr(), self.params.sub_wave) };
+        }
+    }
+}
+
+#[inline(always)]
+pub fn get_waves_ptr(table: *const *const f32, idx: u8) -> *const f32 {
+    unsafe { *table.offset(idx as isize) }
 }

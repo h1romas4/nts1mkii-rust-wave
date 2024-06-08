@@ -2,6 +2,18 @@
     "version": "2.0.0",
     "tasks": [
         {
+            "label": "nm",
+            "type": "shell",
+            "command": "toolchain/gcc-arm-none-eabi/bin/arm-none-eabi-nm",
+            "args": [
+                "dist/libnts1mkii.a",
+                "|",
+                "tee",
+                "dist/nts1mkii-rust-wave.nm.txt"
+            ],
+            "problemMatcher": []
+        },
+        {
             "label": "objdump",
             "type": "shell",
             "command": "toolchain/gcc-arm-none-eabi/bin/arm-none-eabi-objdump",

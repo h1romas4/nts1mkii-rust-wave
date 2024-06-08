@@ -248,16 +248,6 @@ pub const M_1_SQRT2: f64 = 0.7071067811865475;
 pub const F32_FRAC_MASK: u32 = 8388607;
 pub const F32_EXP_MASK: u32 = 4286578688;
 pub const F32_SIGN_MASK: u32 = 2147483648;
-pub const UNIT_TARGET_PLATFORM_MASK: u32 = 32512;
-pub const UNIT_TARGET_MODULE_MASK: u32 = 127;
-pub const UNIT_API_MAJOR_MASK: u32 = 8323072;
-pub const UNIT_API_MINOR_MASK: u32 = 32512;
-pub const UNIT_API_PATCH_MASK: u32 = 127;
-pub const UNIT_MAX_PARAM_COUNT: u32 = 11;
-pub const UNIT_PARAM_NAME_LEN: u32 = 21;
-pub const UNIT_PARAM_NAME_SIZE: u32 = 22;
-pub const UNIT_NAME_LEN: u32 = 19;
-pub const UNIT_NAME_SIZE: u32 = 20;
 pub const k_samplerate: u32 = 48000;
 pub const k_midi_to_hz_size: u32 = 152;
 pub const k_note_mod_fscale: f64 = 0.00392156862745098;
@@ -326,6 +316,21 @@ pub const k_bitres_size_exp: u32 = 7;
 pub const k_bitres_size: u32 = 128;
 pub const k_bitres_mask: u32 = 127;
 pub const k_bitres_lut_size: u32 = 129;
+pub const k_pow2_size_exp: u32 = 8;
+pub const k_pow2_size: u32 = 256;
+pub const k_pow2_scale: f64 = 85.3333333333333;
+pub const k_pow2_mask: u32 = 255;
+pub const k_pow2_lut_size: u32 = 257;
+pub const UNIT_TARGET_PLATFORM_MASK: u32 = 32512;
+pub const UNIT_TARGET_MODULE_MASK: u32 = 127;
+pub const UNIT_API_MAJOR_MASK: u32 = 8323072;
+pub const UNIT_API_MINOR_MASK: u32 = 32512;
+pub const UNIT_API_PATCH_MASK: u32 = 127;
+pub const UNIT_MAX_PARAM_COUNT: u32 = 11;
+pub const UNIT_PARAM_NAME_LEN: u32 = 21;
+pub const UNIT_PARAM_NAME_SIZE: u32 = 22;
+pub const UNIT_NAME_LEN: u32 = 19;
+pub const UNIT_NAME_SIZE: u32 = 20;
 pub const UNIT_OSC_MAX_PARAM_COUNT: u32 = 10;
 pub type __int8_t = core::ffi::c_schar;
 pub type __uint8_t = core::ffi::c_uchar;
@@ -2547,15 +2552,6 @@ extern "C" {
 }
 extern "C" {
     pub fn logf(arg1: f32) -> f32;
-}
-extern "C" {
-    pub fn log10f(arg1: f32) -> f32;
-}
-extern "C" {
-    pub fn powf(arg1: f32, arg2: f32) -> f32;
-}
-extern "C" {
-    pub fn sqrtf(arg1: f32) -> f32;
 }
 extern "C" {
     pub fn fmodf(arg1: f32, arg2: f32) -> f32;
@@ -10126,16 +10122,8 @@ extern "C" {
     pub fn fastertanh2f(x: f32) -> f32;
 }
 extern "C" {
-    #[doc = " Amplitude to dB\n @note Will remove low boundary check in future version"]
-    pub fn ampdbf(amp: f32) -> f32;
-}
-extern "C" {
     #[doc = " \"Faster\" Amplitude to dB"]
     pub fn fasterampdbf(amp: f32) -> f32;
-}
-extern "C" {
-    #[doc = " dB to ampltitude"]
-    pub fn dbampf(db: f32) -> f32;
 }
 extern "C" {
     #[doc = " \"Faster\" dB to ampltitude"]
@@ -10172,6 +10160,263 @@ extern "C" {
 extern "C" {
     #[doc = " Buffer copy (32bit unsigned integer version)."]
     pub fn buf_cpy_u32(src: *const u32, dst: *mut u32, len: usize);
+}
+extern "C" {
+    #[doc = " Current platform"]
+    pub static k_osc_api_platform: u32;
+}
+extern "C" {
+    #[doc = " Current API version"]
+    pub static k_osc_api_version: u32;
+}
+extern "C" {
+    #[doc = " Get MCU hash\n\n @return  A MCU specific \"unique\" hash."]
+    pub fn osc_mcu_hash() -> u32;
+}
+extern "C" {
+    pub static midi_to_hz_lut_f: [f32; 152usize];
+}
+extern "C" {
+    #[doc = " Get Hertz value for note\n\n @param note Note in [0-151] range.\n @return     Corresponding Hertz value."]
+    pub fn osc_notehzf(note: u8) -> f32;
+}
+extern "C" {
+    #[doc = " Get floating point phase increment for given note and fine modulation\n\n @param note Note in [0-151] range, mod in [0-255] range.\n @return     Corresponding 0-1 phase increment in floating point."]
+    pub fn osc_w0f_for_note(note: u8, mod_: u8) -> f32;
+}
+extern "C" {
+    pub static wt_sine_lut_f: [f32; 129usize];
+}
+extern "C" {
+    #[doc = " Lookup value of sin(2*pi*x).\n\n @param   x  Phase ratio\n @return     Result of sin(2*pi*x)."]
+    pub fn osc_sinf(x: f32) -> f32;
+}
+extern "C" {
+    #[doc = " Lookup value of cos(2*pi*x) in [0, 1.0] range.\n\n @param   x  Value in [0, 1.0].\n @return     Result of cos(2*pi*x)."]
+    pub fn osc_cosf(x: f32) -> f32;
+}
+extern "C" {
+    pub static wt_saw_notes: [u8; 7usize];
+}
+extern "C" {
+    pub static wt_saw_lut_f: [f32; 903usize];
+}
+extern "C" {
+    #[doc = " Sawtooth wave lookup.\n\n @param   x  Phase in [0, 1.0].\n @return     Wave sample."]
+    pub fn osc_sawf(x: f32) -> f32;
+}
+extern "C" {
+    #[doc = " Band-limited sawtooth wave lookup.\n\n @param   x     Phase in [0, 1.0].\n @param   idx   Wave index in [0,6].\n @return        Wave sample."]
+    pub fn osc_bl_sawf(x: f32, idx: u8) -> f32;
+}
+extern "C" {
+    #[doc = " Band-limited sawtooth wave lookup. (interpolated version)\n\n @param   x     Phase in [0, 1.0].\n @param   idx   Fractional wave index in [0,6].\n @return        Wave sample."]
+    pub fn osc_bl2_sawf(x: f32, idx: f32) -> f32;
+}
+extern "C" {
+    #[doc = " Get band-limited sawtooth wave index for note.\n\n @param note Fractional note in [0-151] range.\n @return     Corresponding band-limited wave fractional index in [0-6]."]
+    pub fn osc_bl_saw_idx(note: f32) -> f32;
+}
+extern "C" {
+    pub static wt_sqr_notes: [u8; 7usize];
+}
+extern "C" {
+    pub static wt_sqr_lut_f: [f32; 903usize];
+}
+extern "C" {
+    #[doc = " Square wave lookup.\n\n @param   x  Phase in [0, 1.0].\n @return     Wave sample.\n @note Not checking input, caller responsible for bounding x."]
+    pub fn osc_sqrf(x: f32) -> f32;
+}
+extern "C" {
+    #[doc = " Band-limited square wave lookup.\n\n @param   x     Phase in [0, 1.0].\n @param   idx   Wave index in [0,6].\n @return        Wave sample.\n @note Not checking input, caller responsible for bounding x and idx."]
+    pub fn osc_bl_sqrf(x: f32, idx: u8) -> f32;
+}
+extern "C" {
+    #[doc = " Band-limited square wave lookup. (interpolated version).\n\n @param   x     Phase in [0, 1.0].\n @param   idx   Fractional wave index in [0,6].\n @return        Wave sample.\n @note Not checking input, caller responsible for bounding x and idx."]
+    pub fn osc_bl2_sqrf(x: f32, idx: f32) -> f32;
+}
+extern "C" {
+    #[doc = " Get band-limited square wave index for note.\n\n @param note Fractional note in [0-151] range.\n @return     Corresponding band-limited wave fractional index in [0-6]."]
+    pub fn osc_bl_sqr_idx(note: f32) -> f32;
+}
+extern "C" {
+    pub static wt_par_notes: [u8; 7usize];
+}
+extern "C" {
+    pub static wt_par_lut_f: [f32; 903usize];
+}
+extern "C" {
+    #[doc = " Parabolic wave lookup.\n\n @param   x  Phase in [0, 1.0].\n @return     Wave sample.\n @note Not checking input, caller responsible for bounding x."]
+    pub fn osc_parf(x: f32) -> f32;
+}
+extern "C" {
+    #[doc = " Band-limited parabolic wave lookup.\n\n @param   x     Phase in [0, 1.0].\n @param   idx   Wave index in [0,6].\n @return        Wave sample.\n @note Not checking input, caller responsible for bounding x and idx."]
+    pub fn osc_bl_parf(x: f32, idx: u8) -> f32;
+}
+extern "C" {
+    #[doc = " Band-limited parabolic wave lookup. (interpolated version)\n\n @param   x     Phase in [0, 1.0].\n @param   idx   Fractional wave index in [0,6].\n @return        Wave sample.\n @note Not checking input, caller responsible for bounding x and idx."]
+    pub fn osc_bl2_parf(x: f32, idx: f32) -> f32;
+}
+extern "C" {
+    #[doc = " Get band-limited parabolic wave index for note.\n\n @param note Fractional note in [0-151] range.\n @return     Corresponding band-limited wave fractional index in [0-6]."]
+    pub fn osc_bl_par_idx(note: f32) -> f32;
+}
+extern "C" {
+    pub static wavesA: [*const f32; 16usize];
+}
+extern "C" {
+    pub static wavesB: [*const f32; 16usize];
+}
+extern "C" {
+    pub static wavesC: [*const f32; 14usize];
+}
+extern "C" {
+    pub static wavesD: [*const f32; 13usize];
+}
+extern "C" {
+    pub static wavesE: [*const f32; 15usize];
+}
+extern "C" {
+    pub static wavesF: [*const f32; 16usize];
+}
+extern "C" {
+    pub fn osc_wave_scanf(w: *const f32, x: f32) -> f32;
+}
+extern "C" {
+    pub fn osc_wave_scanuf(w: *const f32, x: u32) -> f32;
+}
+extern "C" {
+    pub static log_lut_f: [f32; 257usize];
+}
+extern "C" {
+    #[doc = " Lookup value of log(x) in [0.00001, 1.0] range.\n\n @param   x  Value in [0.00001, 1.0].\n @return     Result of log(x).\n @note Not checking input, caller responsible for bounding x."]
+    pub fn osc_logf(x: f32) -> f32;
+}
+extern "C" {
+    pub static tanpi_lut_f: [f32; 257usize];
+}
+extern "C" {
+    #[doc = " Lookup value of tan(pi*x) in [0.0001, 0.49] range.\n\n @param   x  Value in [0.0001, 0.49].\n @return     Result of tan(pi*x).\n @note Not checking input, caller responsible for bounding x."]
+    pub fn osc_tanpif(x: f32) -> f32;
+}
+extern "C" {
+    pub static sqrtm2log_lut_f: [f32; 257usize];
+}
+extern "C" {
+    #[doc = " Lookup value of sqrt(-2*log(x)) in [0.005, 1.0] range.\n\n @param   x  Value in [0.005, 1.0].\n @return     Result of sqrt(-2*log(x)).\n @note Not checking input, caller responsible for bounding x."]
+    pub fn osc_sqrtm2logf(x: f32) -> f32;
+}
+extern "C" {
+    #[doc = " Soft clip\n\n @param   c  Coefficient in [0, 1/3].\n @param   x  Value in (-inf, +inf).\n @return     Clipped value in [-(1-c), (1-c)]."]
+    pub fn osc_softclipf(c: f32, x: f32) -> f32;
+}
+extern "C" {
+    pub static cubicsat_lut_f: [f32; 129usize];
+}
+extern "C" {
+    #[doc = " Cubic saturation.\n\n @param   x  Value in [-1.0, 1.0].\n @return     Cubic curve above 0.42264973081, gain: 1.2383127573"]
+    pub fn osc_sat_cubicf(x: f32) -> f32;
+}
+extern "C" {
+    pub static schetzen_lut_f: [f32; 129usize];
+}
+extern "C" {
+    #[doc = " Schetzen saturation.\n\n @param   x  Value in [-1.0, 1.0].\n @return     Saturated value."]
+    pub fn osc_sat_schetzenf(x: f32) -> f32;
+}
+extern "C" {
+    pub static bitres_lut_f: [f32; 129usize];
+}
+extern "C" {
+    #[doc = " Bit depth scaling table\n\n @param   x  Value in [0, 1.0].\n @return     Quantization scaling factor.\n @note       Fractional bit depth, exponentially mapped, 1 to 24 bits."]
+    pub fn osc_bitresf(x: f32) -> f32;
+}
+extern "C" {
+    #[doc = " Random integer\n\n @return     Value in [0, UINT_MAX].\n @note       Generated with Park-Miller-Carta"]
+    pub fn osc_rand() -> u32;
+}
+extern "C" {
+    #[doc = " Gaussian white noise\n\n @return     Value in [-1.0, 1.0]."]
+    pub fn osc_white() -> f32;
+}
+extern "C" {
+    #[doc = " Current platform"]
+    pub static k_fx_api_platform: u32;
+}
+extern "C" {
+    #[doc = " Current API version"]
+    pub static k_fx_api_version: u32;
+}
+extern "C" {
+    #[doc = " Get MCU hash\n\n @return  A MCU specific \"unique\" hash."]
+    pub fn fx_mcu_hash() -> u32;
+}
+extern "C" {
+    #[doc = " Get current tempo as beats per minute as integer\n\n @return  Current integer BPM, multiplied by 10 to allow 1 decimal precision"]
+    pub fn fx_get_bpm() -> u16;
+}
+extern "C" {
+    #[doc = " Get current tempo as beats per minute as floating point\n\n @return  Current floating point BPM"]
+    pub fn fx_get_bpmf() -> f32;
+}
+extern "C" {
+    #[doc = " Lookup value of sin(2*pi*x).\n\n @param   x  Phase ratio\n @return     Result of sin(2*pi*x)."]
+    pub fn fx_sinf(x: f32) -> f32;
+}
+extern "C" {
+    #[doc = " Lookup value of sin(2*pi*x) in [0, 1.0] range.\n\n @param   x  Phase ratio.\n @return     Result of sin(2*pi*x)."]
+    pub fn fx_sinuf(x: u32) -> f32;
+}
+extern "C" {
+    #[doc = " Lookup value of cos(2*pi*x) in [0, 1.0] range.\n\n @param   x  Value in [0, 1.0].\n @return     Result of cos(2*pi*x)."]
+    pub fn fx_cosf(x: f32) -> f32;
+}
+extern "C" {
+    #[doc = " Lookup value of cos(2*pi*x) in [0, 1.0] range.\n\n @param   x  Phase ratio.\n @return     Result of sin(2*pi*x)."]
+    pub fn fx_cosuf(x: u32) -> f32;
+}
+extern "C" {
+    #[doc = " Lookup value of log(x) in [0.00001, 1.0] range.\n\n @param   x  Value in [0.00001, 1.0].\n @return     Result of log(x).\n @note Not checking input, caller responsible for bounding x."]
+    pub fn fx_logf(x: f32) -> f32;
+}
+extern "C" {
+    #[doc = " Lookup value of tan(pi*x) in [0.0001, 0.49] range.\n\n @param   x  Value in [0.0001, 0.49].\n @return     Result of tan(pi*x).\n @note Not checking input, caller responsible for bounding x."]
+    pub fn fx_tanpif(x: f32) -> f32;
+}
+extern "C" {
+    #[doc = " Lookup value of sqrt(-2*log(x)) in [0.005, 1.0] range.\n\n @param   x  Value in [0.005, 1.0].\n @return     Result of sqrt(-2*log(x)).\n @note Not checking input, caller responsible for bounding x."]
+    pub fn fx_sqrtm2logf(x: f32) -> f32;
+}
+extern "C" {
+    pub static pow2_lut_f: [f32; 257usize];
+}
+extern "C" {
+    #[doc = " Lookup value of 2^k for k in [0, 3.0] range.\n\n @param   x  Value in [0, 3.0].\n @return     Result of 2^k.\n @note Not checking input, caller responsible for bounding x."]
+    pub fn fx_pow2f(x: f32) -> f32;
+}
+extern "C" {
+    #[doc = " Soft clip\n\n @param   c  Coefficient in [0, 1/3].\n @param   x  Value in (-inf, +inf).\n @return     Clipped value in [-(1-c), (1-c)]."]
+    pub fn fx_softclipf(c: f32, x: f32) -> f32;
+}
+extern "C" {
+    #[doc = " Cubic saturation.\n\n @param   x  Value in [-1.0, 1.0].\n @return     Cubic curve above 0.42264973081, gain: 1.2383127573"]
+    pub fn fx_sat_cubicf(x: f32) -> f32;
+}
+extern "C" {
+    #[doc = " Schetzen saturation.\n\n @param   x  Value in [-1.0, 1.0].\n @return     Saturated value."]
+    pub fn fx_sat_schetzenf(x: f32) -> f32;
+}
+extern "C" {
+    #[doc = " Bit depth scaling table\n\n @param   x  Value in [0, 1.0].\n @return     Quantization scaling factor.\n @note       Fractional bit depth, exponentially mapped, 1 to 24 bits."]
+    pub fn fx_bitresf(x: f32) -> f32;
+}
+extern "C" {
+    #[doc = " Random integer\n\n @return     Value in [0, UINT_MAX].\n @note       Generated with Park-Miller-Carta"]
+    pub fn fx_rand() -> u32;
+}
+extern "C" {
+    #[doc = " Gaussian white noise\n\n @return     Value in [-1.0, 1.0]."]
+    pub fn fx_white() -> f32;
 }
 #[doc = " Dummy category, may be used in future."]
 pub const k_unit_module_global: _bindgen_ty_1 = 0;
@@ -10821,98 +11066,6 @@ pub const k_unit_err_undef: _bindgen_ty_11 = -32;
 pub type _bindgen_ty_11 = core::ffi::c_int;
 extern "C" {
     pub static unit_header: unit_header_t;
-}
-extern "C" {
-    #[doc = " Current platform"]
-    pub static k_osc_api_platform: u32;
-}
-extern "C" {
-    #[doc = " Current API version"]
-    pub static k_osc_api_version: u32;
-}
-extern "C" {
-    #[doc = " Get MCU hash\n\n @return  A MCU specific \"unique\" hash."]
-    pub fn osc_mcu_hash() -> u32;
-}
-extern "C" {
-    pub static midi_to_hz_lut_f: [f32; 152usize];
-}
-extern "C" {
-    pub static wt_sine_lut_f: [f32; 129usize];
-}
-extern "C" {
-    pub static wt_saw_notes: [u8; 7usize];
-}
-extern "C" {
-    pub static wt_saw_lut_f: [f32; 903usize];
-}
-extern "C" {
-    #[doc = " Get band-limited sawtooth wave index for note.\n\n @param note Fractional note in [0-151] range.\n @return     Corresponding band-limited wave fractional index in [0-6]."]
-    pub fn osc_bl_saw_idx(note: f32) -> f32;
-}
-extern "C" {
-    pub static wt_sqr_notes: [u8; 7usize];
-}
-extern "C" {
-    pub static wt_sqr_lut_f: [f32; 903usize];
-}
-extern "C" {
-    #[doc = " Get band-limited square wave index for note.\n\n @param note Fractional note in [0-151] range.\n @return     Corresponding band-limited wave fractional index in [0-6]."]
-    pub fn osc_bl_sqr_idx(note: f32) -> f32;
-}
-extern "C" {
-    pub static wt_par_notes: [u8; 7usize];
-}
-extern "C" {
-    pub static wt_par_lut_f: [f32; 903usize];
-}
-extern "C" {
-    #[doc = " Get band-limited parabolic wave index for note.\n\n @param note Fractional note in [0-151] range.\n @return     Corresponding band-limited wave fractional index in [0-6]."]
-    pub fn osc_bl_par_idx(note: f32) -> f32;
-}
-extern "C" {
-    pub static wavesA: [*const f32; 16usize];
-}
-extern "C" {
-    pub static wavesB: [*const f32; 16usize];
-}
-extern "C" {
-    pub static wavesC: [*const f32; 14usize];
-}
-extern "C" {
-    pub static wavesD: [*const f32; 13usize];
-}
-extern "C" {
-    pub static wavesE: [*const f32; 15usize];
-}
-extern "C" {
-    pub static wavesF: [*const f32; 16usize];
-}
-extern "C" {
-    pub static log_lut_f: [f32; 257usize];
-}
-extern "C" {
-    pub static tanpi_lut_f: [f32; 257usize];
-}
-extern "C" {
-    pub static sqrtm2log_lut_f: [f32; 257usize];
-}
-extern "C" {
-    pub static cubicsat_lut_f: [f32; 129usize];
-}
-extern "C" {
-    pub static schetzen_lut_f: [f32; 129usize];
-}
-extern "C" {
-    pub static bitres_lut_f: [f32; 129usize];
-}
-extern "C" {
-    #[doc = " Random integer\n\n @return     Value in [0, UINT_MAX].\n @note       Generated with Park-Miller-Carta"]
-    pub fn osc_rand() -> u32;
-}
-extern "C" {
-    #[doc = " Gaussian white noise\n\n @return     Value in [-1.0, 1.0]."]
-    pub fn osc_white() -> f32;
 }
 pub const k_runtime_osc_input_unused: _bindgen_ty_12 = 0;
 pub const k_runtime_osc_input_used: _bindgen_ty_12 = 1;

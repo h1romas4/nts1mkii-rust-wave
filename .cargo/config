@@ -12,7 +12,7 @@ linker = "toolchain/gcc-arm-none-eabi/bin/arm-none-eabi-ld"
 rustflags = [
     "-C", "relocation-model=pic",
     "-C", "target-cpu=cortex-m7",
-    # "-C", "target-feature=+thumb-mode,+v7,+vfp4d16sp",
+    # "-C", "target-feature=+thumb-mode,+v7,+vfp4d16sp,+dsp",
     "-C", "link-arg=--Map=dist/nts1mkii-rust-wave.map",
     "-C", "link-arg=--cref",
     "-C", "link-arg=--no-warn-mismatch",
@@ -26,6 +26,7 @@ rustflags = [
     # for arm-none-eabi-ld osc_white@plt Address 0x00000000000005ce is out of bounds. (?)
     "-C", "link-arg=--long-plt",
     "-C", "link-arg=-Bsymbolic-functions",
+    "-C", "link-arg=--gc-sections",
     "-lnosys",
     "-lc_nano",
     "-lm"

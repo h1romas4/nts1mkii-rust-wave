@@ -4,12 +4,7 @@ project(nts1mkii C)
 set(CMAKE_C_COMPILER ${CMAKE_CURRENT_SOURCE_DIR}/toolchain/gcc-arm-none-eabi/bin/arm-none-eabi-gcc)
 
 set(SOURCES
-    components/logue-sdk/platform/nts-1_mkii/common/_unit_base.c
-    components/logue-sdk/platform/nts-1_mkii/common/utils/buffer_ops.h
-    components/logue-sdk/platform/nts-1_mkii/common/utils/cortexm.h
-    components/logue-sdk/platform/nts-1_mkii/common/utils/fixed_math.h
-    components/logue-sdk/platform/nts-1_mkii/common/utils/float_math.h
-    components/logue-sdk/platform/nts-1_mkii/common/utils/int_math.h
+    src/bindings_libnts1mkii.c
 )
 
 include_directories(

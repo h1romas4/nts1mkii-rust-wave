@@ -4,7 +4,7 @@
 #![allow(clippy::all)]
 mod header;
 mod waves;
-mod util;
+mod libm_sqrtf;
 
 use core::{mem::MaybeUninit, panic::PanicInfo};
 use waves::Waves;
@@ -101,7 +101,10 @@ pub extern "C" fn unit_suspend() {
 /// via the unit_runtime_desc_t argument of unit_init(..).
 ///
 #[no_mangle]
-pub extern "C" fn unit_render(_arg1: *const f32, _arg2: *mut f32, _arg3: u32) {
+pub extern "C" fn unit_render(input: *const f32, output: *mut f32, frames: u32) {
+    unsafe {
+        WAVES.assume_init_mut().process(input, output, frames);
+    }
 }
 
 ///
@@ -157,8 +160,7 @@ pub extern "C" fn unit_set_param_value(index: u8, value: i32) {
 /// when handling tempo changes as this handler may be called frequently especially if externally synced.
 ///
 #[no_mangle]
-pub extern "C" fn unit_set_tempo(_arg1: u32) {
-
+pub extern "C" fn unit_set_tempo(_tempo: u32) {
 }
 
 ///
@@ -167,8 +169,7 @@ pub extern "C" fn unit_set_tempo(_arg1: u32) {
 /// After initialization, the callback may be called at any time to notify
 /// the unit of a clock event (4PPQN interval, ie: 16th notes with regards to tempo).
 #[no_mangle]
-pub extern "C" fn unit_tempo_4ppqn_tick(_arg1: u32) {
-
+pub extern "C" fn unit_tempo_4ppqn_tick(_tempo: u32) {
 }
 
 ///
@@ -183,19 +184,10 @@ pub extern "C" fn unit_tempo_4ppqn_tick(_arg1: u32) {
 /// in which case note will be set to 0xFFU. velocity is a 7-bit value.
 ///
 #[no_mangle]
-pub extern "C" fn unit_note_on(_arg1: u8, _arg2: u8) {
-    // Relocation section '.rel.dyn' at offset 0x5e8 contains 1 entry:
-    // Offset     Info    Type            Sym.Value  Sym. Name
-    // 000008a0  00001415 R_ARM_GLOB_DAT    00000000   wavesA
-    // unsafe {
-    //     let _wave_a = core::ptr::read_volatile(wavesA[0]);
-    // }
-
-    // TODO: The problem is that it freezes.
-    // Relocation section '.rel.plt' at offset 0x5cc contains 1 entry:
-    // Offset     Info    Type            Sym.Value  Sym. Name
-    // 00000854  00001316 R_ARM_JUMP_SLOT   00000000   osc_white
-    unsafe { osc_white(); };
+pub extern "C" fn unit_note_on(note: u8, velo: u8) {
+    unsafe {
+        WAVES.assume_init_mut().note_on(note, velo);
+    }
 }
 
 ///
@@ -205,8 +197,10 @@ pub extern "C" fn unit_note_on(_arg1: u8, _arg2: u8) {
 /// if an explicit unit_gate_off(..) handler is not provided, in which case note will be set to 0xFFU.
 ///
 #[no_mangle]
-pub extern "C" fn unit_note_off(_arg1: u8) {
-
+pub extern "C" fn unit_note_off(note: u8) {
+    unsafe {
+        WAVES.assume_init_mut().note_off(note);
+    }
 }
 
 ///
@@ -216,7 +210,9 @@ pub extern "C" fn unit_note_off(_arg1: u8) {
 ///
 #[no_mangle]
 pub extern "C" fn unit_all_note_off() {
-
+    unsafe {
+        WAVES.assume_init_mut().all_note_off();
+    }
 }
 
 ///
@@ -226,8 +222,10 @@ pub extern "C" fn unit_all_note_off() {
 /// Sensitivity can be defined according to the unit's needs.
 ///
 #[no_mangle]
-pub extern "C" fn unit_pitch_bend(_arg1: u16) {
-
+pub extern "C" fn unit_pitch_bend(bend: u8) {
+    unsafe {
+        WAVES.assume_init_mut().pitch_bend(bend);
+    }
 }
 
 ///
@@ -236,16 +234,20 @@ pub extern "C" fn unit_pitch_bend(_arg1: u16) {
 /// Called upon MIDI channel pressure events. pressure is a 7-bit value.
 ///
 #[no_mangle]
-pub extern "C" fn unit_channel_pressure(_arg1: u8) {
-
+pub extern "C" fn unit_channel_pressure(press: u8) {
+    unsafe {
+        WAVES.assume_init_mut().channel_pressure(press);
+    }
 }
 
 ///
 /// Called upon MIDI aftertouch events. afterotuch is a 7-bit value.
 ///
 #[no_mangle]
-pub extern "C" fn unit_aftertouch(_arg1: u8, _arg2: u8) {
-
+pub extern "C" fn unit_aftertouch(note: u8, press: u8) {
+    unsafe {
+        WAVES.assume_init_mut().after_touch(note, press);
+    }
 }
 
 ///
@@ -421,5 +423,102 @@ macro_rules! param_10bit_to_f32 {
 macro_rules! param_f32_to_10bit {
     ($f32:expr) => {
         ($f32 * 1023.0_f32) as i32
+    };
+}
+
+#[allow(unused)]
+const Q15_TO_F32_C: f32 = 3.05175781250000e-005;
+const Q31_TO_F32_C: f32 = 4.65661287307739e-010;
+
+/// The `q15_to_f32` macro converts a value in Q15 format to F32 format.
+///
+/// # Arguments
+///
+/// * `$q` - The value in Q15 format. This is represented as a value of type `i16`.
+///
+/// # Returns
+///
+/// * The value in F32 format. This is represented as a value of type `f32`.
+///
+/// # Example
+///
+/// ```
+/// let q: i16 = 32767;
+/// let f: f32 = q15_to_f32!(q);  // f will be approximately 1.0.
+/// ```
+#[macro_export]
+macro_rules! q15_to_f32 {
+    ($q:expr) => {
+        ($q as f32) * crate::Q15_TO_F32_C
+    };
+}
+
+/// The `q31_to_f32` macro converts a value in Q31 format to F32 format.
+///
+/// # Arguments
+///
+/// * `$q` - The value in Q31 format. This is represented as a value of type `i32`.
+///
+/// # Returns
+///
+/// * The value in F32 format. This is represented as a value of type `f32`.
+///
+/// # Example
+///
+/// ```
+/// let q: i32 = 2147483647;
+/// let f: f32 = q31_to_f32!(q);  // f will be approximately 1.0.
+/// ```
+#[macro_export]
+macro_rules! q31_to_f32 {
+    ($q:expr) => {
+        ($q as f32) * crate::Q31_TO_F32_C
+    };
+}
+
+/// The `f32_to_q15` macro converts a value in F32 format to Q15 format.
+///
+/// # Arguments
+///
+/// * `$f` - The value in F32 format. This is represented as a value of type `f32`.
+///
+/// # Returns
+///
+/// * The value in Q15 format. This is represented as a value of type `i16`.
+///   The result is clamped to the range of `i16` to prevent overflow.
+///
+/// # Example
+///
+/// ```
+/// let f: f32 = 1.0;
+/// let q: i16 = f32_to_q15!(f);  // q will be 32767.
+/// ```
+#[macro_export]
+macro_rules! f32_to_q15 {
+    ($f:expr) => {
+        (($f * ((1<<15)-1) as f32) as i32).min(32767).max(-32768) as i16
+    };
+}
+
+/// The `f32_to_q31` macro converts a value in F32 format to Q31 format.
+///
+/// # Arguments
+///
+/// * `$f` - The value in F32 format. This is represented as a value of type `f32`.
+///
+/// # Returns
+///
+/// * The value in Q31 format. This is represented as a value of type `i32`.
+///
+/// # Example
+///
+/// ```
+/// let f: f32 = 1.0;
+/// let q: i32 = f32_to_q31!(f);  // q will be 2147483647.
+/// ```
+#[macro_export]
+macro_rules! f32_to_q31 {
+    ($f:expr) => {
+        ($f * 0x7FFFFFFF as f32) as i32
     };
 }
