@@ -59,6 +59,10 @@ Disassembly of section .got:
  854:	00000610 	andeq	r0, r0, r0, lsl r6
 ```
 
+Would a merge of `config->armThumbPLTs` fix this?
+
+- [[lld] Support thumb PLTs #86223](https://github.com/llvm/llvm-project/pull/86223)
+
 ### Rust & arm-none-eabi-ld ver
 
 Does not work.
