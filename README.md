@@ -190,3 +190,74 @@ ELF Header:
     11ea:	f8dc f000 	ldr.w	pc, [ip]
     11ee:	e7fc      	b.n	11ea <osc_white@plt+0xa>
 ```
+
+## A note about ELF
+
+- Requre ELF header magic: Note that OS/ABI is UNIX - System V (0x00).
+
+```
+ELF Header:
+  Magic:   7f 45 4c 46 01 01 01 00 00 00 00 00 00 00 00 00
+  Class:                             ELF32
+  Data:                              2's complement, little endian
+  Version:                           1 (current)
+  OS/ABI:                            UNIX - System V
+  ABI Version:                       0
+  Type:                              DYN (Shared object file)
+  Machine:                           ARM
+  Version:                           0x1
+  Entry point address:               0x0
+  Start of program headers:          52 (bytes into file)
+  Start of section headers:          17276 (bytes into file)
+  Flags:                             0x0
+  Size of this header:               52 (bytes)
+  Size of program headers:           32 (bytes)
+  Number of program headers:         5
+  Size of section headers:           40 (bytes)
+  Number of section headers:         19
+  Section header string table index: 18
+```
+
+- Section .unit_header: It must be of type `unit_header_t`.
+
+```
+Disassembly of section .unit_header
+
+00003fb0 <unit_header>:
+    3fb0:	00000198 	muleq	r0, r8, r1
+    3fb4:	00000504 	andeq	r0, r0, r4, lsl #10
+    3fb8:	00020000 	andeq	r0, r2, r0
+    3fbc:	4831524f 	ldmdami	r1!, {r0, r1, r2, r3, r6, r9, ip, lr}
+    3fc0:	00050400 	andeq	r0, r5, r0, lsl #8
+    3fc4:	00020000 	andeq	r0, r2, r0
+    ...snip...
+```
+
+- Section `.rel.plt` and `.rel.dyn`: The .rel.plt must contain only system calls.
+
+```
+Relocation section '.rel.plt' at offset 0x18a0 contains 1 entry:
+ Offset     Info    Type            Sym.Value  Sym. Name
+000041e4  00000f16 R_ARM_JUMP_SLOT   00000000   osc_white
+
+Relocation section '.rel.dyn' at offset 0x1810 contains 18 entries:
+ Offset     Info    Type            Sym.Value  Sym. Name
+000041e8  00000e15 R_ARM_GLOB_DAT    00000000   bitres_lut_f
+000041ec  00002615 R_ARM_GLOB_DAT    00000000   wavesF
+000041f0  00002715 R_ARM_GLOB_DAT    00000000   wavesC
+000041f4  00003b15 R_ARM_GLOB_DAT    00000000   tanpi_lut_f
+000041f8  00004115 R_ARM_GLOB_DAT    00000000   sqrtm2log_lut_f
+000041fc  00004215 R_ARM_GLOB_DAT    00000000   wt_saw_lut_f
+00004200  00004e15 R_ARM_GLOB_DAT    00000000   schetzen_lut_f
+00004204  00005615 R_ARM_GLOB_DAT    00000000   cubicsat_lut_f
+00004208  00005815 R_ARM_GLOB_DAT    00000000   wavesE
+0000420c  00007715 R_ARM_GLOB_DAT    00000000   wavesA
+00004210  00007c15 R_ARM_GLOB_DAT    00000000   log_lut_f
+00004214  00008315 R_ARM_GLOB_DAT    00000000   wt_sine_lut_f
+00004218  00008f15 R_ARM_GLOB_DAT    00000000   wavesB
+0000421c  00009115 R_ARM_GLOB_DAT    00000000   wavesD
+00004220  00009315 R_ARM_GLOB_DAT    00000000   pow2_lut_f
+00004224  00009c15 R_ARM_GLOB_DAT    00000000   wt_sqr_lut_f
+00004228  00009f15 R_ARM_GLOB_DAT    00000000   midi_to_hz_lut_f
+0000422c  0000a215 R_ARM_GLOB_DAT    00000000   wt_par_lut_f
+```
