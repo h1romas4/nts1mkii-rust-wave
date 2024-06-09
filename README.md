@@ -9,7 +9,7 @@ This repository is a Rust ported build of the WAVES(osc) synthesizer for the NTS
 ## WIP
 
 - [ ] Not all of the original Waves are implemented.
-    - [ ] `K_SHAPE` is not working properly.
+    - [ ] `K_SHAPE`, `K_SUB_MIX` is not working properly. The setpoints are not being evaluated correctly.
     - [ ] Does not implement `dither` and `bit_res_recip`.
 - [ ] There may be other bugs.
 
