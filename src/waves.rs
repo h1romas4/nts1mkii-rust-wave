@@ -122,8 +122,8 @@ impl State {
             lfo: 0_f32,
             lfoz: 0_f32,
             dither: 0_f32,
-            bit_res: 0_f32,
-            bit_res_recip: 0_f32,
+            bit_res: 1.0_f32,
+            bit_res_recip: 1.0_f32,
             imperfection: 0_f32,
             flags: AtomicU32::new(StateFlags::K_FLAGS_NONE as u32),
         };
