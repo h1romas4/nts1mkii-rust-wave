@@ -219,6 +219,91 @@ impl Waves {
         // Unit was deselected and the render callback will stop being called
     }
 
+    pub fn process(&mut self, _input: *const f32, output: *mut f32, frames: u32) {
+        let _state = &self.state;
+        let _params: &Params = &self.params;
+        let ctxt = unsafe {
+            (*self.runtime_desc).hooks.runtime_context as *const unit_runtime_osc_context_t
+        };
+
+        // Handle events.
+        {
+            self.update_pitch(unsafe {
+                osc_w0f_for_note((((*ctxt).pitch) >> 8) as u8, (((*ctxt).pitch) & 0xff) as u8)
+                    as f32
+            });
+            let flags = self.state.flags.swap(
+                StateFlags::K_FLAGS_NONE as u32,
+                core::sync::atomic::Ordering::Relaxed,
+            );
+            self.update_waves(flags);
+
+            if flags & StateFlags::K_FLAG_RESET as u32 != 0 {
+                self.reset();
+            }
+
+            self.state.lfo = unsafe { q31_to_f32!((*ctxt).shape_lfo) };
+
+            if flags & StateFlags::K_FLAG_BIT_CRUSH as u32 != 0 {
+                self.state.dither = self.params.bit_crush * 2e-008_f32;
+                self.state.bit_res = unsafe { osc_bitresf(self.params.bit_crush) };
+                self.state.bit_res_recip = 1.0_f32 / self.state.bit_res;
+            }
+        }
+
+        // Temporaries.
+        let mut phi_a: f32 = self.state.phi_a;
+        let mut phi_b: f32 = self.state.phi_b;
+        let mut phi_sub: f32 = self.state.phi_sub;
+
+        let mut lfoz: f32 = self.state.lfoz;
+        let lfo_inc: f32 = (self.state.lfo - lfoz) / frames as f32;
+
+        let _ditheramt = self.params.bit_crush * 2e-008_f32;
+
+        let sub_mix = self.params.sub_mix * 0.5011872336272722_f32;
+        let ring_mix = self.params.ring_mix;
+
+        let mut y = output as *mut f32;
+        let y_e = unsafe { y.offset(frames as isize) };
+
+        while y != y_e {
+            let wave_mix = unsafe { clip01f(self.params.shape + lfoz) };
+
+            let mut sig =
+                (1.0_f32 - wave_mix) * unsafe { osc_wave_scanf(self.state.wave_a, phi_a) };
+            sig += wave_mix * unsafe { osc_wave_scanf(self.state.wave_b, phi_b) };
+
+            let sub_sig = unsafe { osc_wave_scanf(self.state.sub_wave, phi_sub) };
+            sig = (1.0_f32 - ring_mix) * sig + ring_mix * 1.4125375446227544_f32 * (sub_sig * sig);
+            sig += sub_mix * sub_sig;
+            sig *= 1.4125375446227544_f32;
+            sig = unsafe { clip1m1f(fastertanh2f(sig)) };
+
+            // TODO: dsp::BiQuad
+
+            // *(y++) = sig;
+            unsafe {
+                *y = sig;
+                y = y.offset(1);
+            }
+
+            phi_a += self.state.w0_a;
+            phi_a -= phi_a as i32 as f32;
+            phi_b += self.state.w0_b;
+            phi_b -= phi_b as i32 as f32;
+            phi_sub += self.state.w0_sub;
+            phi_sub -= phi_sub as i32 as f32;
+            lfoz += lfo_inc;
+        }
+
+        // Update state
+        self.state.phi_a = phi_a;
+        self.state.phi_b = phi_b;
+        self.state.phi_sub = phi_sub;
+        self.state.lfoz = lfoz;
+    }
+
     pub fn set_parameter(&mut self, index: u8, value: i32) {
         match index {
             i if i == ParamsIndex::K_SHAPE as u8 => {
@@ -329,6 +414,11 @@ impl Waves {
 
     pub fn get_parameter_str_value(&self, index: u8, _value: i32) -> *const core::ffi::c_char {
         match index {
+            // Note: String memory must be accessible even after function returned.
+            //       It can be assumed that caller will have copied or used the string
+            //       before the next call to getParameterStrValue
+
+            // Currently no Parameters of type k_unit_param_type_strings.
             _ => core::ptr::null(),
         }
     }
@@ -339,91 +429,8 @@ impl Waves {
             StateFlags::K_FLAG_RESET as u32,
             core::sync::atomic::Ordering::Relaxed,
         );
-    }
 
-    pub fn process(&mut self, _input: *const f32, output: *mut f32, frames: u32) {
-        let _state = &self.state;
-        let _params: &Params = &self.params;
-        let ctxt = unsafe {
-            (*self.runtime_desc).hooks.runtime_context as *const unit_runtime_osc_context_t
-        };
-
-        // Handle events.
-        {
-            self.update_pitch(unsafe {
-                osc_w0f_for_note((((*ctxt).pitch) >> 8) as u8, (((*ctxt).pitch) & 0xff) as u8)
-                    as f32
-            });
-            let flags = self.state.flags.swap(
-                StateFlags::K_FLAGS_NONE as u32,
-                core::sync::atomic::Ordering::Relaxed,
-            );
-            self.update_waves(flags);
-
-            if flags & StateFlags::K_FLAG_RESET as u32 != 0 {
-                self.reset();
-            }
-
-            self.state.lfo = unsafe { q31_to_f32!((*ctxt).shape_lfo) };
-
-            if flags & StateFlags::K_FLAG_BIT_CRUSH as u32 != 0 {
-                self.state.dither = self.params.bit_crush * 2e-008_f32;
-                self.state.bit_res = unsafe { osc_bitresf(self.params.bit_crush) };
-                self.state.bit_res_recip = 1.0_f32 / self.state.bit_res;
-            }
-        }
-
-        // Temporaries.
-        let mut phi_a: f32 = self.state.phi_a;
-        let mut phi_b: f32 = self.state.phi_b;
-        let mut phi_sub: f32 = self.state.phi_sub;
-
-        let mut lfoz: f32 = self.state.lfoz;
-        let lfo_inc: f32 = (self.state.lfo - lfoz) / frames as f32;
-
-        let _ditheramt = self.params.bit_crush * 2e-008_f32;
-
-        let sub_mix = self.params.sub_mix * 0.5011872336272722_f32;
-        let ring_mix = self.params.ring_mix;
-
-        let mut y = output as *mut f32;
-        let y_e = unsafe { y.offset(frames as isize) };
-
-        while y != y_e {
-            let wave_mix = unsafe { clip01f(self.params.shape + lfoz) };
-
-            let mut sig =
-                (1.0_f32 - wave_mix) * unsafe { osc_wave_scanf(self.state.wave_a, phi_a) };
-            sig += wave_mix * unsafe { osc_wave_scanf(self.state.wave_b, phi_b) };
-
-            let sub_sig = unsafe { osc_wave_scanf(self.state.sub_wave, phi_sub) };
-            sig = (1.0_f32 - ring_mix) * sig + ring_mix * 1.4125375446227544_f32 * (sub_sig * sig);
-            sig += sub_mix * sub_sig;
-            sig *= 1.4125375446227544_f32;
-            sig = unsafe { clip1m1f(fastertanh2f(sig)) };
-
-            // TODO: dsp::BiQuad
-
-            // *(y++) = sig;
-            unsafe {
-                *y = sig;
-                y = y.offset(1);
-            }
-
-            phi_a += self.state.w0_a;
-            phi_a -= phi_a as i32 as f32;
-            phi_b += self.state.w0_b;
-            phi_b -= phi_b as i32 as f32;
-            phi_sub += self.state.w0_sub;
-            phi_sub -= phi_sub as i32 as f32;
-            lfoz += lfo_inc;
-        }
-
-        // Update state
-        self.state.phi_a = phi_a;
-        self.state.phi_b = phi_b;
-        self.state.phi_sub = phi_sub;
-        self.state.lfoz = lfoz;
+        // TODO: should we still fully rely on osc context pitch?
     }
 
     pub fn note_off(&self, _note: u8) {}
