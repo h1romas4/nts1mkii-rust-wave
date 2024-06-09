@@ -422,7 +422,7 @@ macro_rules! param_10bit_to_f32 {
 #[macro_export]
 macro_rules! param_f32_to_10bit {
     ($f32:expr) => {
-        ($f32 * 1023.0_f32) as i32
+        (unsafe { si_roundf($f32 * 1023.0) } as i32)
     };
 }
 
