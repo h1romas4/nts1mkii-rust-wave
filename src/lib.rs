@@ -406,7 +406,7 @@ macro_rules! unit_api_is_compat {
 #[macro_export]
 macro_rules! param_10bit_to_f32 {
     ($val:expr) => {
-        (($val as f32) * 9.77517106549365e-004_f32) as i32
+        (($val as f32) * 9.77517106549365e-004_f32) as i32 // TODO: 0-1023 -> 0.f-1.f
     };
 }
 
@@ -422,7 +422,7 @@ macro_rules! param_10bit_to_f32 {
 #[macro_export]
 macro_rules! param_f32_to_10bit {
     ($f32:expr) => {
-        (unsafe { si_roundf($f32 * 1023.0) } as i32)
+        (unsafe { si_roundf($f32 * 1023.0) } as i32) // TODO: 0.f-1.f -> 0-1023
     };
 }
 
