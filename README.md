@@ -6,11 +6,12 @@
 
 This repository is a Rust ported build of the WAVES(osc) synthesizer for the NTS-1 digital kit mkII included in [logue-sdk](https://github.com/korginc/logue-sdk). This may be useful if you want to write the sound unit for the NTS-1 Digital Kit mkII in Rust.
 
-## WIP: This repository is not yet working!
+## WIP
 
-- In the meantime, some sounds are pronounced.
-- Perhaps some porting mistakes have been made.
-- Not all of the original Waves are implemented.
+- [ ] Not all of the original Waves are implemented.
+    - [ ] `K_SHAPE` is not working properly.
+    - [ ] Does not implement `dither` and `bit_res_recip`.
+- [ ] There may be other bugs.
 
 ## Build
 
