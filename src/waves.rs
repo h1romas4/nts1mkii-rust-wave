@@ -5,7 +5,7 @@ use crate::{
     clip01f, clip1m1f, fastertanh2f, k_samplerate_recipf, k_unit_err_api_version,
     k_unit_err_geometry, k_unit_err_none, k_unit_err_samplerate, k_unit_err_target,
     k_unit_err_undef, k_waves_a_cnt, k_waves_b_cnt, k_waves_c_cnt, k_waves_d_cnt, k_waves_e_cnt,
-    k_waves_f_cnt, osc_bitresf, osc_w0f_for_note, osc_wave_scanf, osc_white, param_10bit_to_f32,
+    k_waves_f_cnt, osc_bitresf, osc_w0f_for_note, osc_wave_scanf, osc_white, param_10bit_to_f32, param_f32_to_10bit,
     q31_to_f32, si_roundf, unit_api_is_compat, unit_header, unit_runtime_desc_t,
     unit_runtime_osc_context_t, wavesA, wavesB, wavesC, wavesD, wavesE, wavesF,
 };
@@ -371,12 +371,12 @@ impl Waves {
             i if i == ParamsIndex::K_SHAPE as u8 => {
                 //  min, max,  center, default, type,                   frac, frac. mode, <reserved>, name
                 // {0,   1023, 0,      0,       k_unit_param_type_none, 0,    0,          0,          {"SHAPE"}},
-                return param_10bit_to_f32!((self.params.shape - 0.05_f32) / 0.99_f32);
+                return param_f32_to_10bit!((self.params.shape - 0.05_f32) / 0.99_f32);
             }
             i if i == ParamsIndex::K_SUB_MIX as u8 => {
                 //  min, max,  center, default, type,                   frac, frac. mode, <reserved>, name
                 // {0,   1023, 0,      0,       k_unit_param_type_none, 0,    0,          0,          {"SUB"}},
-                return param_10bit_to_f32!((self.params.sub_mix - 0.05_f32) / 0.90_f32);
+                return param_f32_to_10bit!((self.params.sub_mix - 0.05_f32) / 0.90_f32);
             }
             i if i == ParamsIndex::K_WAVE_A as u8 => {
                 //  min, max,          center, default, type,                   frac, frac. mode, <reserved>, name
