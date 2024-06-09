@@ -328,7 +328,7 @@ impl Waves {
             i if i == ParamsIndex::K_WAVE_B as u8 => {
                 //  min, max,          center, default, type,                   frac, frac. mode, <reserved>, name
                 // {0,   WAVE_B_CNT-1, 0,      0,       k_unit_param_type_enum, 0,    0,          0,          {"WAVE B"}},
-                self.params.wave_a = (value as i16 % K_WAVES_B_CNT) as u8;
+                self.params.wave_b = (value as i16 % K_WAVES_B_CNT) as u8;
                 self.state.flags.fetch_or(
                     StateFlags::K_FLAG_WAVE_B as u32,
                     core::sync::atomic::Ordering::Relaxed,
