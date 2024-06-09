@@ -48,6 +48,14 @@ jobs:
     - name: Build Sound unit
       run: |
         WITH_LOGUE_SDK_BINDGEN=true cargo build --release
+        # fix sound unit binary
         TARGET=target/thumbv7em-none-eabihf/release/nts1mkii-rust-wave
-        readelf -a ${TARGET}
-        toolchain/gcc-arm-none-eabi/bin/arm-none-eabi-objdump -d ${TARGET}
+        # strip binary
+        toolchain/gcc-arm-none-eabi/bin/arm-none-eabi-strip --remove-section=.debug* ${TARGET}
+        # patch elf header
+        printf '\x00' | dd of=${TARGET} bs=1 seek=7 count=1 conv=notrunc
+        # distribute
+        cp -p ${TARGET} dist/nts1mkii-rust-wave.nts1mkiiunit
+        # check
+        readelf -a dist/nts1mkii-rust-wave.nts1mkiiunit
+        toolchain/gcc-arm-none-eabi/bin/arm-none-eabi-objdump -d dist/nts1mkii-rust-wave.nts1mkiiunit

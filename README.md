@@ -38,9 +38,18 @@ Build NTS-1 digital kit mkII sound unit:
 ```bash
 rustup target add thumbv7em-none-eabihf
 cargo build --release
-cp -p target/thumbv7em-none-eabihf/release/nts1mkii-rust-wave dist/nts1mkii-rust-wave.nts1mkiiunit
+```
+
+Distribute:
+
+```bash
+TARGET=target/thumbv7em-none-eabihf/release/nts1mkii-rust-wave
+# strip binary
+toolchain/gcc-arm-none-eabi/bin/arm-none-eabi-strip --remove-section=.debug* ${TARGET}
 # patch elf header
-printf '\x00' | dd of=dist/nts1mkii-rust-wave.nts1mkiiunit bs=1 seek=7 count=1 conv=notrunc
+printf '\x00' | dd of=${TARGET} bs=1 seek=7 count=1 conv=notrunc
+# distribute
+cp -p ${TARGET} dist/nts1mkii-rust-wave.nts1mkiiunit
 ```
 
 Transfer `dist/nts1mkii-rust-wave.nts1mkiiunit` to NTS-1 digital kit mkII.
@@ -66,10 +75,6 @@ Build Rust with bindgen: `WITH_LOGUE_SDK_BINDGEN=true`
 
 ```bash
 WITH_LOGUE_SDK_BINDGEN=true cargo build --release
-readelf -a target/thumbv7em-none-eabihf/release/nts1mkii-rust-wave > dist/nts1mkii-rust-wave.elf.txt
-cp -p target/thumbv7em-none-eabihf/release/nts1mkii-rust-wave dist/nts1mkii-rust-wave.nts1mkiiunit
-# patch elf header
-printf '\x00' | dd of=dist/nts1mkii-rust-wave.nts1mkiiunit bs=1 seek=7 count=1 conv=notrunc
 ```
 
 ## License
