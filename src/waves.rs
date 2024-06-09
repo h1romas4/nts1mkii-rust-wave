@@ -337,7 +337,7 @@ impl Waves {
             i if i == ParamsIndex::K_SUB_WAVE as u8 => {
                 //  min, max,            center, default, type,                   frac, frac. mode, <reserved>, name
                 // {0,   SUB_WAVE_CNT-1, 0,      0,       k_unit_param_type_enum, 0,    0,          0,          {"SUB WAVE"}},
-                self.params.wave_a = (value as i16 % SUB_WAVE_CNT) as u8;
+                self.params.sub_wave = (value as i16 % SUB_WAVE_CNT) as u8;
                 self.state.flags.fetch_or(
                     StateFlags::K_FLAG_SUB_WAVE as u32,
                     core::sync::atomic::Ordering::Relaxed,
