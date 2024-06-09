@@ -40,7 +40,7 @@
             "problemMatcher": []
         },
         {
-            "label": "upload (WSL2)",
+            "label": "Distribute (WSL2)",
             "type": "shell",
             "dependsOn" : [
                 "elf-patch",
@@ -54,7 +54,7 @@
             "problemMatcher": []
         },
         {
-            "label": "upload (UNIX)",
+            "label": "Distribute (UNIX)",
             "type": "shell",
             "dependsOn" : [
                 "elf-patch",
@@ -96,5 +96,26 @@
             ],
             "problemMatcher": []
         },
+        {
+            "label": "Deploy to nts1mkii (py-logue-tools)",
+            "type": "shell",
+            "dependsOn" : [
+                "Distribute (UNIX)",
+            ],
+            "command": "py-logue-tools",
+            "args": [
+                "-p2",
+                "--type",
+                "NTS1Mk2",
+                "install",
+                "-f",
+                "dist/nts1mkii-rust-wave.nts1mkiiunit",
+                "-m",
+                "osc",
+                "-s",
+                "2"
+            ],
+            "problemMatcher": []
+        }
     ]
 }
