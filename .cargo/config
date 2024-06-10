@@ -8,6 +8,7 @@ target = "thumbv7em-none-eabihf"
 # toolchain/gcc-arm-none-eabi/bin/arm-none-eabi-ld --help
 #  KORG KONTROL Editor wants `OS/ABI: UNIX - System V`
 #  printf '\x00' | dd of=target/thumbv7em-none-eabihf/release/nts1mkii-rust-wave bs=1 seek=7 count=1 conv=notrunc
+# linker = "/home/hiromasa/devel/toolchain/llvm-14/bin/ld.lld"
 linker = "toolchain/gcc-arm-none-eabi/bin/arm-none-eabi-ld"
 rustflags = [
     "-C", "relocation-model=pic",
