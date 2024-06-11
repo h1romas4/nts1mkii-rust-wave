@@ -1,27 +1,15 @@
-// louge-sdk constants and types.
 use crate::unit_param_t;
 use crate::unit_header_t;
 use crate::__BindgenBitfieldUnit;
-use crate::k_waves_a_cnt;
-use crate::k_waves_b_cnt;
-use crate::k_waves_c_cnt;
-use crate::k_waves_d_cnt;
-use crate::k_waves_e_cnt;
-use crate::k_waves_f_cnt;
 use crate::k_unit_api_2_0_0;
 use crate::k_unit_module_osc;
 use crate::k_unit_param_type_enum;
 use crate::k_unit_param_type_none;
 use crate::k_unit_param_type_percent;
 use crate::k_unit_target_nts1_mkii;
-// Utility macros.
 use crate::sound_unit_dev_id_string;
 use crate::sound_unit_string;
-
-// Constants for sound unit.
-pub const K_WAVES_A_CNT: i16 = (k_waves_a_cnt + k_waves_b_cnt + k_waves_c_cnt) as i16;
-pub const K_WAVES_B_CNT: i16 = (k_waves_d_cnt + k_waves_e_cnt + k_waves_f_cnt) as i16;
-pub const SUB_WAVE_CNT: i16 = k_waves_a_cnt as i16;
+use crate::waves::{ K_WAVES_A_CNT, K_WAVES_B_CNT, SUB_WAVE_CNT };
 
 ///
 /// The sound unit header.

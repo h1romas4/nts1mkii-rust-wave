@@ -3,10 +3,7 @@
 ///  WAVES by KORG INC.
 ///  https://github.com/korginc/logue-sdk/blob/master/platform/nts-1_mkii/waves/waves.h
 ///  rev. c78b4b67f97dcff3c87cb6cf2ee9ebe36b8b82a4
-
 use core::sync::atomic::AtomicU32;
-
-use crate::header::{K_WAVES_A_CNT, K_WAVES_B_CNT, SUB_WAVE_CNT};
 use crate::{
     clip01f, clip1m1f, fastertanh2f, k_samplerate_recipf, k_unit_err_api_version,
     k_unit_err_geometry, k_unit_err_none, k_unit_err_samplerate, k_unit_err_target,
@@ -15,6 +12,10 @@ use crate::{
     q31_to_f32, si_roundf, unit_api_is_compat, unit_header, unit_runtime_desc_t,
     unit_runtime_osc_context_t, wavesA, wavesB, wavesC, wavesD, wavesE, wavesF,
 };
+
+pub const K_WAVES_A_CNT: i16 = (k_waves_a_cnt + k_waves_b_cnt + k_waves_c_cnt) as i16;
+pub const K_WAVES_B_CNT: i16 = (k_waves_d_cnt + k_waves_e_cnt + k_waves_f_cnt) as i16;
+pub const SUB_WAVE_CNT: i16 = k_waves_a_cnt as i16;
 
 pub struct Params {
     sub_mix: f32,
