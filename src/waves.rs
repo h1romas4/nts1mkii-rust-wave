@@ -1,3 +1,9 @@
+/// license:BSD-3-Clause
+/// Porting from:
+///  WAVES by KORG INC.
+///  https://github.com/korginc/logue-sdk/blob/master/platform/nts-1_mkii/waves/waves.h
+///  rev. c78b4b67f97dcff3c87cb6cf2ee9ebe36b8b82a4
+
 use core::sync::atomic::AtomicU32;
 
 use crate::header::{K_WAVES_A_CNT, K_WAVES_B_CNT, SUB_WAVE_CNT};
