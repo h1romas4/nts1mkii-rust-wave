@@ -45,8 +45,6 @@ Distribute:
 
 ```bash
 TARGET=target/thumbv7em-none-eabihf/release/nts1mkii-rust-wave
-# strip binary
-toolchain/gcc-arm-none-eabi/bin/arm-none-eabi-strip --remove-section=.debug* ${TARGET}
 # patch elf header
 printf '\x00' | dd of=${TARGET} bs=1 seek=7 count=1 conv=notrunc
 # distribute

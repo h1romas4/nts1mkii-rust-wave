@@ -234,5 +234,6 @@ SECTIONS
     *(.note.GNU-stack) *(.gnu_debuglink) *(.gnu.lto_*)
     *(.ARM.exidx.*)
     *(.gnu.hash)
+    *(.debug*)
   }
 }

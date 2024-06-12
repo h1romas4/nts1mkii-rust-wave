@@ -70,9 +70,9 @@
         {
             "label": "elf-patch",
             "type": "shell",
-            "dependsOn" : [
-                "strip",
-            ],
+            // "dependsOn" : [
+            //     "strip",
+            // ],
             "command": "printf",
             "args": [
                 "'\\x00'",
