@@ -1,7 +1,5 @@
-/target
+target/
 build/
-/dist/*
+/dist
 /toolchain/gcc-arm-none-eabi/*
-
 !toolchain/gcc-arm-none-eabi/EMPTY
-!dist/libnts1mkii.a

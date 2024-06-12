@@ -28,7 +28,7 @@ rustflags = [
     "-C", "link-arg=--long-plt",
     "-C", "link-arg=-Bsymbolic-functions",
     "-C", "link-arg=--gc-sections",
-    "-lnosys",
-    "-lc_nano",
-    "-lm"
+    "-C", "link-arg=-lc_nano",
+    "-C", "link-arg=-lm",
+    "-C", "link-arg=-lnosys",
 ]

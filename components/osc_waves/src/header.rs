@@ -1,15 +1,5 @@
-use crate::unit_param_t;
-use crate::unit_header_t;
-use crate::__BindgenBitfieldUnit;
-use crate::k_unit_api_2_0_0;
-use crate::k_unit_module_osc;
-use crate::k_unit_param_type_enum;
-use crate::k_unit_param_type_none;
-use crate::k_unit_param_type_percent;
-use crate::k_unit_target_nts1_mkii;
-use crate::sound_unit_dev_id_string;
-use crate::sound_unit_string;
-use crate::waves::{ K_WAVES_A_CNT, K_WAVES_B_CNT, SUB_WAVE_CNT };
+use logue_sdk_v2rs::*;
+use crate::waves::{K_WAVES_A_CNT, K_WAVES_B_CNT, SUB_WAVE_CNT};
 
 ///
 /// The sound unit header.
@@ -83,7 +73,7 @@ pub static UNIT_HEADER: unit_header_t = unit_header_t {
             max: K_WAVES_B_CNT - 1,
             center: 0,
             init: 0,
-            type_: k_unit_param_type_enum as u8,
+            type_: k_unit_param_type_none as u8,
             _bitfield_align_1: [0u8; 0],
             // frac : 4, frac_mode : 1, reserved : 3
             _bitfield_1: __BindgenBitfieldUnit::new([0b00000000; 1]),
@@ -94,7 +84,7 @@ pub static UNIT_HEADER: unit_header_t = unit_header_t {
             max: SUB_WAVE_CNT - 1,
             center: 0,
             init: 0,
-            type_: k_unit_param_type_enum as u8,
+            type_: k_unit_param_type_none as u8,
             _bitfield_align_1: [0u8; 0],
             // frac : 4, frac_mode : 1, reserved : 3
             _bitfield_1: __BindgenBitfieldUnit::new([0b00000000; 1]),
@@ -116,7 +106,7 @@ pub static UNIT_HEADER: unit_header_t = unit_header_t {
             max: 1000,
             center: 0,
             init: 0,
-            type_: k_unit_param_type_percent as u8,
+            type_: k_unit_param_type_none as u8,
             _bitfield_align_1: [0u8; 0],
             // frac : 4, frac_mode : 1, reserved : 3
             _bitfield_1: __BindgenBitfieldUnit::new([0b00010001; 1]),

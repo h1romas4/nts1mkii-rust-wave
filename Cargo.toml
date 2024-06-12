@@ -1,16 +1,9 @@
-[package]
-name = "nts1mkii-rust-wave"
-version = "0.1.0"
-edition = "2021"
-
-[lib]
-crate-type = ["bin"]
+[workspace]
+members = ["components/logue_sdk_v2rs", "components/osc_waves"]
+resolver = "2"
 
 [profile.release]
 panic = "abort"
 opt-level = "s"
 # https://doc.rust-lang.org/cargo/reference/profiles.html#lto
 lto = "off"
-
-[build-dependencies]
-bindgen = "0.65.1"
