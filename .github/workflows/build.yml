@@ -57,6 +57,9 @@ jobs:
         printf '\x00' | dd of=${TARGET} bs=1 seek=7 count=1 conv=notrunc
         # distribute
         cp -p ${TARGET} dist/osc_waves.nts1mkiiunit
+
+    - name: Valid Sound unit
+      run: |
         # check
         readelf -a dist/osc_waves.nts1mkiiunit
         toolchain/gcc-arm-none-eabi/bin/arm-none-eabi-objdump -d dist/osc_waves.nts1mkiiunit
