@@ -47,7 +47,7 @@ jobs:
         cmake ..
         make
 
-    - name: Build Sound unit
+    - name: Build Sound unit (osc_waves)
       run: |
         # build
         WITH_LOGUE_SDK_BINDGEN=true cargo build --release
@@ -58,7 +58,7 @@ jobs:
         # distribute
         cp -p ${TARGET} dist/osc_waves.nts1mkiiunit
 
-    - name: Valid Sound unit
+    - name: Valid Sound unit (osc_waves)
       run: |
         # check
         readelf -a dist/osc_waves.nts1mkiiunit
