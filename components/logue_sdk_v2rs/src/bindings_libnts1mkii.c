@@ -6,4 +6,7 @@
 #include "osc_api.h"
 #include "fx_api.h"
 
+#include "unit_delfx.h"
+#include "unit_modfx.h"
 #include "unit_osc.h"
+#include "unit_revfx.h"

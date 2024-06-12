@@ -331,7 +331,10 @@ pub const UNIT_PARAM_NAME_LEN: u32 = 21;
 pub const UNIT_PARAM_NAME_SIZE: u32 = 22;
 pub const UNIT_NAME_LEN: u32 = 19;
 pub const UNIT_NAME_SIZE: u32 = 20;
+pub const UNIT_DELFX_MAX_PARAM_COUNT: u32 = 11;
+pub const UNIT_MODFX_MAX_PARAM_COUNT: u32 = 10;
 pub const UNIT_OSC_MAX_PARAM_COUNT: u32 = 10;
+pub const UNIT_REVFX_MAX_PARAM_COUNT: u32 = 11;
 pub type __int8_t = core::ffi::c_schar;
 pub type __uint8_t = core::ffi::c_uchar;
 pub type __int16_t = core::ffi::c_short;
@@ -11084,10 +11087,21 @@ pub type _bindgen_ty_11 = core::ffi::c_int;
 extern "C" {
     pub static unit_header: unit_header_t;
 }
-pub const k_runtime_osc_input_unused: _bindgen_ty_12 = 0;
-pub const k_runtime_osc_input_used: _bindgen_ty_12 = 1;
-#[doc = " Oscillator input usage states"]
+pub const k_unit_delfx_fixed_param_time: _bindgen_ty_12 = 0;
+pub const k_unit_delfx_fixed_param_depth: _bindgen_ty_12 = 1;
+pub const k_unit_delfx_fixed_param_mix: _bindgen_ty_12 = 2;
+pub const k_num_unit_delfx_fixed_param_id: _bindgen_ty_12 = 3;
+#[doc = " Exposed parameters with fixed/direct UI controls."]
 pub type _bindgen_ty_12 = core::ffi::c_uint;
+pub const k_unit_modfx_fixed_param_time: _bindgen_ty_13 = 0;
+pub const k_unit_modfx_fixed_param_depth: _bindgen_ty_13 = 1;
+pub const k_num_unit_modfx_fixed_param_id: _bindgen_ty_13 = 2;
+#[doc = " Exposed parameters with fixed/direct UI controls."]
+pub type _bindgen_ty_13 = core::ffi::c_uint;
+pub const k_runtime_osc_input_unused: _bindgen_ty_14 = 0;
+pub const k_runtime_osc_input_used: _bindgen_ty_14 = 1;
+#[doc = " Oscillator input usage states"]
+pub type _bindgen_ty_14 = core::ffi::c_uint;
 #[doc = " Pointer to notify_input_usage(uint8_t usage), used to notify the runtime that oscillator is using the audio input or not.\n Note: the runtime assumes audio input is unused by default"]
 pub type unit_runtime_osc_notify_input_usage_ptr =
     ::core::option::Option<unsafe extern "C" fn(arg1: u8)>;
@@ -11219,8 +11233,14 @@ impl unit_runtime_osc_context {
 }
 #[doc = " Oscillator specific unit runtime context."]
 pub type unit_runtime_osc_context_t = unit_runtime_osc_context;
-pub const k_unit_osc_fixed_param_shape: _bindgen_ty_13 = 0;
-pub const k_unit_osc_fixed_param_altshape: _bindgen_ty_13 = 1;
-pub const k_num_unit_osc_fixed_param_id: _bindgen_ty_13 = 2;
+PUB const k_unit_osc_fixed_param_shape: _bindgen_ty_15 = 0;
+pub const k_unit_osc_fixed_param_altshape: _bindgen_ty_15 = 1;
+pub const k_num_unit_osc_fixed_param_id: _bindgen_ty_15 = 2;
 #[doc = " Exposed parameters with fixed/direct UI controls."]
-pub type _bindgen_ty_13 = core::ffi::c_uint;
+pub type _bindgen_ty_15 = core::ffi::c_uint;
+pub const k_unit_revfx_fixed_param_time: _bindgen_ty_16 = 0;
+pub const k_unit_revfx_fixed_param_depth: _bindgen_ty_16 = 1;
+pub const k_unit_revfx_fixed_param_mix: _bindgen_ty_16 = 2;
+pub const k_num_unit_revfx_fixed_param_id: _bindgen_ty_16 = 3;
+#[doc = " Exposed parameters with fixed/direct UI controls."]
+pub type _bindgen_ty_16 = core::ffi::c_uint;
