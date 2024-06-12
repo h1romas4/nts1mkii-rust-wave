@@ -14,7 +14,7 @@
             "problemMatcher": []
         },
         {
-            "label": "objdump",
+            "label": "objdump (osc_waves)",
             "type": "shell",
             "command": "toolchain/gcc-arm-none-eabi/bin/arm-none-eabi-objdump",
             "args": [
@@ -27,12 +27,38 @@
             "problemMatcher": []
         },
         {
-            "label": "readelf",
+            "label": "readelf (osc_waves)",
             "type": "shell",
             "command": "readelf",
             "args": [
                 "-a",
                 "target/thumbv7em-none-eabihf/release/osc_waves",
+                "|",
+                "tee",
+                "dist/nts1mkii-rust-wave.readelf.txt"
+            ],
+            "problemMatcher": []
+        },
+        {
+            "label": "objdump (osc_dummy)",
+            "type": "shell",
+            "command": "toolchain/gcc-arm-none-eabi/bin/arm-none-eabi-objdump",
+            "args": [
+                "-D",
+                "target/thumbv7em-none-eabihf/release/osc_dummy",
+                "|",
+                "tee",
+                "dist/nts1mkii-rust-wave.objdump.txt"
+            ],
+            "problemMatcher": []
+        },
+        {
+            "label": "readelf (osc_dummy)",
+            "type": "shell",
+            "command": "readelf",
+            "args": [
+                "-a",
+                "target/thumbv7em-none-eabihf/release/osc_dummy",
                 "|",
                 "tee",
                 "dist/nts1mkii-rust-wave.readelf.txt"

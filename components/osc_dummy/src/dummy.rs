@@ -36,6 +36,8 @@ impl Dummy {
 
         self.runtime_desc = desc;
 
+        unsafe { osc_white(); }
+
         k_unit_err_none as i8
     }
 
