@@ -12,7 +12,9 @@ pub const K_SAMPLERATE_RECIPF: f64 = 2.08333333333333e-005_f64;
 pub const Q15_TO_F32_C: f32 = 3.05175781250000e-005;
 pub const Q31_TO_F32_C: f32 = 4.65661287307739e-010;
 
-// For libm error handling
+///
+/// Workaround handler for libm.
+///
 #[no_mangle]
 #[cfg_attr(all(test, assert_no_panic), no_panic::no_panic)]
 pub extern "C" fn __errno() {

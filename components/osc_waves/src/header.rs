@@ -4,8 +4,8 @@ use crate::waves::{K_WAVES_A_CNT, K_WAVES_B_CNT, SUB_WAVE_CNT};
 ///
 /// The sound unit header.
 ///
-#[link_section = ".unit_header"]
 #[used]
+#[link_section = ".unit_header"]
 #[export_name = "unit_header"]
 pub static UNIT_HEADER: unit_header_t = unit_header_t {
     // This unit's version: major.minor.patch (major<<16 minor<<8 patch).
