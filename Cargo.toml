@@ -1,5 +1,9 @@
 [workspace]
-members = ["components/logue_sdk_v2rs", "components/osc_waves"]
+members = [
+    "components/logue_sdk_v2rs",
+    "components/osc_waves",
+    "components/osc_dummy",
+]
 resolver = "2"
 
 [profile.release]
