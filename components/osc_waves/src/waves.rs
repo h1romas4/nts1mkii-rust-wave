@@ -219,6 +219,7 @@ impl Waves {
         // Unit was deselected and the render callback will stop being called
     }
 
+    #[allow(clippy::excessive_precision)]
     pub fn process(&mut self, _input: *const f32, output: *mut f32, frames: u32) {
         let _state = &self.state;
         let _params: &Params = &self.params;
@@ -230,7 +231,6 @@ impl Waves {
         {
             self.update_pitch(unsafe {
                 osc_w0f_for_note((((*ctxt).pitch) >> 8) as u8, (((*ctxt).pitch) & 0xff) as u8)
-                    as f32
             });
             let flags = self.state.flags.swap(
                 StateFlags::KFlagsNone as u32,
@@ -264,7 +264,7 @@ impl Waves {
         let sub_mix = self.params.sub_mix * 0.5011872336272722_f32;
         let ring_mix = self.params.ring_mix;
 
-        let mut y = output as *mut f32;
+        let mut y = output;
         let y_e = unsafe { y.offset(frames as isize) };
 
         while y != y_e {
@@ -309,12 +309,12 @@ impl Waves {
             i if i == ParamsIndex::KShape as u8 => {
                 //  min, max,  center, default, type,                   frac, frac. mode, <reserved>, name
                 // {0,   1023, 0,      0,       k_unit_param_type_none, 0,    0,          0,          {"SHAPE"}},
-                self.params.shape = 0.005_f32 + param_10bit_to_f32!(value) as f32 * 0.99_f32;
+                self.params.shape = 0.005_f32 + param_10bit_to_f32!(value) * 0.99_f32;
             }
             i if i == ParamsIndex::KSubMix as u8 => {
                 //  min, max,  center, default, type,                   frac, frac. mode, <reserved>, name
                 // {0,   1023, 0,      0,       k_unit_param_type_none, 0,    0,          0,          {"SUB"}},
-                self.params.sub_mix = 0.05_f32 + param_10bit_to_f32!(value) as f32 * 0.90_f32;
+                self.params.sub_mix = 0.05_f32 + param_10bit_to_f32!(value) * 0.90_f32;
             }
             i if i == ParamsIndex::KWaveA as u8 => {
                 //  min, max,          center, default, type,                   frac, frac. mode, <reserved>, name
@@ -371,48 +371,49 @@ impl Waves {
             i if i == ParamsIndex::KShape as u8 => {
                 //  min, max,  center, default, type,                   frac, frac. mode, <reserved>, name
                 // {0,   1023, 0,      0,       k_unit_param_type_none, 0,    0,          0,          {"SHAPE"}},
-                return param_f32_to_10bit!((self.params.shape - 0.05_f32) / 0.99_f32);
+                param_f32_to_10bit!((self.params.shape - 0.05_f32) / 0.99_f32)
             }
             i if i == ParamsIndex::KSubMix as u8 => {
                 //  min, max,  center, default, type,                   frac, frac. mode, <reserved>, name
                 // {0,   1023, 0,      0,       k_unit_param_type_none, 0,    0,          0,          {"SUB"}},
-                return param_f32_to_10bit!((self.params.sub_mix - 0.05_f32) / 0.90_f32);
+                param_f32_to_10bit!((self.params.sub_mix - 0.05_f32) / 0.90_f32)
             }
             i if i == ParamsIndex::KWaveA as u8 => {
                 //  min, max,          center, default, type,                   frac, frac. mode, <reserved>, name
                 // {0,   WAVE_A_CNT-1, 0,      0,       k_unit_param_type_enum, 0,    0,          0,          {"WAVE A"}},
-                return self.params.wave_a as i32;
+                self.params.wave_a as i32
             }
             i if i == ParamsIndex::KWaveB as u8 => {
                 //  min, max,          center, default, type,                   frac, frac. mode, <reserved>, name
                 // {0,   WAVE_B_CNT-1, 0,      0,       k_unit_param_type_enum, 0,    0,          0,          {"WAVE B"}},
-                return self.params.wave_b as i32;
+                self.params.wave_b as i32
             }
             i if i == ParamsIndex::KSubWave as u8 => {
                 //  min, max,            center, default, type,                   frac, frac. mode, <reserved>, name
                 // {0,   SUB_WAVE_CNT-1, 0,      0,       k_unit_param_type_enum, 0,    0,          0,          {"SUB WAVE"}},
-                return self.params.sub_wave as i32;
+                self.params.sub_wave as i32
             }
             i if i == ParamsIndex::KRingMix as u8 => {
                 //  min, max,  center, default, type,                      frac, frac. mode, <reserved>, name
                 // {0,   1000,  0,      0,       k_unit_param_type_percent, 1,    1,          0,          {"RING MIX"}},
-                return unsafe { si_roundf(self.params.ring_mix * 1000_f32) as i32 };
+                unsafe { si_roundf(self.params.ring_mix * 1000_f32) as i32 }
             }
             i if i == ParamsIndex::KBitCrush as u8 => {
                 //  min, max,  center, default, type,                      frac, frac. mode, <reserved>, name
                 // {0,   1000,  0,      0,       k_unit_param_type_percent, 1,    1,          0,          {"BIT CRUSH"}},
-                return unsafe { si_roundf(self.params.bit_crush * 1000_f32) as i32 };
+                unsafe { si_roundf(self.params.bit_crush * 1000_f32) as i32 }
             }
             i if i == ParamsIndex::KDrift as u8 => {
                 //  min, max,  center, default, type,                      frac, frac. mode, <reserved>, name
                 // {0,   1000,  0,      250,     k_unit_param_type_percent, 1,    1,          0,          {"DRIFT"}},
-                return unsafe { si_roundf((self.params.drift - 1.0_f32) * 1000_f32) as i32 };
+                unsafe { si_roundf((self.params.drift - 1.0_f32) * 1000_f32) as i32 }
             }
             _ => 0,
         }
     }
 
     pub fn get_parameter_str_value(&self, index: u8, _value: i32) -> *const core::ffi::c_char {
+        #[allow(clippy::match_single_binding)]
         match index {
             // Note: String memory must be accessible even after function returned.
             //       It can be assumed that caller will have copied or used the string
@@ -443,6 +444,7 @@ impl Waves {
 
     pub fn after_touch(&self, _note: u8, _press: u8) {}
 
+    #[allow(clippy::excessive_precision)]
     fn update_pitch(&mut self, w0: f32) {
         let w0: f32 = w0 + self.state.imperfection;
         let drift = self.params.drift;
