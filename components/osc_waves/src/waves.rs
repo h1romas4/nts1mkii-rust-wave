@@ -4,14 +4,7 @@
 ///  https://github.com/korginc/logue-sdk/blob/master/platform/nts-1_mkii/waves/waves.h
 ///  rev. c78b4b67f97dcff3c87cb6cf2ee9ebe36b8b82a4
 use core::sync::atomic::AtomicU32;
-use crate::{
-    clip01f, clip1m1f, fastertanh2f, k_samplerate_recipf, k_unit_err_api_version,
-    k_unit_err_geometry, k_unit_err_none, k_unit_err_samplerate, k_unit_err_target,
-    k_unit_err_undef, k_waves_a_cnt, k_waves_b_cnt, k_waves_c_cnt, k_waves_d_cnt, k_waves_e_cnt,
-    k_waves_f_cnt, osc_bitresf, osc_w0f_for_note, osc_wave_scanf, osc_white, param_10bit_to_f32, param_f32_to_10bit,
-    q31_to_f32, si_roundf, unit_api_is_compat, unit_header, unit_runtime_desc_t,
-    unit_runtime_osc_context_t, wavesA, wavesB, wavesC, wavesD, wavesE, wavesF,
-};
+use logue_sdk_v2rs::*;
 
 pub const K_WAVES_A_CNT: i16 = (k_waves_a_cnt + k_waves_b_cnt + k_waves_c_cnt) as i16;
 pub const K_WAVES_B_CNT: i16 = (k_waves_d_cnt + k_waves_e_cnt + k_waves_f_cnt) as i16;
@@ -30,14 +23,14 @@ pub struct Params {
 }
 
 enum ParamsIndex {
-    K_SHAPE = 0,
-    K_SUB_MIX,
-    K_WAVE_A,
-    K_WAVE_B,
-    K_SUB_WAVE,
-    K_RING_MIX,
-    K_BIT_CRUSH,
-    K_DRIFT,
+    KShape = 0,
+    KSubMix,
+    KWaveA,
+    KWaveB,
+    KSubWave,
+    KRingMix,
+    KBitCrush,
+    KDrift,
 }
 
 impl Params {
@@ -70,13 +63,13 @@ impl Params {
 
 #[allow(unused)]
 enum StateFlags {
-    K_FLAGS_NONE = 0,
-    K_FLAG_WAVE_A = 1 << 1,
-    K_FLAG_WAVE_B = 1 << 2,
-    K_FLAG_SUB_WAVE = 1 << 3,
-    K_FLAG_RING_MIX = 1 << 4,
-    K_FLAG_BIT_CRUSH = 1 << 5,
-    K_FLAG_RESET = 1 << 6,
+    KFlagsNone = 0,
+    KFlagWaveA = 1 << 1,
+    KFlagWaveB = 1 << 2,
+    KFlagSubWave = 1 << 3,
+    KFlagRingMix = 1 << 4,
+    KFlagBitCrush = 1 << 5,
+    KFlagReset = 1 << 6,
 }
 
 struct State {
@@ -132,7 +125,7 @@ impl State {
             bit_res: 1.0_f32,
             bit_res_recip: 1.0_f32,
             imperfection: 0_f32,
-            flags: AtomicU32::new(StateFlags::K_FLAGS_NONE as u32),
+            flags: AtomicU32::new(StateFlags::KFlagsNone as u32),
         };
         Self::reset(&mut state);
         // +/- 0.05Hz@48KHz
@@ -240,18 +233,18 @@ impl Waves {
                     as f32
             });
             let flags = self.state.flags.swap(
-                StateFlags::K_FLAGS_NONE as u32,
+                StateFlags::KFlagsNone as u32,
                 core::sync::atomic::Ordering::Relaxed,
             );
             self.update_waves(flags);
 
-            if flags & StateFlags::K_FLAG_RESET as u32 != 0 {
+            if flags & StateFlags::KFlagReset as u32 != 0 {
                 self.reset();
             }
 
             self.state.lfo = unsafe { q31_to_f32!((*ctxt).shape_lfo) };
 
-            if flags & StateFlags::K_FLAG_BIT_CRUSH as u32 != 0 {
+            if flags & StateFlags::KFlagBitCrush as u32 != 0 {
                 self.state.dither = self.params.bit_crush * 2e-008_f32;
                 self.state.bit_res = unsafe { osc_bitresf(self.params.bit_crush) };
                 self.state.bit_res_recip = 1.0_f32 / self.state.bit_res;
@@ -313,58 +306,58 @@ impl Waves {
 
     pub fn set_parameter(&mut self, index: u8, value: i32) {
         match index {
-            i if i == ParamsIndex::K_SHAPE as u8 => {
+            i if i == ParamsIndex::KShape as u8 => {
                 //  min, max,  center, default, type,                   frac, frac. mode, <reserved>, name
                 // {0,   1023, 0,      0,       k_unit_param_type_none, 0,    0,          0,          {"SHAPE"}},
                 self.params.shape = 0.005_f32 + param_10bit_to_f32!(value) as f32 * 0.99_f32;
             }
-            i if i == ParamsIndex::K_SUB_MIX as u8 => {
+            i if i == ParamsIndex::KSubMix as u8 => {
                 //  min, max,  center, default, type,                   frac, frac. mode, <reserved>, name
                 // {0,   1023, 0,      0,       k_unit_param_type_none, 0,    0,          0,          {"SUB"}},
                 self.params.sub_mix = 0.05_f32 + param_10bit_to_f32!(value) as f32 * 0.90_f32;
             }
-            i if i == ParamsIndex::K_WAVE_A as u8 => {
+            i if i == ParamsIndex::KWaveA as u8 => {
                 //  min, max,          center, default, type,                   frac, frac. mode, <reserved>, name
                 // {0,   WAVE_A_CNT-1, 0,      0,       k_unit_param_type_enum, 0,    0,          0,          {"WAVE A"}},
                 self.params.wave_a = (value as i16 % K_WAVES_A_CNT) as u8;
                 self.state.flags.fetch_or(
-                    StateFlags::K_FLAG_WAVE_A as u32,
+                    StateFlags::KFlagWaveA as u32,
                     core::sync::atomic::Ordering::Relaxed,
                 );
             }
-            i if i == ParamsIndex::K_WAVE_B as u8 => {
+            i if i == ParamsIndex::KWaveB as u8 => {
                 //  min, max,          center, default, type,                   frac, frac. mode, <reserved>, name
                 // {0,   WAVE_B_CNT-1, 0,      0,       k_unit_param_type_enum, 0,    0,          0,          {"WAVE B"}},
                 self.params.wave_b = (value as i16 % K_WAVES_B_CNT) as u8;
                 self.state.flags.fetch_or(
-                    StateFlags::K_FLAG_WAVE_B as u32,
+                    StateFlags::KFlagWaveB as u32,
                     core::sync::atomic::Ordering::Relaxed,
                 );
             }
-            i if i == ParamsIndex::K_SUB_WAVE as u8 => {
+            i if i == ParamsIndex::KSubWave as u8 => {
                 //  min, max,            center, default, type,                   frac, frac. mode, <reserved>, name
                 // {0,   SUB_WAVE_CNT-1, 0,      0,       k_unit_param_type_enum, 0,    0,          0,          {"SUB WAVE"}},
                 self.params.sub_wave = (value as i16 % SUB_WAVE_CNT) as u8;
                 self.state.flags.fetch_or(
-                    StateFlags::K_FLAG_SUB_WAVE as u32,
+                    StateFlags::KFlagSubWave as u32,
                     core::sync::atomic::Ordering::Relaxed,
                 );
             }
-            i if i == ParamsIndex::K_RING_MIX as u8 => {
+            i if i == ParamsIndex::KRingMix as u8 => {
                 //  min, max,  center, default, type,                      frac, frac. mode, <reserved>, name
                 // {0,   1000,  0,      0,       k_unit_param_type_percent, 1,    1,          0,          {"RING MIX"}},
                 self.params.ring_mix = unsafe { clip01f(value as f32 * 0.001_f32) };
             }
-            i if i == ParamsIndex::K_BIT_CRUSH as u8 => {
+            i if i == ParamsIndex::KBitCrush as u8 => {
                 //  min, max,  center, default, type,                      frac, frac. mode, <reserved>, name
                 // {0,   1000,  0,      0,       k_unit_param_type_percent, 1,    1,          0,          {"BIT CRUSH"}},
                 self.params.bit_crush = unsafe { clip01f(value as f32 * 0.001_f32) };
                 self.state.flags.fetch_or(
-                    StateFlags::K_FLAG_BIT_CRUSH as u32,
+                    StateFlags::KFlagBitCrush as u32,
                     core::sync::atomic::Ordering::Relaxed,
                 );
             }
-            i if i == ParamsIndex::K_DRIFT as u8 => {
+            i if i == ParamsIndex::KDrift as u8 => {
                 //  min, max,  center, default, type,                      frac, frac. mode, <reserved>, name
                 // {0,   1000,  0,      250,     k_unit_param_type_percent, 1,    1,          0,          {"DRIFT"}},
                 self.params.drift = 1.0_f32 + value as f32 * 0.001_f32;
@@ -375,42 +368,42 @@ impl Waves {
 
     pub fn get_parameter_value(&self, index: u8) -> i32 {
         match index {
-            i if i == ParamsIndex::K_SHAPE as u8 => {
+            i if i == ParamsIndex::KShape as u8 => {
                 //  min, max,  center, default, type,                   frac, frac. mode, <reserved>, name
                 // {0,   1023, 0,      0,       k_unit_param_type_none, 0,    0,          0,          {"SHAPE"}},
                 return param_f32_to_10bit!((self.params.shape - 0.05_f32) / 0.99_f32);
             }
-            i if i == ParamsIndex::K_SUB_MIX as u8 => {
+            i if i == ParamsIndex::KSubMix as u8 => {
                 //  min, max,  center, default, type,                   frac, frac. mode, <reserved>, name
                 // {0,   1023, 0,      0,       k_unit_param_type_none, 0,    0,          0,          {"SUB"}},
                 return param_f32_to_10bit!((self.params.sub_mix - 0.05_f32) / 0.90_f32);
             }
-            i if i == ParamsIndex::K_WAVE_A as u8 => {
+            i if i == ParamsIndex::KWaveA as u8 => {
                 //  min, max,          center, default, type,                   frac, frac. mode, <reserved>, name
                 // {0,   WAVE_A_CNT-1, 0,      0,       k_unit_param_type_enum, 0,    0,          0,          {"WAVE A"}},
                 return self.params.wave_a as i32;
             }
-            i if i == ParamsIndex::K_WAVE_B as u8 => {
+            i if i == ParamsIndex::KWaveB as u8 => {
                 //  min, max,          center, default, type,                   frac, frac. mode, <reserved>, name
                 // {0,   WAVE_B_CNT-1, 0,      0,       k_unit_param_type_enum, 0,    0,          0,          {"WAVE B"}},
                 return self.params.wave_b as i32;
             }
-            i if i == ParamsIndex::K_SUB_WAVE as u8 => {
+            i if i == ParamsIndex::KSubWave as u8 => {
                 //  min, max,            center, default, type,                   frac, frac. mode, <reserved>, name
                 // {0,   SUB_WAVE_CNT-1, 0,      0,       k_unit_param_type_enum, 0,    0,          0,          {"SUB WAVE"}},
                 return self.params.sub_wave as i32;
             }
-            i if i == ParamsIndex::K_RING_MIX as u8 => {
+            i if i == ParamsIndex::KRingMix as u8 => {
                 //  min, max,  center, default, type,                      frac, frac. mode, <reserved>, name
                 // {0,   1000,  0,      0,       k_unit_param_type_percent, 1,    1,          0,          {"RING MIX"}},
                 return unsafe { si_roundf(self.params.ring_mix * 1000_f32) as i32 };
             }
-            i if i == ParamsIndex::K_BIT_CRUSH as u8 => {
+            i if i == ParamsIndex::KBitCrush as u8 => {
                 //  min, max,  center, default, type,                      frac, frac. mode, <reserved>, name
                 // {0,   1000,  0,      0,       k_unit_param_type_percent, 1,    1,          0,          {"BIT CRUSH"}},
                 return unsafe { si_roundf(self.params.bit_crush * 1000_f32) as i32 };
             }
-            i if i == ParamsIndex::K_DRIFT as u8 => {
+            i if i == ParamsIndex::KDrift as u8 => {
                 //  min, max,  center, default, type,                      frac, frac. mode, <reserved>, name
                 // {0,   1000,  0,      250,     k_unit_param_type_percent, 1,    1,          0,          {"DRIFT"}},
                 return unsafe { si_roundf((self.params.drift - 1.0_f32) * 1000_f32) as i32 };
@@ -433,7 +426,7 @@ impl Waves {
     pub fn note_on(&self, _note: u8, _velo: u8) {
         // Schedule phase reset
         self.state.flags.fetch_or(
-            StateFlags::K_FLAG_RESET as u32,
+            StateFlags::KFlagReset as u32,
             core::sync::atomic::Ordering::Relaxed,
         );
 
@@ -461,7 +454,7 @@ impl Waves {
     }
 
     fn update_waves(&mut self, flags: u32) {
-        if flags & StateFlags::K_FLAG_WAVE_A as u32 != 0 {
+        if flags & StateFlags::KFlagWaveA as u32 != 0 {
             let k_a_thr: u8 = k_waves_a_cnt as u8;
             let k_b_thr: u8 = k_a_thr + k_waves_b_cnt as u8;
             let _k_c_thr: u8 = k_b_thr + k_waves_c_cnt as u8;
@@ -478,7 +471,7 @@ impl Waves {
                 self.state.wave_a = unsafe { get_waves_ptr(wavesC.as_ptr(), idx) };
             }
         }
-        if flags & StateFlags::K_FLAG_WAVE_B as u32 != 0 {
+        if flags & StateFlags::KFlagWaveB as u32 != 0 {
             let k_d_thr: u8 = k_waves_d_cnt as u8;
             let k_e_thr: u8 = k_d_thr + k_waves_e_cnt as u8;
             let _k_f_thr: u8 = k_e_thr + k_waves_f_cnt as u8;
@@ -496,7 +489,7 @@ impl Waves {
                 self.state.wave_b = unsafe { get_waves_ptr(wavesF.as_ptr(), idx) };
             }
         }
-        if flags & StateFlags::K_FLAG_SUB_WAVE as u32 != 0 {
+        if flags & StateFlags::KFlagSubWave as u32 != 0 {
             self.state.sub_wave = unsafe { get_waves_ptr(wavesA.as_ptr(), self.params.sub_wave) };
         }
     }

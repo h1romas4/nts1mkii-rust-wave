@@ -18,9 +18,9 @@ fn main() {
 fn bindgen() {
     let bindings = bindgen::Builder::default()
         .header("src/bindings_libnts1mkii.c")
-        .clang_arg("-Icomponents/logue-sdk/platform/nts-1_mkii/common")
-        .clang_arg("-Itoolchain/gcc-arm-none-eabi/arm-none-eabi/include")
-        .clang_arg("-Icomponents/logue-sdk/platform/ext/CMSIS/CMSIS/Include")
+        .clang_arg("-I../components/logue-sdk/platform/nts-1_mkii/common")
+        .clang_arg("-I../../toolchain/gcc-arm-none-eabi/arm-none-eabi/include")
+        .clang_arg("-I../components/logue-sdk/platform/ext/CMSIS/CMSIS/Include")
         .clang_arg("-Wno-unknown-attributes")
         .clang_arg("-Wno-implicit-function-declaration")
         .clang_arg("-DSTM32H725xE")
@@ -50,11 +50,11 @@ fn bindgen() {
 #[allow(dead_code)]
 fn bindgen_patch() {
     let dir = PathBuf::from(env::var("CARGO_MANIFEST_DIR").unwrap());
-    let cmsis_dir = dir.join("components/logue-sdk/platform/ext/CMSIS");
+    let cmsis_dir = dir.join("../components/logue-sdk/platform/ext/CMSIS");
 
     let result = Command::new("git")
         .arg("apply")
-        .arg(dir.join("script/cmsis_gcc-for-bindgen-clang.patch"))
+        .arg(dir.join("../../script/cmsis_gcc-for-bindgen-clang.patch"))
         .current_dir(&cmsis_dir)
         .output();
 

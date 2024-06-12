@@ -1,0 +1,10 @@
+[package]
+name = "osc_waves"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+crate-type = ["bin"]
+
+[dependencies]
+logue_sdk_v2rs = { path = "../logue_sdk_v2rs" }

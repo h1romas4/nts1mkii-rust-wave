@@ -1,7 +1,7 @@
-/target
-/build
 /dist/*
 /toolchain/gcc-arm-none-eabi/*
+/components/logue_sdk_v2rs/build
+target/
 
 !toolchain/gcc-arm-none-eabi/EMPTY
 !dist/libnts1mkii.a

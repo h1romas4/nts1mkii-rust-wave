@@ -1,16 +1,16 @@
 cmake_minimum_required(VERSION 3.12)
 project(nts1mkii C)
 
-set(CMAKE_C_COMPILER ${CMAKE_CURRENT_SOURCE_DIR}/toolchain/gcc-arm-none-eabi/bin/arm-none-eabi-gcc)
+set(CMAKE_C_COMPILER ${CMAKE_CURRENT_SOURCE_DIR}/../../toolchain/gcc-arm-none-eabi/bin/arm-none-eabi-gcc)
 
 set(SOURCES
     src/bindings_libnts1mkii.c
 )
 
 include_directories(
-    components/logue-sdk/platform/nts-1_mkii/common
-    components/logue-sdk/platform/nts-1_mkii/common/utils
-    components/logue-sdk/platform/ext/CMSIS/CMSIS/Include
+    ../logue-sdk/platform/nts-1_mkii/common
+    ../logue-sdk/platform/nts-1_mkii/common/utils
+    ../logue-sdk/platform/ext/CMSIS/CMSIS/Include
 )
 
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} \

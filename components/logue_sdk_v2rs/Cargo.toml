@@ -1,0 +1,12 @@
+[package]
+name = "logue_sdk_v2rs"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+crate-type = ["lib"]
+
+[dependencies]
+
+[build-dependencies]
+bindgen = "0.65.1"

@@ -6,7 +6,7 @@
             "type": "shell",
             "command": "toolchain/gcc-arm-none-eabi/bin/arm-none-eabi-nm",
             "args": [
-                "dist/libnts1mkii.a",
+                "components/logue_sdk_v2rs/dist/libnts1mkii.a",
                 "|",
                 "tee",
                 "dist/nts1mkii-rust-wave.nm.txt"
@@ -19,7 +19,7 @@
             "command": "toolchain/gcc-arm-none-eabi/bin/arm-none-eabi-objdump",
             "args": [
                 "-D",
-                "target/thumbv7em-none-eabihf/release/nts1mkii-rust-wave",
+                "target/thumbv7em-none-eabihf/release/osc_waves",
                 "|",
                 "tee",
                 "dist/nts1mkii-rust-wave.objdump.txt"
@@ -32,7 +32,7 @@
             "command": "readelf",
             "args": [
                 "-a",
-                "target/thumbv7em-none-eabihf/release/nts1mkii-rust-wave",
+                "target/thumbv7em-none-eabihf/release/osc_waves",
                 "|",
                 "tee",
                 "dist/nts1mkii-rust-wave.readelf.txt"
@@ -48,8 +48,8 @@
             "command": "cp",
             "args": [
                 "-p",
-                "target/thumbv7em-none-eabihf/release/nts1mkii-rust-wave",
-                "/mnt/c/Users/${env:USER}/Downloads/nts1mkii-rust-wave.nts1mkiiunit",
+                "target/thumbv7em-none-eabihf/release/osc_waves",
+                "/mnt/c/Users/${env:USER}/Downloads/osc_waves.nts1mkiiunit",
             ],
             "problemMatcher": []
         },
@@ -62,37 +62,24 @@
             "command": "cp",
             "args": [
                 "-p",
-                "target/thumbv7em-none-eabihf/release/nts1mkii-rust-wave",
-                "dist/nts1mkii-rust-wave.nts1mkiiunit",
+                "target/thumbv7em-none-eabihf/release/osc_waves",
+                "dist/osc_waves.nts1mkiiunit",
             ],
             "problemMatcher": []
         },
         {
             "label": "elf-patch",
             "type": "shell",
-            // "dependsOn" : [
-            //     "strip",
-            // ],
             "command": "printf",
             "args": [
                 "'\\x00'",
                 "|",
                 "dd",
-                "of=target/thumbv7em-none-eabihf/release/nts1mkii-rust-wave",
+                "of=target/thumbv7em-none-eabihf/release/osc_waves",
                 "bs=1",
                 "seek=7",
                 "count=1",
                 "conv=notrunc",
-            ],
-            "problemMatcher": []
-        },
-        {
-            "label": "strip",
-            "type": "shell",
-            "command": "toolchain/gcc-arm-none-eabi/bin/arm-none-eabi-strip",
-            "args": [
-                "--remove-section=.debug*",
-                "target/thumbv7em-none-eabihf/release/nts1mkii-rust-wave"
             ],
             "problemMatcher": []
         },
@@ -109,7 +96,7 @@
                 "NTS1Mk2",
                 "install",
                 "-f",
-                "dist/nts1mkii-rust-wave.nts1mkiiunit",
+                "dist/osc_waves.nts1mkiiunit",
                 "-m",
                 "osc",
                 "-s",
