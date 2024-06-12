@@ -11233,7 +11233,7 @@ impl unit_runtime_osc_context {
 }
 #[doc = " Oscillator specific unit runtime context."]
 pub type unit_runtime_osc_context_t = unit_runtime_osc_context;
-PUB const k_unit_osc_fixed_param_shape: _bindgen_ty_15 = 0;
+pub const k_unit_osc_fixed_param_shape: _bindgen_ty_15 = 0;
 pub const k_unit_osc_fixed_param_altshape: _bindgen_ty_15 = 1;
 pub const k_num_unit_osc_fixed_param_id: _bindgen_ty_15 = 2;
 #[doc = " Exposed parameters with fixed/direct UI controls."]
