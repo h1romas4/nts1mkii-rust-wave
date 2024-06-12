@@ -60,3 +60,5 @@ jobs:
         # check
         readelf -a dist/osc_waves.nts1mkiiunit
         toolchain/gcc-arm-none-eabi/bin/arm-none-eabi-objdump -d dist/osc_waves.nts1mkiiunit
+        # size check
+        [ $(stat -c%s "dist/osc_waves.nts1mkiiunit") -le 49000 ]
