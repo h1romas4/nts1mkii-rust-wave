@@ -225,7 +225,7 @@ macro_rules! q31_to_f32 {
 #[macro_export]
 macro_rules! f32_to_q15 {
     ($f:expr) => {
-        (($f * ((1<<15)-1) as f32) as i32).min(32767).max(-32768) as i16
+        (($f * ((1 << 15)- 1) as f32) as i32).min(32767).max(-32768) as i16
     };
 }
 
@@ -248,6 +248,6 @@ macro_rules! f32_to_q15 {
 #[macro_export]
 macro_rules! f32_to_q31 {
     ($f:expr) => {
-        ($f * 0x7FFFFFFF as f32) as i32
+        ($f * 0x7fffffff as f32) as i32
     };
 }
