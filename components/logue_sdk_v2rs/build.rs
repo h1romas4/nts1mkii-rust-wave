@@ -50,11 +50,11 @@ fn bindgen() {
 #[allow(dead_code)]
 fn bindgen_patch() {
     let dir = PathBuf::from(env::var("CARGO_MANIFEST_DIR").unwrap());
-    let cmsis_dir = dir.join("../components/logue-sdk/platform/ext/CMSIS");
+    let cmsis_dir = dir.join("../logue-sdk/platform/ext/CMSIS");
 
     let result = Command::new("git")
         .arg("apply")
-        .arg(dir.join("../../script/cmsis_gcc-for-bindgen-clang.patch"))
+        .arg(dir.join("script/cmsis_gcc-for-bindgen-clang.patch"))
         .current_dir(&cmsis_dir)
         .output();
 

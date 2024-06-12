@@ -48,6 +48,9 @@ jobs:
 
     - name: Build Sound unit
       run: |
+        # workaround patch
+        components/logue_sdk_v2rs/script/louge-sdk-remove-inline-patch.sh
+        # build
         WITH_LOGUE_SDK_BINDGEN=true cargo build --release
         # fix sound unit binary
         TARGET=target/thumbv7em-none-eabihf/release/osc_waves

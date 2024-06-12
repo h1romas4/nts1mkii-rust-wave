@@ -61,7 +61,7 @@ Build logue-sdk: `components/logue_sdk_v2rs/dist/libnts1mkii.a`
 
 ```bash
 # workaround patch
-script/louge-sdk-remove-inline-patch.sh
+components/logue_sdk_v2rs/script/louge-sdk-remove-inline-patch.sh
 # build
 pushd components/logue_sdk_v2rs
 mkdir build && cd build
