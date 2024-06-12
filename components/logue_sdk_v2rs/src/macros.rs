@@ -139,7 +139,7 @@ macro_rules! unit_api_is_compat {
 #[macro_export]
 macro_rules! param_10bit_to_f32 {
     ($val:expr) => {
-        (($val as f32) * 9.77517106549365e-004_f32) as f32 // 0-1023 -> 0.f-1.f
+        (($val as f32) * 0.0009775_f32) as f32 // 0-1023 -> 0.f-1.f (9.77517106549365e-004_f32)
     };
 }
 
