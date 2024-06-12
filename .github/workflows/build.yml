@@ -39,8 +39,9 @@ jobs:
 
     - name: Build logue-sdk
       run: |
-        pwd
-        script/louge-sdk-remove-inline-patch.sh
+        # workaround patch
+        components/logue_sdk_v2rs/script/louge-sdk-remove-inline-patch.sh
+        # build
         pushd components/logue_sdk_v2rs
         mkdir build && cd build
         cmake ..
@@ -48,8 +49,6 @@ jobs:
 
     - name: Build Sound unit
       run: |
-        # workaround patch
-        components/logue_sdk_v2rs/script/louge-sdk-remove-inline-patch.sh
         # build
         WITH_LOGUE_SDK_BINDGEN=true cargo build --release
         # fix sound unit binary
