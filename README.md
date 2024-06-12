@@ -89,7 +89,6 @@ Thanks for all the open source.
 |Name|Version|License|Note|
 |-|-|-|-|
 |[logue-sdk](https://github.com/korginc/logue-sdk)|`67ad379`|BSD-3-Clause||
-|[libm](https://github.com/rust-lang/libm)|`279e5f6`|Apache-2.0, MIT Licenses|libm_sqrtf.rs|
 
 ## A note about linkers
 

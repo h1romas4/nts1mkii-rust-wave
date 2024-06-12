@@ -29,11 +29,6 @@ fn bindgen() {
         .clang_arg("-DCORTEX_USE_FPU=TRUE")
         .clang_arg("-fkeep-inline-functions")
         .generate_inline_functions(true)
-        .blocklist_function("ampdbf")// TODO: log10f
-        .blocklist_function("dbampf")// TODO: powf
-        .blocklist_function("log10f")
-        .blocklist_function("powf")
-        .blocklist_function("sqrtf")
         .use_core()
         .ctypes_prefix("core::ffi")
         .blocklist_function("^unit_.+$")

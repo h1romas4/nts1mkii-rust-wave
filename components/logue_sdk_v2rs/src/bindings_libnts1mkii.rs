@@ -2554,6 +2554,15 @@ extern "C" {
     pub fn logf(arg1: f32) -> f32;
 }
 extern "C" {
+    pub fn log10f(arg1: f32) -> f32;
+}
+extern "C" {
+    pub fn powf(arg1: f32, arg2: f32) -> f32;
+}
+extern "C" {
+    pub fn sqrtf(arg1: f32) -> f32;
+}
+extern "C" {
     pub fn fmodf(arg1: f32, arg2: f32) -> f32;
 }
 extern "C" {
@@ -10122,8 +10131,16 @@ extern "C" {
     pub fn fastertanh2f(x: f32) -> f32;
 }
 extern "C" {
+    #[doc = " Amplitude to dB\n @note Will remove low boundary check in future version"]
+    pub fn ampdbf(amp: f32) -> f32;
+}
+extern "C" {
     #[doc = " \"Faster\" Amplitude to dB"]
     pub fn fasterampdbf(amp: f32) -> f32;
+}
+extern "C" {
+    #[doc = " dB to ampltitude"]
+    pub fn dbampf(db: f32) -> f32;
 }
 extern "C" {
     #[doc = " \"Faster\" dB to ampltitude"]
