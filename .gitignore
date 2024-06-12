@@ -1,5 +1,6 @@
 target/
 build/
-/dist
 /toolchain/gcc-arm-none-eabi/*
 !toolchain/gcc-arm-none-eabi/EMPTY
+/dist/*
+!dist/EMPTY
