@@ -44,30 +44,32 @@ cargo build --release
 Distribute:
 
 ```bash
-TARGET=target/thumbv7em-none-eabihf/release/nts1mkii-rust-wave
+TARGET=target/thumbv7em-none-eabihf/release/osc_waves
 # patch elf header
 printf '\x00' | dd of=${TARGET} bs=1 seek=7 count=1 conv=notrunc
 # distribute
-cp -p ${TARGET} dist/nts1mkii-rust-wave.nts1mkiiunit
+cp -p ${TARGET} dist/osc_waves.nts1mkiiunit
 ```
 
-Transfer `dist/nts1mkii-rust-wave.nts1mkiiunit` to NTS-1 digital kit mkII.
+Transfer `dist/osc_waves.nts1mkiiunit` to NTS-1 digital kit mkII.
 
 Enjoy!
 
 ## Full Build (Optional - with louge-sdk bindgen)
 
-Build logue-sdk: `dist/libnts1mkii.a`
+Build logue-sdk: `components/logue_sdk_v2rs/dist/libnts1mkii.a`
 
 ```bash
 # workaround patch
 script/louge-sdk-remove-inline-patch.sh
 # build
+pushd components/logue_sdk_v2rs
 mkdir build && cd build
 cmake ..
 make
 cd ..
 ls -laF dist/libnts1mkii.a
+popd
 ```
 
 Build Rust with bindgen: `WITH_LOGUE_SDK_BINDGEN=true`
