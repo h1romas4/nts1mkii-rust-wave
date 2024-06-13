@@ -68,7 +68,7 @@ mkdir build && cd build
 cmake ..
 make
 popd
-ls -laF dist/libnts1mkii.a
+ls -laF components/logue_sdk_v2rs/dist/libnts1mkii.a
 ```
 
 Build Rust with bindgen: `WITH_LOGUE_SDK_BINDGEN=true`
