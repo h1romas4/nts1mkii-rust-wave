@@ -233,7 +233,7 @@ Disassembly of section .unit_header
     ...snip...
 ```
 
-- Section `.rel.plt` and `.rel.dyn`: The .rel.plt must contain only system calls.
+- Section `.rel.plt` and `.rel.dyn`: Dynamic link must contain only system calls.
 
 ```
 Relocation section '.rel.plt' at offset 0x18a0 contains 1 entry:
