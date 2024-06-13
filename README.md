@@ -110,6 +110,11 @@ Does not work.
 
 Probably the PLT code freezes because it moves the pc to the address of the function in the Thumb code it is calling while in Arm mode.
 
+```bash
+$ rustc -V
+rustc 1.77.2 (25ef9e3d8 2024-04-09)
+```
+
 ```asm
 000005cc <.rel.plt>:
  5cc:	00000854 	andeq	r0, r0, r4, asr r8       ; 0x854 Indicates the address of the GOT.
