@@ -50,7 +50,7 @@ jobs:
     - name: Build Sound unit (osc_waves)
       run: |
         # build
-        WITH_LOGUE_SDK_BINDGEN=true cargo build --release
+        WITH_LOGUE_SDK_BINDGEN=true cargo build --release --target=thumbv7em-none-eabihf
         # fix sound unit binary
         TARGET=target/thumbv7em-none-eabihf/release/osc_waves
         # patch elf header

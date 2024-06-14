@@ -39,7 +39,7 @@ Build NTS-1 digital kit mkII sound unit:
 
 ```bash
 rustup target add thumbv7em-none-eabihf
-cargo build --release
+cargo build --release --target=thumbv7em-none-eabihf
 ```
 
 Distribute:
@@ -75,7 +75,7 @@ ls -laF components/logue_sdk_v2rs/dist/libnts1mkii.a
 Build Rust with bindgen: `WITH_LOGUE_SDK_BINDGEN=true`
 
 ```bash
-WITH_LOGUE_SDK_BINDGEN=true cargo build --release
+WITH_LOGUE_SDK_BINDGEN=true cargo build --release --target=thumbv7em-none-eabihf
 ```
 
 ## License
