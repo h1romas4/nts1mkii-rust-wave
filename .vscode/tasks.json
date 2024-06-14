@@ -19,7 +19,7 @@
             "command": "toolchain/gcc-arm-none-eabi/bin/arm-none-eabi-objdump",
             "args": [
                 "-D",
-                "target/thumbv7em-none-eabihf/release/osc_waves",
+                "dist/osc_waves.nts1mkiiunit",
                 "|",
                 "tee",
                 "dist/nts1mkii-rust-wave.objdump.txt"
@@ -32,80 +32,10 @@
             "command": "readelf",
             "args": [
                 "-a",
-                "target/thumbv7em-none-eabihf/release/osc_waves",
-                "|",
-                "tee",
-                "dist/nts1mkii-rust-wave.readelf.txt"
-            ],
-            "problemMatcher": []
-        },
-        {
-            "label": "objdump (osc_dummy)",
-            "type": "shell",
-            "command": "toolchain/gcc-arm-none-eabi/bin/arm-none-eabi-objdump",
-            "args": [
-                "-D",
-                "target/thumbv7em-none-eabihf/release/osc_dummy",
-                "|",
-                "tee",
-                "dist/nts1mkii-rust-wave.objdump.txt"
-            ],
-            "problemMatcher": []
-        },
-        {
-            "label": "readelf (osc_dummy)",
-            "type": "shell",
-            "command": "readelf",
-            "args": [
-                "-a",
-                "target/thumbv7em-none-eabihf/release/osc_dummy",
-                "|",
-                "tee",
-                "dist/nts1mkii-rust-wave.readelf.txt"
-            ],
-            "problemMatcher": []
-        },
-        {
-            "label": "Distribute (WSL2)",
-            "type": "shell",
-            "dependsOn" : [
-                "elf-patch",
-            ],
-            "command": "cp",
-            "args": [
-                "-p",
-                "target/thumbv7em-none-eabihf/release/osc_waves",
-                "/mnt/c/Users/${env:USER}/Downloads/osc_waves.nts1mkiiunit",
-            ],
-            "problemMatcher": []
-        },
-        {
-            "label": "Distribute (UNIX)",
-            "type": "shell",
-            "dependsOn" : [
-                "elf-patch",
-            ],
-            "command": "cp",
-            "args": [
-                "-p",
-                "target/thumbv7em-none-eabihf/release/osc_waves",
                 "dist/osc_waves.nts1mkiiunit",
-            ],
-            "problemMatcher": []
-        },
-        {
-            "label": "elf-patch",
-            "type": "shell",
-            "command": "printf",
-            "args": [
-                "'\\x00'",
                 "|",
-                "dd",
-                "of=target/thumbv7em-none-eabihf/release/osc_waves",
-                "bs=1",
-                "seek=7",
-                "count=1",
-                "conv=notrunc",
+                "tee",
+                "dist/nts1mkii-rust-wave.readelf.txt"
             ],
             "problemMatcher": []
         },

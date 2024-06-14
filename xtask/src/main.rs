@@ -7,10 +7,13 @@ use core::panic::PanicInfo;
 #[panic_handler]
 fn panic(_info: &PanicInfo) -> ! { loop {} }
 
+#[cfg(not(target_os = "none"))]
+mod build;
+
 ///
 /// xtask main
 ///
 #[cfg(not(target_os = "none"))]
 fn main() {
-    println!("Hello, world!");
+    build::dist();
 }

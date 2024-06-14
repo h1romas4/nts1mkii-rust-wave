@@ -51,12 +51,8 @@ jobs:
       run: |
         # build
         WITH_LOGUE_SDK_BINDGEN=true cargo build --release --target=thumbv7em-none-eabihf
-        # fix sound unit binary
-        TARGET=target/thumbv7em-none-eabihf/release/osc_waves
-        # patch elf header
-        printf '\x00' | dd of=${TARGET} bs=1 seek=7 count=1 conv=notrunc
         # distribute
-        cp -p ${TARGET} dist/osc_waves.nts1mkiiunit
+        cargo xtask dist
 
     - name: Valid Sound unit (osc_waves)
       run: |

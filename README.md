@@ -45,11 +45,7 @@ cargo build --release --target=thumbv7em-none-eabihf
 Distribute:
 
 ```bash
-TARGET=target/thumbv7em-none-eabihf/release/osc_waves
-# patch elf header
-printf '\x00' | dd of=${TARGET} bs=1 seek=7 count=1 conv=notrunc
-# distribute
-cp -p ${TARGET} dist/osc_waves.nts1mkiiunit
+cargo xtask dist
 ```
 
 Transfer `dist/osc_waves.nts1mkiiunit` to NTS-1 digital kit mkII.
