@@ -46,6 +46,7 @@ jobs:
         mkdir build && cd build
         cmake ..
         make
+        popd
         # check
         ls -laF components/logue_bind/dist/libnts1mkii.a
 
