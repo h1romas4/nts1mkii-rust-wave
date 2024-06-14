@@ -46,6 +46,8 @@ jobs:
         mkdir build && cd build
         cmake ..
         make
+        # check
+        ls -laF components/logue_bind/dist/libnts1mkii.a
 
     - name: Build Sound unit (osc_waves)
       run: |

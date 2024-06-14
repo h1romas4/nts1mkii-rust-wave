@@ -54,7 +54,7 @@ Enjoy!
 
 ## Full Build (Optional - with louge-sdk bindgen)
 
-Build logue-sdk: `components/logue_sdk_v2rs/dist/libnts1mkii.a`
+Build logue-sdk: `components/logue_bind/dist/libnts1mkii.a`
 
 ```bash
 # workaround patch
@@ -65,7 +65,7 @@ mkdir build && cd build
 cmake ..
 make
 popd
-ls -laF components/logue_sdk_v2rs/dist/libnts1mkii.a
+ls -laF components/logue_bind/dist/libnts1mkii.a
 ```
 
 Build Rust with bindgen: `WITH_LOGUE_SDK_BINDGEN=true`
