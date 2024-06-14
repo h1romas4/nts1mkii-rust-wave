@@ -18,7 +18,7 @@ pub static UNIT_HEADER: unit_header_t = unit_header_t {
     // Developer ID. See https://github.com/korginc/logue-sdk/blob/master/developer_ids.md
     dev_id: sound_unit_dev_id_string!(b"H1RO"),
     // ID for this unit. Scoped within the context of a given dev_id.
-    unit_id: 0x050400,
+    unit_id: 0x050401,
     // Name for this unit, will be displayed on device
     name: sound_unit_string!(b"DMMY", 20),
     // Reserved
