@@ -60,7 +60,7 @@ Build logue-sdk: `components/logue_sdk_v2rs/dist/libnts1mkii.a`
 # workaround patch
 components/logue_bind/script/louge-sdk-remove-inline-patch.sh
 # build
-pushd components/logue_sdk_v2rs
+pushd components/logue_bind
 mkdir build && cd build
 cmake ..
 make
