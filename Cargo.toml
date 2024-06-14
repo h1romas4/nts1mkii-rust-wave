@@ -1,6 +1,6 @@
 [workspace]
 members = [
-    "components/logue_sdk_v2rs",
+    "components/logue_bind",
     "components/osc_waves",
     "components/osc_dummy",
 ]
