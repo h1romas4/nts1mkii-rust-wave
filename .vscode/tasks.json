@@ -42,9 +42,6 @@
         {
             "label": "Deploy to nts1mkii (py-logue-tools)",
             "type": "shell",
-            "dependsOn" : [
-                "Distribute (UNIX)",
-            ],
             "command": "py-logue-tools",
             "args": [
                 "-p2",
