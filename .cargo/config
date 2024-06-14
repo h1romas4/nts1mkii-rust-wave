@@ -25,3 +25,6 @@ rustflags = [
     "-C", "link-arg=-lm",
     "-C", "link-arg=-lnosys",
 ]
+
+[alias]
+xtask = "run --package xtask --"
