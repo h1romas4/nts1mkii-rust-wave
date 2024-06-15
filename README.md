@@ -80,6 +80,7 @@ pushd components/logue_bind
 mkdir build && cd build
 cmake ..
 make
+cd ..
 nm dist/libnts1mkii.a | tee dist/libnts1mkii.obj.txt
 popd
 ```
