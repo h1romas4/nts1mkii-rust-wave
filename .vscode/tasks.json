@@ -40,8 +40,36 @@
             "problemMatcher": []
         },
         {
+            "label": "compile",
+            "type": "shell",
+            "command": "cargo",
+            "args": [
+                "build",
+                "--release",
+                "--target=thumbv7em-none-eabihf",
+            ],
+            "problemMatcher": []
+        },
+        {
+            "label": "Build",
+            "type": "shell",
+            "command": "cargo",
+            "dependsOn": [
+                "compile"
+            ],
+            "args": [
+                "xtask",
+                "dist",
+            ],
+            "problemMatcher": []
+        },
+        {
+            // https://github.com/TarkanAl-Kazily/py-logue-tools
             "label": "Deploy to nts1mkii (py-logue-tools)",
             "type": "shell",
+            "dependsOn": [
+                "Build"
+            ],
             "command": "py-logue-tools",
             "args": [
                 "-p2",
