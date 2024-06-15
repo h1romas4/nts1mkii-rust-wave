@@ -52,28 +52,6 @@ Transfer `dist/osc_waves.nts1mkiiunit` to NTS-1 digital kit mkII.
 
 Enjoy!
 
-## Full Build (Optional - with louge-sdk bindgen)
-
-Build logue-sdk: `components/logue_bind/dist/libnts1mkii.a`
-
-```bash
-# workaround patch
-components/logue_bind/script/louge-sdk-remove-inline-patch.sh
-# build
-pushd components/logue_bind
-mkdir build && cd build
-cmake ..
-make
-popd
-ls -laF components/logue_bind/dist/libnts1mkii.a
-```
-
-Build Rust with bindgen: `WITH_LOGUE_SDK_BINDGEN=true`
-
-```bash
-WITH_LOGUE_SDK_BINDGEN=true cargo build --release --target=thumbv7em-none-eabihf
-```
-
 ## License
 
 BSD-3-Clause License
@@ -85,6 +63,32 @@ Thanks for all the open source.
 |Name|Version|License|Note|
 |-|-|-|-|
 |[logue-sdk](https://github.com/korginc/logue-sdk)|`67ad379`|BSD-3-Clause||
+
+---
+
+## Build (with libnts1mkii.a and bindgen)
+
+Build logue-sdk: `components/logue_bind/dist/libnts1mkii.a`
+
+```bash
+# remove inline attribute for libnts1mkii.a
+pushd components/logue-sdk
+git apply ../logue_bind/script/louge-sdk-remove-inline.patch
+popd
+# build
+pushd components/logue_bind
+mkdir build && cd build
+cmake ..
+make
+nm dist/libnts1mkii.a | tee dist/libnts1mkii.obj.txt
+popd
+```
+
+Build Rust with bindgen: `WITH_LOGUE_SDK_BINDGEN=true`
+
+```bash
+WITH_LOGUE_SDK_BINDGEN=true cargo build --release --target=thumbv7em-none-eabihf
+```
 
 ## A note about linkers
 

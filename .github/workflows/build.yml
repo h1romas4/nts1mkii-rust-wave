@@ -39,16 +39,17 @@ jobs:
 
     - name: Build logue-sdk
       run: |
-        # workaround patch
-        components/logue_bind/script/louge-sdk-remove-inline-patch.sh
+        # remove inline attribute for libnts1mkii.a
+        pushd components/logue-sdk
+        git apply ../logue_bind/script/louge-sdk-remove-inline.patch
+        popd
         # build
         pushd components/logue_bind
         mkdir build && cd build
         cmake ..
         make
+        nm dist/libnts1mkii.a | tee dist/libnts1mkii.obj.txt
         popd
-        # check
-        ls -laF components/logue_bind/dist/libnts1mkii.a
 
     - name: Build Sound unit (osc_waves)
       run: |
