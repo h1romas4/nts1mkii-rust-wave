@@ -3,6 +3,10 @@ project(nts1mkii C)
 
 set(CMAKE_C_COMPILER ${CMAKE_CURRENT_SOURCE_DIR}/../../toolchain/gcc-arm-none-eabi/bin/arm-none-eabi-gcc)
 
+if(WIN32)
+    set(CMAKE_C_COMPILER "${CMAKE_C_COMPILER}.exe")
+endif()
+
 set(SOURCES
     src/bindings_libnts1mkii.c
 )
