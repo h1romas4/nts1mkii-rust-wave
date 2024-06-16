@@ -49,6 +49,45 @@ Transfer `dist/osc_waves.nts1mkiiunit` to NTS-1 digital kit mkII.
 
 Enjoy!
 
+## How to add a new sound unit
+
+ex. `osc_table32`
+
+```bash
+# add project to workspace
+$ cargo new components/osc_table32
+# copy template
+$ cp -p components/osc_dummy/src/*.rs components/osc_table32/src
+# add to xtask UNIT_NAME
+$ grep -A4 UNIT_NAME: xtask/src/build.rs
+const UNIT_NAME: [&str; 3] = [
+    "osc_waves",
+    "osc_dummy",
+    "osc_table32", // add this line
+];
+```
+
+Sound unit Settings:
+
+```bash
+# edit attribute
+$ grep -A4 dev_id: components/osc_table32/src/header.rs
+    dev_id: sound_unit_dev_id_string!(b"H1RO"),
+    // ID for this unit. Scoped within the context of a given dev_id.
+    unit_id: 0x050401,
+    // Name for this unit, will be displayed on device
+    name: sound_unit_string!(b"DMMY", 20),
+```
+
+Build:
+
+```bash
+$ cargo build --release --target=thumbv7em-none-eabihf
+$ cargo xtask dist
+$ ls -laF dist/osc_table32.nts1mkiiunit
+-rwxrwxr-x 1 hiromasa hiromasa 29408  6月 16 14:12 dist/osc_table32.nts1mkiiunit*
+```
+
 ## License
 
 BSD-3-Clause License
