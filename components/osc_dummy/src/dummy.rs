@@ -2,12 +2,14 @@ use logue_sdk_v2rs::*;
 
 pub struct Dummy {
     runtime_desc: *const unit_runtime_desc_t,
+    phase: f32,
 }
 
 impl Dummy {
     pub fn new() -> Self {
         Self {
             runtime_desc: core::ptr::null(),
+            phase: 0_f32,
         }
     }
 
@@ -36,8 +38,6 @@ impl Dummy {
 
         self.runtime_desc = desc;
 
-        unsafe { osc_white(); }
-
         k_unit_err_none as i8
     }
 
@@ -54,7 +54,7 @@ impl Dummy {
             (*self.runtime_desc).hooks.runtime_context as *const unit_runtime_osc_context_t
         };
 
-        let _w0 = unsafe {
+        let w0 = unsafe {
             osc_w0f_for_note((((*ctxt).pitch) >> 8) as u8, (((*ctxt).pitch) & 0xff) as u8)
         };
 
@@ -62,10 +62,17 @@ impl Dummy {
         let y_e = unsafe { y.offset(frames as isize) };
 
         while y != y_e {
+            let sig = if self.phase - 0.5_f32 <= 0.0_f32 {
+                1.0_f32
+            } else {
+                -1.0_f32
+            };
             unsafe {
-                *y = 0.0_f32;
+                *y = sig;
                 y = y.offset(1);
             }
+            self.phase += w0;
+            self.phase -= self.phase as i32 as f32;
         }
     }
 
