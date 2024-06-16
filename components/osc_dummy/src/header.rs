@@ -25,7 +25,7 @@ pub static UNIT_HEADER: unit_header_t = unit_header_t {
     reserved0: 0,
     reserved1: 0,
     // Number of valid parameter descriptors. (max. 10)
-    num_params: 8,
+    num_params: 2,
     // Format:
     // min, max, center, default, type, frac. bits, frac. mode, <reserved>, name
     // See common/runtime.h for type enum and unit_param_t structure
@@ -41,7 +41,7 @@ pub static UNIT_HEADER: unit_header_t = unit_header_t {
             _bitfield_align_1: [0u8; 0],
             // frac : 4, frac_mode : 1, reserved : 3
             _bitfield_1: __BindgenBitfieldUnit::new([0b00000000; 1]),
-            name: sound_unit_string!(b"SHPE", 22),
+            name: sound_unit_string!(b"KNB1", 22),
         },
         // B knob
         unit_param_t {
@@ -53,7 +53,7 @@ pub static UNIT_HEADER: unit_header_t = unit_header_t {
             _bitfield_align_1: [0u8; 0],
             // frac : 4, frac_mode : 1, reserved : 3
             _bitfield_1: __BindgenBitfieldUnit::new([0b00000000; 1]),
-            name: sound_unit_string!(b"SUB", 22),
+            name: sound_unit_string!(b"KNB2", 22),
         },
         // 8 Edit menu parameters
         unit_param_t {
@@ -61,11 +61,11 @@ pub static UNIT_HEADER: unit_header_t = unit_header_t {
             max: 0,
             center: 0,
             init: 0,
-            type_: k_unit_param_type_enum as u8,
+            type_: k_unit_param_type_none as u8,
             _bitfield_align_1: [0u8; 0],
             // frac : 4, frac_mode : 1, reserved : 3
-            _bitfield_1: __BindgenBitfieldUnit::new([0b00000000; 1]),
-            name: sound_unit_string!(b"WAVE A", 22),
+            _bitfield_1: __BindgenBitfieldUnit::new([0u8; 1]),
+            name: [0x0; 22],
         },
         unit_param_t {
             min: 0,
@@ -75,8 +75,8 @@ pub static UNIT_HEADER: unit_header_t = unit_header_t {
             type_: k_unit_param_type_none as u8,
             _bitfield_align_1: [0u8; 0],
             // frac : 4, frac_mode : 1, reserved : 3
-            _bitfield_1: __BindgenBitfieldUnit::new([0b00000000; 1]),
-            name: sound_unit_string!(b"WAVE B", 22),
+            _bitfield_1: __BindgenBitfieldUnit::new([0u8; 1]),
+            name: [0x0; 22],
         },
         unit_param_t {
             min: 0,
@@ -86,41 +86,41 @@ pub static UNIT_HEADER: unit_header_t = unit_header_t {
             type_: k_unit_param_type_none as u8,
             _bitfield_align_1: [0u8; 0],
             // frac : 4, frac_mode : 1, reserved : 3
-            _bitfield_1: __BindgenBitfieldUnit::new([0b00000000; 1]),
-            name: sound_unit_string!(b"SUB WAVE", 22),
+            _bitfield_1: __BindgenBitfieldUnit::new([0u8; 1]),
+            name: [0x0; 22],
         },
         unit_param_t {
             min: 0,
-            max: 1000,
-            center: 0,
-            init: 0,
-            type_: k_unit_param_type_percent as u8,
-            _bitfield_align_1: [0u8; 0],
-            // frac : 4, frac_mode : 1, reserved : 3
-            _bitfield_1: __BindgenBitfieldUnit::new([0b00010001; 1]),
-            name: sound_unit_string!(b"RING MIX", 22),
-        },
-        unit_param_t {
-            min: 0,
-            max: 1000,
+            max: 0,
             center: 0,
             init: 0,
             type_: k_unit_param_type_none as u8,
             _bitfield_align_1: [0u8; 0],
             // frac : 4, frac_mode : 1, reserved : 3
-            _bitfield_1: __BindgenBitfieldUnit::new([0b00010001; 1]),
-            name: sound_unit_string!(b"BIT CRUSH", 22),
+            _bitfield_1: __BindgenBitfieldUnit::new([0u8; 1]),
+            name: [0x0; 22],
         },
         unit_param_t {
             min: 0,
-            max: 1000,
+            max: 0,
             center: 0,
-            init: 250,
-            type_: k_unit_param_type_percent as u8,
+            init: 0,
+            type_: k_unit_param_type_none as u8,
             _bitfield_align_1: [0u8; 0],
             // frac : 4, frac_mode : 1, reserved : 3
-            _bitfield_1: __BindgenBitfieldUnit::new([0b00010001; 1]),
-            name: sound_unit_string!(b"DRIFT", 22),
+            _bitfield_1: __BindgenBitfieldUnit::new([0u8; 1]),
+            name: [0x0; 22],
+        },
+        unit_param_t {
+            min: 0,
+            max: 0,
+            center: 0,
+            init: 0,
+            type_: k_unit_param_type_none as u8,
+            _bitfield_align_1: [0u8; 0],
+            // frac : 4, frac_mode : 1, reserved : 3
+            _bitfield_1: __BindgenBitfieldUnit::new([0u8; 1]),
+            name: [0x0; 22],
         },
         unit_param_t {
             min: 0,

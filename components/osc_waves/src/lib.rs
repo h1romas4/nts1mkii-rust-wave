@@ -8,7 +8,7 @@ use waves::Waves;
 
 // Oscillator is placed in memory.
 #[used]
-static mut WAVES: MaybeUninit<Waves> = MaybeUninit::uninit();
+static mut UNIT: MaybeUninit<Waves> = MaybeUninit::uninit();
 
 ///
 /// unit_init
@@ -27,8 +27,8 @@ static mut WAVES: MaybeUninit<Waves> = MaybeUninit::uninit();
 #[no_mangle]
 pub extern "C" fn unit_init(desc: *const unit_runtime_desc_t) -> i8 {
     unsafe {
-        WAVES.as_mut_ptr().write(Waves::new());
-        WAVES.assume_init_mut().init(desc)
+        UNIT.as_mut_ptr().write(Waves::new());
+        UNIT.assume_init_mut().init(desc)
     }
 }
 
@@ -40,7 +40,7 @@ pub extern "C" fn unit_init(desc: *const unit_runtime_desc_t) -> i8 {
 #[no_mangle]
 pub extern "C" fn unit_teardown() {
     unsafe {
-        WAVES.assume_init_mut().teardown();
+        UNIT.assume_init_mut().teardown();
     }
 }
 
@@ -55,7 +55,7 @@ pub extern "C" fn unit_teardown() {
 #[no_mangle]
 pub extern "C" fn unit_reset() {
     unsafe {
-        WAVES.assume_init_mut().reset();
+        UNIT.assume_init_mut().reset();
     }
 }
 
@@ -67,7 +67,7 @@ pub extern "C" fn unit_reset() {
 #[no_mangle]
 pub extern "C" fn unit_resume() {
     unsafe {
-        WAVES.assume_init_mut().resume();
+        UNIT.assume_init_mut().resume();
     }
 }
 
@@ -81,7 +81,7 @@ pub extern "C" fn unit_resume() {
 #[no_mangle]
 pub extern "C" fn unit_suspend() {
     unsafe {
-        WAVES.assume_init_mut().suspend();
+        UNIT.assume_init_mut().suspend();
     }
 }
 
@@ -94,7 +94,7 @@ pub extern "C" fn unit_suspend() {
 #[no_mangle]
 pub extern "C" fn unit_render(input: *const f32, output: *mut f32, frames: u32) {
     unsafe {
-        WAVES.assume_init_mut().process(input, output, frames);
+        UNIT.assume_init_mut().process(input, output, frames);
     }
 }
 
@@ -106,7 +106,7 @@ pub extern "C" fn unit_render(input: *const f32, output: *mut f32, frames: u32) 
 #[no_mangle]
 pub extern "C" fn unit_get_param_value(index: u8) -> i32 {
     unsafe {
-        WAVES.assume_init_mut().get_parameter_value(index)
+        UNIT.assume_init_mut().get_parameter_value(index)
     }
 }
 
@@ -123,7 +123,7 @@ pub extern "C" fn unit_get_param_value(index: u8) -> i32 {
 #[no_mangle]
 pub extern "C" fn unit_get_param_str_value(index: u8, value: i32) -> *const core::ffi::c_char {
     unsafe {
-        WAVES.assume_init_mut().get_parameter_str_value(index, value)
+        UNIT.assume_init_mut().get_parameter_str_value(index, value)
     }
 }
 
@@ -138,7 +138,7 @@ pub extern "C" fn unit_get_param_str_value(index: u8, value: i32) -> *const core
 #[no_mangle]
 pub extern "C" fn unit_set_param_value(index: u8, value: i32) {
     unsafe {
-        WAVES.assume_init_mut().set_parameter(index, value);
+        UNIT.assume_init_mut().set_parameter(index, value);
     }
 }
 
@@ -177,7 +177,7 @@ pub extern "C" fn unit_tempo_4ppqn_tick(_tempo: u32) {
 #[no_mangle]
 pub extern "C" fn unit_note_on(note: u8, velo: u8) {
     unsafe {
-        WAVES.assume_init_mut().note_on(note, velo);
+        UNIT.assume_init_mut().note_on(note, velo);
     }
 }
 
@@ -190,7 +190,7 @@ pub extern "C" fn unit_note_on(note: u8, velo: u8) {
 #[no_mangle]
 pub extern "C" fn unit_note_off(note: u8) {
     unsafe {
-        WAVES.assume_init_mut().note_off(note);
+        UNIT.assume_init_mut().note_off(note);
     }
 }
 
@@ -202,7 +202,7 @@ pub extern "C" fn unit_note_off(note: u8) {
 #[no_mangle]
 pub extern "C" fn unit_all_note_off() {
     unsafe {
-        WAVES.assume_init_mut().all_note_off();
+        UNIT.assume_init_mut().all_note_off();
     }
 }
 
@@ -215,7 +215,7 @@ pub extern "C" fn unit_all_note_off() {
 #[no_mangle]
 pub extern "C" fn unit_pitch_bend(bend: u8) {
     unsafe {
-        WAVES.assume_init_mut().pitch_bend(bend);
+        UNIT.assume_init_mut().pitch_bend(bend);
     }
 }
 
@@ -227,7 +227,7 @@ pub extern "C" fn unit_pitch_bend(bend: u8) {
 #[no_mangle]
 pub extern "C" fn unit_channel_pressure(press: u8) {
     unsafe {
-        WAVES.assume_init_mut().channel_pressure(press);
+        UNIT.assume_init_mut().channel_pressure(press);
     }
 }
 
@@ -237,7 +237,7 @@ pub extern "C" fn unit_channel_pressure(press: u8) {
 #[no_mangle]
 pub extern "C" fn unit_aftertouch(note: u8, press: u8) {
     unsafe {
-        WAVES.assume_init_mut().after_touch(note, press);
+        UNIT.assume_init_mut().after_touch(note, press);
     }
 }
 
