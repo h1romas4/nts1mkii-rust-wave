@@ -1,6 +1,7 @@
 # nts1mkii-rust-wave
 
 ![](https://github.com/h1romas4/nts1mkii-rust-wave/workflows/Build/badge.svg)
+![](https://github.com/h1romas4/nts1mkii-rust-wave/workflows/Release/badge.svg)
 
 ![NTS-1](https://raw.githubusercontent.com/h1romas4/nts1mkii-rust-wave/main/docs/images/nts1mkii-rust-wave-01.jpg)
 

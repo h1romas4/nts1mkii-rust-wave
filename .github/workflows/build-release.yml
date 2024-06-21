@@ -1,9 +1,12 @@
 name: Build
 
 on:
-  push:
-    branches:
-      - main
+  workflow_call:
+    inputs:
+      release:
+        description: 'release'
+        type: boolean
+        required: true
 
 jobs:
   build:
@@ -68,3 +71,9 @@ jobs:
         [ $(stat -c%s "dist/osc_waves.nts1mkiiunit") -le 49000 ]
         [ $(stat -c%s "dist/osc_dummy.nts1mkiiunit") -le 49000 ]
         [ $(stat -c%s "dist/osc_table32.nts1mkiiunit") -le 49000 ]
+
+    - uses: ncipollo/release-action@v1
+      if: ${{ inputs.release }}
+      with:
+          artifacts: "dist/*.nts1mkiiunit"
+          token: ${{ secrets.GITHUB_TOKEN }}
