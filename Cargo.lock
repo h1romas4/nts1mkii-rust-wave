@@ -186,6 +186,13 @@ dependencies = [
 ]
 
 [[package]]
+name = "osc_table32"
+version = "0.1.0"
+dependencies = [
+ "logue_sdk_v2rs",
+]
+
+[[package]]
 name = "osc_waves"
 version = "0.1.0"
 dependencies = [

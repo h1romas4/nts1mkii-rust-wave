@@ -77,7 +77,7 @@
                 "NTS1Mk2",
                 "install",
                 "-f",
-                "dist/osc_waves.nts1mkiiunit",
+                "dist/osc_table32.nts1mkiiunit",
                 "-m",
                 "osc",
                 "-s",

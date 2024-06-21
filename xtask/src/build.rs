@@ -2,9 +2,10 @@ use std::fs::OpenOptions;
 use std::io::{Seek, SeekFrom, Write};
 use std::path::{Path, PathBuf};
 
-const UNIT_NAME: [&str; 2] = [
+const UNIT_NAME: [&str; 3] = [
     "osc_waves",
     "osc_dummy",
+    "osc_table32",
 ];
 
 ///

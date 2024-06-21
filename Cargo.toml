@@ -2,7 +2,9 @@
 members = [
     "components/logue_bind",
     "components/osc_waves",
-    "components/osc_dummy", "xtask",
+    "components/osc_dummy",
+    "components/osc_table32",
+    "xtask",
 ]
 resolver = "2"
 
