@@ -65,7 +65,7 @@
         },
         {
             // https://github.com/TarkanAl-Kazily/py-logue-tools
-            "label": "Deploy to nts1mkii (py-logue-tools)",
+            "label": "Deploy to nts1mkii osc_table32 (py-logue-tools) ",
             "type": "shell",
             "dependsOn": [
                 "Build"
@@ -82,6 +82,50 @@
                 "osc",
                 "-s",
                 "2"
+            ],
+            "problemMatcher": []
+        },
+        {
+            // https://github.com/TarkanAl-Kazily/py-logue-tools
+            "label": "Deploy to nts1mkii osc_waves (py-logue-tools)",
+            "type": "shell",
+            "dependsOn": [
+                "Build"
+            ],
+            "command": "py-logue-tools",
+            "args": [
+                "-p2",
+                "--type",
+                "NTS1Mk2",
+                "install",
+                "-f",
+                "dist/osc_waves.nts1mkiiunit",
+                "-m",
+                "osc",
+                "-s",
+                "3"
+            ],
+            "problemMatcher": []
+        },
+        {
+            // https://github.com/TarkanAl-Kazily/py-logue-tools
+            "label": "Deploy to nts1mkii osc_dummy (py-logue-tools)",
+            "type": "shell",
+            "dependsOn": [
+                "Build"
+            ],
+            "command": "py-logue-tools",
+            "args": [
+                "-p2",
+                "--type",
+                "NTS1Mk2",
+                "install",
+                "-f",
+                "dist/osc_dummy.nts1mkiiunit",
+                "-m",
+                "osc",
+                "-s",
+                "4"
             ],
             "problemMatcher": []
         }
