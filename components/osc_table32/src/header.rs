@@ -1,4 +1,4 @@
-use logue_sdk_v2rs::*;
+use logue_bind::*;
 use crate::table32::WAVE_TABLE_COUNT;
 
 ///

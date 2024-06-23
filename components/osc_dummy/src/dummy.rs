@@ -1,4 +1,4 @@
-use logue_sdk_v2rs::*;
+use logue_bind::*;
 
 pub struct Dummy {
     runtime_desc: *const unit_runtime_desc_t,

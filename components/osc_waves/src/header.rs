@@ -1,4 +1,4 @@
-use logue_sdk_v2rs::*;
+use logue_bind::*;
 use crate::waves::{K_WAVES_A_CNT, K_WAVES_B_CNT, SUB_WAVE_CNT};
 
 ///

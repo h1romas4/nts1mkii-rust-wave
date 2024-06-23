@@ -1,5 +1,5 @@
 [package]
-name = "logue_sdk_v2rs"
+name = "logue_bind"
 version = "0.1.0"
 edition = "2021"
 

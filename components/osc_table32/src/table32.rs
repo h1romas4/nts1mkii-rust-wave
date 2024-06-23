@@ -1,4 +1,4 @@
-use logue_sdk_v2rs::*;
+use logue_bind::*;
 
 pub const WAVE_TABLE_COUNT: usize = 32;
 pub const WAVE_TABLE_WIDTH: usize = 32;

@@ -3,7 +3,7 @@
 mod header;
 mod waves;
 use core::{mem::MaybeUninit, panic::PanicInfo};
-use logue_sdk_v2rs::*;
+use logue_bind::*;
 use waves::Waves;
 
 // Oscillator is placed in memory.

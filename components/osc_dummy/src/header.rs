@@ -1,4 +1,4 @@
-use logue_sdk_v2rs::*;
+use logue_bind::*;
 
 ///
 /// The sound unit header.

@@ -4,7 +4,7 @@
 ///  https://github.com/korginc/logue-sdk/blob/master/platform/nts-1_mkii/waves/waves.h
 ///  rev. c78b4b67f97dcff3c87cb6cf2ee9ebe36b8b82a4
 use core::sync::atomic::AtomicU32;
-use logue_sdk_v2rs::*;
+use logue_bind::*;
 
 pub const K_WAVES_A_CNT: i16 = (k_waves_a_cnt + k_waves_b_cnt + k_waves_c_cnt) as i16;
 pub const K_WAVES_B_CNT: i16 = (k_waves_d_cnt + k_waves_e_cnt + k_waves_f_cnt) as i16;

@@ -6,7 +6,7 @@
             "type": "shell",
             "command": "toolchain/gcc-arm-none-eabi/bin/arm-none-eabi-nm",
             "args": [
-                "components/logue_sdk_v2rs/dist/libnts1mkii.a",
+                "components/logue_bind/dist/libnts1mkii.a",
                 "|",
                 "tee",
                 "dist/nts1mkii-rust-wave.nm.txt"
