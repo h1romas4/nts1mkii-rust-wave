@@ -65,7 +65,7 @@ $ cargo new components/osc_hello
 $ cp -p components/osc_dummy/src/*.rs components/osc_hello/src
 # add to xtask UNIT_NAME
 $ grep -A4 UNIT_NAME: xtask/src/build.rs
-const UNIT_NAME: [&str; 3] = [
+const UNIT_NAME: [&str; 4] = [ // increase the number of array elements
     "osc_waves",
     "osc_dummy",
     "osc_table32",
