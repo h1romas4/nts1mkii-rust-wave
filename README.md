@@ -28,9 +28,15 @@ This project uses the gcc-ld and thumbv7em sysroot provided by gcc-arm-none-eabi
 ```bash
 cd toolchain
 rm -Rf gcc-arm-none-eabi/
+# ex. Linux
 wget https://developer.arm.com/-/media/Files/downloads/gnu-rm/10.3-2021.10/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux.tar.bz2
 tar xvf gcc-arm-none-eabi-10.3-2021.10-x86_64-linux.tar.bz2
 rm gcc-arm-none-eabi-10.3-2021.10-x86_64-linux.tar.bz2
+# ex. macOS
+# wget https://developer.arm.com/-/media/Files/downloads/gnu-rm/10.3-2021.10/gcc-arm-none-eabi-10.3-2021.10-mac.tar.bz2
+# tar xvf gcc-arm-none-eabi-10.3-2021.10-mac.tar.bz2
+# rm gcc-arm-none-eabi-10.3-2021.10-mac.tar.bz2
+# rename direvtory for .cargo/config
 mv gcc-arm-none-eabi-10.3-2021.10 gcc-arm-none-eabi
 # for git
 touch gcc-arm-none-eabi/EMPTY
