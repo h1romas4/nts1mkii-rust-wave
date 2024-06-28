@@ -239,15 +239,6 @@ Passing the `--long-plt` option to linker fixes it, but not sure if it is correc
 
 Good work.
 
-```
-ELF Header:
-  Magic:   7f 45 4c 46 01 01 01 00 00 00 00 00 00 00 00 00
-  Class:                             ELF32
-  Data:                              2's complement, little endian
-  Version:                           1 (current)
-  OS/ABI:                            UNIX - System V
-```
-
 ```asm
 000011e0 <osc_white@plt>:
     11e0:	f240 4c28 	movw	ip, #1064	; 0x428
