@@ -62,17 +62,13 @@ impl Dummy {
         let y_e = unsafe { y.offset(frames as isize) };
 
         while y != y_e {
-            let sig = if self.phase - 0.5_f32 <= 0.0_f32 {
-                1.0_f32
-            } else {
-                -1.0_f32
-            };
+            self.phase += w0;
+            self.phase = unsafe { modff(self.phase, core::ptr::null_mut()) };
+
             unsafe {
-                *y = sig;
+                *y = osc_sinf(self.phase);
                 y = y.offset(1);
             }
-            self.phase += w0;
-            self.phase -= self.phase as i32 as f32;
         }
     }
 

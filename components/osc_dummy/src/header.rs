@@ -8,7 +8,7 @@ use logue_bind::*;
 #[export_name = "unit_header"]
 pub static UNIT_HEADER: unit_header_t = unit_header_t {
     // This unit's version: major.minor.patch (major<<16 minor<<8 patch).
-    version: 0x00020000,
+    version: 0x00010000,
     // Size of this header. Leave as is.
     header_size: core::mem::size_of::<unit_header_t>() as u32,
     // Target platform and module pair for this unit
