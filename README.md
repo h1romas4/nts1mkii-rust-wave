@@ -72,6 +72,7 @@ $ cargo new components/osc_hello
 # copy template
 $ cp -p components/osc_dummy/src/*.rs components/osc_hello/src
 # update template
+rm components/osc_hello/src/main.rs
 cp -p components/osc_dummy/Cargo.toml components/osc_hello
 sed -i '' 's/name = "osc_dummy"/name = "osc_hello"/' components/osc_hello/Cargo.toml
 # add to xtask UNIT_NAME
