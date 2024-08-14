@@ -75,8 +75,8 @@ $ cp -p components/osc_dummy/src/*.rs components/osc_hello/src
 $ rm components/osc_hello/src/main.rs
 $ cp -p components/osc_dummy/Cargo.toml components/osc_hello
 $ sed -i '' 's/name = "osc_dummy"/name = "osc_hello"/' components/osc_hello/Cargo.toml
-# add to xtask UNIT_NAME
-$ grep -A4 UNIT_NAME: xtask/src/build.rs
+# add to xtask UNIT_NAME xtask/src/build.rs
+$ code -g $(grep -Hn UNIT_NAME: xtask/src/build.rs | cut -d':' -f1,2)
 const UNIT_NAME: [&str; 4] = [ // increase the number of array elements
     "osc_waves",
     "osc_dummy",
@@ -88,8 +88,8 @@ const UNIT_NAME: [&str; 4] = [ // increase the number of array elements
 Sound unit Settings:
 
 ```bash
-# edit attribute
-$ grep -A4 dev_id: components/osc_hello/src/header.rs
+# edit attribute components/osc_hello/src/header.rs
+$ code -g $(grep -Hn dev_id: components/osc_hello/src/header.rs | cut -d':' -f1,2)
     dev_id: sound_unit_dev_id_string!(b"H1RO"),
     // ID for this unit. Scoped within the context of a given dev_id.
     unit_id: 0x050401,
