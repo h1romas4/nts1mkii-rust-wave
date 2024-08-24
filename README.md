@@ -74,7 +74,7 @@ $ cp -p components/osc_dummy/src/*.rs components/osc_hello/src
 # update template
 $ rm components/osc_hello/src/main.rs
 $ cp -p components/osc_dummy/Cargo.toml components/osc_hello
-$ sed -i '' 's/name = "osc_dummy"/name = "osc_hello"/' components/osc_hello/Cargo.toml
+$ sed -i 's/name = "osc_dummy"/name = "osc_hello"/' components/osc_hello/Cargo.toml
 # add to xtask UNIT_NAME xtask/src/build.rs
 $ code -g $(grep -Hn UNIT_NAME: xtask/src/build.rs | cut -d':' -f1,2)
 const UNIT_NAME: [&str; 4] = [ // increase the number of array elements
