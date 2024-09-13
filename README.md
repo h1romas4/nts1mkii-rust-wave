@@ -19,6 +19,7 @@ Clone repository:
 
 ```bash
 git clone --recursive https://github.com/h1romas4/nts1mkii-rust-wave
+cd nts1mkii-rust-wave
 ```
 
 Install `gcc-arm-none-eabi-10.3` toolchaine:
