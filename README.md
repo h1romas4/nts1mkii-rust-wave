@@ -19,7 +19,6 @@ Clone repository:
 
 ```bash
 git clone --recursive https://github.com/h1romas4/nts1mkii-rust-wave
-cd nts1mkii-rust-wave
 ```
 
 Install `gcc-arm-none-eabi-10.3` toolchaine:
@@ -27,7 +26,7 @@ Install `gcc-arm-none-eabi-10.3` toolchaine:
 This project uses the gcc-ld and thumbv7em sysroot provided by gcc-arm-none-eabi. [Install](https://github.com/korginc/logue-sdk/tree/master/tools/gcc) them according to the OS on which the build will be executed.
 
 ```bash
-cd toolchain
+cd nts1mkii-rust-wave/toolchain
 rm -Rf gcc-arm-none-eabi/
 # ex. Linux
 wget https://developer.arm.com/-/media/Files/downloads/gnu-rm/10.3-2021.10/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux.tar.bz2
