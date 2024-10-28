@@ -16,6 +16,6 @@ pub const Q31_TO_F32_C: f32 = 4.65661287307739e-010;
 /// Workaround handler for libm.
 ///
 #[no_mangle]
-#[cfg_attr(all(test, assert_no_panic), no_panic::no_panic)]
+#[cfg_attr(all(test), no_panic::no_panic)]
 pub extern "C" fn __errno() {
 }
