@@ -5,7 +5,11 @@
 
 ![NTS-1](https://raw.githubusercontent.com/h1romas4/nts1mkii-rust-wave/main/docs/images/nts1mkii-rust-wave-01.jpg)
 
-This repository is a Rust ported build of the WAVES(osc) synthesizer for the NTS-1 digital kit mkII included in [logue-sdk](https://github.com/korginc/logue-sdk). If you are interested in creating an NTS-1 Digital Kit mkII sound source in Rust, perhaps this repository may be of some use to you.
+This repository provides custom oscillators written in Rust for the KORG NTS-1 Digital Kit mkII. 
+
+It includes a Rust port of Waves provided by [logue-sdk](https://github.com/korginc/logue-sdk), a 32-byte wavetable synth, and source code templates for the instruments.
+
+If you are interested in creating a sound source for the NTS-1 Digital Kit mkII in Rust, you may find this repository useful.
 
 ## Demo
 
