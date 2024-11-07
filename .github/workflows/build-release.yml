@@ -55,14 +55,14 @@ jobs:
         nm dist/libnts1mkii.a | tee dist/libnts1mkii.obj.txt
         popd
 
-    - name: Build Sound unit (osc_waves)
+    - name: Build Sound Unit
       run: |
         # build
         WITH_LOGUE_SDK_BINDGEN=true cargo build --release --target=thumbv7em-none-eabihf
         # distribute
         cargo xtask dist
 
-    - name: Valid Sound unit (osc_waves)
+    - name: Validate Sound Unit
       run: |
         # check
         readelf -a dist/osc_waves.nts1mkiiunit
