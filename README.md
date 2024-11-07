@@ -5,7 +5,7 @@
 
 ![NTS-1](https://raw.githubusercontent.com/h1romas4/nts1mkii-rust-wave/main/docs/images/nts1mkii-rust-wave-01.jpg)
 
-This repository provides custom oscillators written in Rust for the KORG NTS-1 Digital Kit mkII. 
+This repository provides custom oscillators written in Rust for the KORG NTS-1 Digital Kit mkII.
 
 It includes a Rust port of Waves provided by [logue-sdk](https://github.com/korginc/logue-sdk), a 32-byte wavetable synth, and source code templates for the instruments.
 
@@ -29,23 +29,41 @@ Install `gcc-arm-none-eabi-10.3` toolchaine:
 
 This project uses the gcc-ld and thumbv7em sysroot provided by gcc-arm-none-eabi. [Install](https://github.com/korginc/logue-sdk/tree/master/tools/gcc) them according to the OS on which the build will be executed.
 
+Linux:
+
 ```bash
 cd nts1mkii-rust-wave/toolchain
 rm -Rf gcc-arm-none-eabi/
-# ex. Linux
 wget https://developer.arm.com/-/media/Files/downloads/gnu-rm/10.3-2021.10/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux.tar.bz2
 tar xvf gcc-arm-none-eabi-10.3-2021.10-x86_64-linux.tar.bz2
 rm gcc-arm-none-eabi-10.3-2021.10-x86_64-linux.tar.bz2
-#
-# ex. macOS
-# wget https://developer.arm.com/-/media/Files/downloads/gnu-rm/10.3-2021.10/gcc-arm-none-eabi-10.3-2021.10-mac.tar.bz2
-# tar xvf gcc-arm-none-eabi-10.3-2021.10-mac.tar.bz2
-# rm gcc-arm-none-eabi-10.3-2021.10-mac.tar.bz2
-#
-# rename directory for .cargo/config
-mv gcc-arm-none-eabi-10.3-2021.10 gcc-arm-none-eabi
-# for git
-touch gcc-arm-none-eabi/EMPTY
+mv gcc-arm-none-eabi-10.3-2021.10 gcc-arm-none-eabi # rename directory for .cargo/config
+touch gcc-arm-none-eabi/EMPTY # for git
+cd ..
+```
+
+macOS:
+
+```bash
+cd nts1mkii-rust-wave/toolchain
+rm -Rf gcc-arm-none-eabi/
+wget https://developer.arm.com/-/media/Files/downloads/gnu-rm/10.3-2021.10/gcc-arm-none-eabi-10.3-2021.10-mac.tar.bz2
+tar xvf gcc-arm-none-eabi-10.3-2021.10-mac.tar.bz2
+rm gcc-arm-none-eabi-10.3-2021.10-mac.tar.bz2
+mv gcc-arm-none-eabi-10.3-2021.10 gcc-arm-none-eabi # rename directory for .cargo/config
+touch gcc-arm-none-eabi/EMPTY # for git
+cd ..
+```
+
+Windows 11 pwsh:
+
+```pwsh
+cd nts1mkii-rust-wave/toolchain
+curl -L https://developer.arm.com/-/media/Files/downloads/gnu-rm/10.3-2021.10/gcc-arm-none-eabi-10.3-2021.10-win32.zip -o gcc-arm-none-eabi-10.3-2021.10-win32.zip
+Expand-Archive -Path ".\gcc-arm-none-eabi-10.3-2021.10-win32.zip"
+Copy-Item -Path ".\gcc-arm-none-eabi-10.3-2021.10-win32\gcc-arm-none-eabi-10.3-2021.10\*" -Destination ".\gcc-arm-none-eabi" -Recurse
+Remove-Item -Path ".\gcc-arm-none-eabi-10.3-2021.10-win32" -Recurse -Force
+Remove-Item .\gcc-arm-none-eabi-10.3-2021.10-win32.zip -Force
 cd ..
 ```
 
