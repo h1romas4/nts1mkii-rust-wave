@@ -19,7 +19,7 @@ jobs:
     name: Build ${{ matrix.os }}
 
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v4
       with:
         submodules: recursive
         token: ${{secrets.GITHUB_TOKEN}}
@@ -28,7 +28,7 @@ jobs:
 
     - name: Cache gcc-arm-none-eabi
       id: cache-gcc-arm-none-eabi
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       with:
         path: |
           ./toolchain
@@ -125,10 +125,10 @@ jobs:
         # check
         toolchain/gcc-arm-none-eabi/bin/arm-none-eabi-objdump -d dist/osc_waves.nts1mkiiunit
         # size check
-        ls -laF
-        # [ $(stat -c%s "dist/osc_waves.nts1mkiiunit") -le 49000 ]
-        # [ $(stat -c%s "dist/osc_dummy.nts1mkiiunit") -le 49000 ]
-        # [ $(stat -c%s "dist/osc_table32.nts1mkiiunit") -le 49000 ]
+        ls -laF dist
+        [ $(stat -f%z "dist/osc_waves.nts1mkiiunit") -le 49000 ]
+        [ $(stat -f%z "dist/osc_dummy.nts1mkiiunit") -le 49000 ]
+        [ $(stat -f%z "dist/osc_table32.nts1mkiiunit") -le 49000 ]
 
     - name: Validate Sound Unit
       if: startsWith(matrix.os, 'windows')
@@ -137,9 +137,9 @@ jobs:
         # check
         toolchain/gcc-arm-none-eabi/bin/arm-none-eabi-objdump -d dist/osc_waves.nts1mkiiunit
         # size check
-        (Get-Item "dist/osc_waves.nts1mkiiunit").length -gt 49000
-        (Get-Item "dist/osc_dummy.nts1mkiiunit").length -gt 49000
-        (Get-Item "dist/osc_table32.nts1mkiiunit").length -gt 49000
+        (Get-Item "dist/osc_waves.nts1mkiiunit").length -le 49000
+        (Get-Item "dist/osc_dummy.nts1mkiiunit").length -le 49000
+        (Get-Item "dist/osc_table32.nts1mkiiunit").length -le 49000
 
     # - uses: ncipollo/release-action@v1
     #   if: ${{ inputs.release }} && startsWith(matrix.os, 'ubuntu')
