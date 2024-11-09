@@ -101,7 +101,7 @@ jobs:
         cargo xtask dist
 
     - name: Build Sound Unit
-      if: startsWith(matrix.os, 'macos')
+      if: startsWith(matrix.os, 'macos') || startsWith(matrix.os, 'windows')
       run: |
         # build
         cargo build --release --target=thumbv7em-none-eabihf
