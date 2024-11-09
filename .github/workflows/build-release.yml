@@ -23,7 +23,7 @@ jobs:
 
     runs-on: ${{ matrix.os }}
 
-    name: Build ${{ matrix.os }}
+    name: ${{ matrix.os }} Build
 
     steps:
     - uses: actions/checkout@v4
@@ -145,6 +145,7 @@ jobs:
         # check
         toolchain/gcc-arm-none-eabi/bin/arm-none-eabi-objdump -d dist/osc_waves.nts1mkiiunit
         # size check
+        Get-ChildItem ./dist/
         (Get-Item "dist/osc_waves.nts1mkiiunit").length -le 49000
         (Get-Item "dist/osc_dummy.nts1mkiiunit").length -le 49000
         (Get-Item "dist/osc_table32.nts1mkiiunit").length -le 49000
