@@ -17,6 +17,16 @@ If you are interested in creating a sound source for the NTS-1 Digital Kit mkII 
 
 🎥 [ Rust build table32 custom oscillator on KORG NTS-1 digital kit mkII ](https://www.youtube.com/watch?v=EQm9mchfxXw)
 
+## Release
+
+[Pre-built binaries](https://github.com/h1romas4/nts1mkii-rust-wave/releases/latest)
+
+|Unit name||
+|---|---|
+|osc_waves.nts1mkiiunit| Rust ports louge-sdk Waves|
+|osc_dummy.nts1mkiiunit| Square wave oscillator|
+|osc_table32.nts1mkiiunit| 32 byte waveform memory oscillator|
+
 ## Build
 
 Clone repository:
@@ -130,16 +140,6 @@ $ cargo xtask dist
 $ ls -laF dist/osc_hello.nts1mkiiunit
 -rwxrwxr-x 1 hiromasa hiromasa 28208  6月 21 19:18 dist/osc_hello.nts1mkiiunit*
 ```
-## Release
-
-[Pre-built binaries for this repository](https://github.com/h1romas4/nts1mkii-rust-wave/releases/latest)
-
-|Unit name||
-|---|---|
-|osc_waves.nts1mkiiunit| Rust ports louge-sdk Waves|
-|osc_dummy.nts1mkiiunit| Square wave oscillator|
-|osc_table32.nts1mkiiunit| 32 byte waveform memory oscillator|
-
 ## License
 
 BSD-3-Clause License
