@@ -12,7 +12,14 @@ jobs:
   build:
     strategy:
       matrix:
-        os: [ ubuntu-22.04, windows-latest, macos-latest ]
+        os: [ ubuntu-24.04, windows-latest, macos-latest ]
+        include:
+          - os: ubuntu-24.04
+            release: ${{ inputs.release }}
+          - os: macos-latest
+            release: false
+          - os: windows-latest
+            release: false
 
     runs-on: ${{ matrix.os }}
 
@@ -115,6 +122,7 @@ jobs:
         readelf -a dist/osc_waves.nts1mkiiunit
         toolchain/gcc-arm-none-eabi/bin/arm-none-eabi-objdump -d dist/osc_waves.nts1mkiiunit
         # size check
+        ls -laF dist
         [ $(stat -c%s "dist/osc_waves.nts1mkiiunit") -le 49000 ]
         [ $(stat -c%s "dist/osc_dummy.nts1mkiiunit") -le 49000 ]
         [ $(stat -c%s "dist/osc_table32.nts1mkiiunit") -le 49000 ]
@@ -141,8 +149,8 @@ jobs:
         (Get-Item "dist/osc_dummy.nts1mkiiunit").length -le 49000
         (Get-Item "dist/osc_table32.nts1mkiiunit").length -le 49000
 
-    # - uses: ncipollo/release-action@v1
-    #   if: ${{ inputs.release }} && startsWith(matrix.os, 'ubuntu')
-    #   with:
-    #       artifacts: "dist/*.nts1mkiiunit"
-    #       token: ${{ secrets.GITHUB_TOKEN }}
+    - uses: ncipollo/release-action@v1
+      if: ${{ matrix.release }}
+      with:
+          artifacts: "dist/*.nts1mkiiunit"
+          token: ${{ secrets.GITHUB_TOKEN }}
