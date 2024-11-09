@@ -70,8 +70,15 @@ jobs:
         Remove-Item .\gcc-arm-none-eabi-10.3-2021.10-win32.zip -Force
 
     - name: Build logue-sdk
-      if: startsWith(matrix.os, 'ubuntu') || startsWith(matrix.os, 'macos')
+      if: startsWith(matrix.os, 'ubuntu')
       run: |
+        #
+        # On Apple Silicon, cmake does not work with the following error.
+        # For this reason, dist/libnts1mkii.a should be generated only on Linux.
+        #  https://gitlab.kitware.com/cmake/cmake/-/issues/23105
+        #  arm-none-eabi-gcc: error: arm64: No such file or directory
+        #  arm-none-eabi-gcc: error: unrecognized command-line option '-arch'; did you mean '-march='?
+        #
         # remove inline attribute for libnts1mkii.a
         pushd components/logue-sdk
         git apply ../logue_bind/script/louge-sdk-remove-inline.patch
@@ -86,10 +93,18 @@ jobs:
         popd
 
     - name: Build Sound Unit
-      if: startsWith(matrix.os, 'ubuntu') || startsWith(matrix.os, 'macos')
+      if: startsWith(matrix.os, 'ubuntu')
+      run: |
+        # build with bindgen
+        WITH_LOGUE_SDK_BINDGEN=true cargo build --release --target=thumbv7em-none-eabihf
+        # distribute
+        cargo xtask dist
+
+    - name: Build Sound Unit
+      if: startsWith(matrix.os, 'macos')
       run: |
         # build
-        WITH_LOGUE_SDK_BINDGEN=true cargo build --release --target=thumbv7em-none-eabihf
+        cargo build --release --target=thumbv7em-none-eabihf
         # distribute
         cargo xtask dist
 
