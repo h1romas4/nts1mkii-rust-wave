@@ -80,7 +80,10 @@ Distribute:
 cargo xtask dist
 ```
 
-Transfer `dist/osc_waves.nts1mkiiunit` to NTS-1 digital kit mkII.
+Transfer `dist/*.nts1mkiiunit` to NTS-1 digital kit mkII.
+
+See [GitHub Actions](https://github.com/h1romas4/nts1mkii-rust-wave/blob/main/.github/workflows/build-release.yml
+) for build details.
 
 Enjoy!
 
