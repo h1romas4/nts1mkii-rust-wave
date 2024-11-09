@@ -10,22 +10,34 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-22.04
+    strategy:
+      matrix:
+        os: [ ubuntu-22.04, windows-latest, macos-latest ]
+
+    runs-on: ${{ matrix.os }}
+
+    name: Build ${{ matrix.os }}
+
     steps:
     - uses: actions/checkout@v1
       with:
         submodules: recursive
         token: ${{secrets.GITHUB_TOKEN}}
 
+    - uses: dtolnay/rust-toolchain@stable
+
     - name: Cache gcc-arm-none-eabi
       id: cache-gcc-arm-none-eabi
       uses: actions/cache@v3
       with:
-        path: ./toolchain
-        key: ${{ runner.os }}-gcc-arm-none-eabi-10.3-2021.10
+        path: |
+          ./toolchain
+          ~/.rustup
+          ~/.cargo
+        key: ${{ runner.os }}-${{ matrix.os }}-gcc-arm-none-eabi-10.3-2021.10
 
     - name: gcc-arm-none-eabi Toolchain Setup
-      if: steps.cache-gcc-arm-none-eabi.outputs.cache-hit != 'true'
+      if: startsWith(matrix.os, 'ubuntu') && steps.cache-gcc-arm-none-eabi.outputs.cache-hit != 'true'
       run: |
         cd toolchain
         rm -Rf gcc-arm-none-eabi/
@@ -35,12 +47,30 @@ jobs:
         mv gcc-arm-none-eabi-10.3-2021.10 gcc-arm-none-eabi
         touch gcc-arm-none-eabi/EMPTY # for git
 
-    - name: Rust Toolchain Setup
+    - name: gcc-arm-none-eabi Toolchain Setup
+      if: startsWith(matrix.os, 'macos') && steps.cache-gcc-arm-none-eabi.outputs.cache-hit != 'true'
       run: |
-        curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
-        rustup target add thumbv7em-none-eabihf
+        cd toolchain
+        rm -Rf gcc-arm-none-eabi/
+        wget https://developer.arm.com/-/media/Files/downloads/gnu-rm/10.3-2021.10/gcc-arm-none-eabi-10.3-2021.10-mac.tar.bz2
+        tar xvf gcc-arm-none-eabi-10.3-2021.10-mac.tar.bz2
+        rm gcc-arm-none-eabi-10.3-2021.10-mac.tar.bz2
+        mv gcc-arm-none-eabi-10.3-2021.10 gcc-arm-none-eabi # rename directory for .cargo/config
+        touch gcc-arm-none-eabi/EMPTY # for git
+
+    - name: gcc-arm-none-eabi Toolchain Setup
+      if: startsWith(matrix.os, 'windows') && steps.cache-gcc-arm-none-eabi.outputs.cache-hit != 'true'
+      shell: pwsh
+      run: |
+        cd toolchain
+        curl -L https://developer.arm.com/-/media/Files/downloads/gnu-rm/10.3-2021.10/gcc-arm-none-eabi-10.3-2021.10-win32.zip -o gcc-arm-none-eabi-10.3-2021.10-win32.zip
+        Expand-Archive -Path ".\gcc-arm-none-eabi-10.3-2021.10-win32.zip"
+        Copy-Item -Path ".\gcc-arm-none-eabi-10.3-2021.10-win32\gcc-arm-none-eabi-10.3-2021.10\*" -Destination ".\gcc-arm-none-eabi" -Recurse
+        Remove-Item -Path ".\gcc-arm-none-eabi-10.3-2021.10-win32" -Recurse -Force
+        Remove-Item .\gcc-arm-none-eabi-10.3-2021.10-win32.zip -Force
 
     - name: Build logue-sdk
+      if: startsWith(matrix.os, 'ubuntu') || startsWith(matrix.os, 'macos')
       run: |
         # remove inline attribute for libnts1mkii.a
         pushd components/logue-sdk
@@ -56,6 +86,7 @@ jobs:
         popd
 
     - name: Build Sound Unit
+      if: startsWith(matrix.os, 'ubuntu') || startsWith(matrix.os, 'macos')
       run: |
         # build
         WITH_LOGUE_SDK_BINDGEN=true cargo build --release --target=thumbv7em-none-eabihf
@@ -63,6 +94,7 @@ jobs:
         cargo xtask dist
 
     - name: Validate Sound Unit
+      if: startsWith(matrix.os, 'ubuntu')
       run: |
         # check
         readelf -a dist/osc_waves.nts1mkiiunit
@@ -72,8 +104,29 @@ jobs:
         [ $(stat -c%s "dist/osc_dummy.nts1mkiiunit") -le 49000 ]
         [ $(stat -c%s "dist/osc_table32.nts1mkiiunit") -le 49000 ]
 
+    - name: Validate Sound Unit
+      if: startsWith(matrix.os, 'macos')
+      run: |
+        # check
+        toolchain/gcc-arm-none-eabi/bin/arm-none-eabi-objdump -d dist/osc_waves.nts1mkiiunit
+        # size check
+        [ $(stat -c%s "dist/osc_waves.nts1mkiiunit") -le 49000 ]
+        [ $(stat -c%s "dist/osc_dummy.nts1mkiiunit") -le 49000 ]
+        [ $(stat -c%s "dist/osc_table32.nts1mkiiunit") -le 49000 ]
+
+    - name: Validate Sound Unit
+      if: startsWith(matrix.os, 'windows')
+      shell: pwsh
+      run: |
+        # check
+        toolchain/gcc-arm-none-eabi/bin/arm-none-eabi-objdump -d dist/osc_waves.nts1mkiiunit
+        # size check
+        (Get-Item "dist/osc_waves.nts1mkiiunit").length -gt 49000
+        (Get-Item "dist/osc_dummy.nts1mkiiunit").length -gt 49000
+        (Get-Item "dist/osc_table32.nts1mkiiunit").length -gt 49000
+
     - uses: ncipollo/release-action@v1
-      if: ${{ inputs.release }}
+      if: ${{ inputs.release }} && startsWith(matrix.os, 'ubuntu')
       with:
           artifacts: "dist/*.nts1mkiiunit"
           token: ${{ secrets.GITHUB_TOKEN }}
