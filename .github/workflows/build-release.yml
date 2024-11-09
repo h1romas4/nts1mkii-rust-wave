@@ -140,8 +140,8 @@ jobs:
         (Get-Item "dist/osc_dummy.nts1mkiiunit").length -gt 49000
         (Get-Item "dist/osc_table32.nts1mkiiunit").length -gt 49000
 
-    - uses: ncipollo/release-action@v1
-      if: ${{ inputs.release }} && startsWith(matrix.os, 'ubuntu')
-      with:
-          artifacts: "dist/*.nts1mkiiunit"
-          token: ${{ secrets.GITHUB_TOKEN }}
+    # - uses: ncipollo/release-action@v1
+    #   if: ${{ inputs.release }} && startsWith(matrix.os, 'ubuntu')
+    #   with:
+    #       artifacts: "dist/*.nts1mkiiunit"
+    #       token: ${{ secrets.GITHUB_TOKEN }}
