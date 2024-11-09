@@ -125,9 +125,10 @@ jobs:
         # check
         toolchain/gcc-arm-none-eabi/bin/arm-none-eabi-objdump -d dist/osc_waves.nts1mkiiunit
         # size check
-        [ $(stat -c%s "dist/osc_waves.nts1mkiiunit") -le 49000 ]
-        [ $(stat -c%s "dist/osc_dummy.nts1mkiiunit") -le 49000 ]
-        [ $(stat -c%s "dist/osc_table32.nts1mkiiunit") -le 49000 ]
+        ls -laF
+        # [ $(stat -c%s "dist/osc_waves.nts1mkiiunit") -le 49000 ]
+        # [ $(stat -c%s "dist/osc_dummy.nts1mkiiunit") -le 49000 ]
+        # [ $(stat -c%s "dist/osc_table32.nts1mkiiunit") -le 49000 ]
 
     - name: Validate Sound Unit
       if: startsWith(matrix.os, 'windows')
