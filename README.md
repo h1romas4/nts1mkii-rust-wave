@@ -254,15 +254,28 @@ For some reason, it becomes out of bounds. Late binaries are overwritten in the 
 
 ```asm
 000005c0 <osc_white@plt>:
- 5c0:   0000            movs    r0, r0
- 5c2:   0000            movs    r0, r0
+ 5c0:   0000            movs    r0, r0          ; ?
+ 5c2:   0000            movs    r0, r0          ; ?
  5c4:   f240 2c1c       movw    ip, #540        ; 0x21c
  5c8:   f2c0 0c00       movt    ip, #0
  5cc:   44fc            add     ip, pc
  5ce:   Address 0x00000000000005ce is out of bounds.
 ```
 
-Passing the `--long-plt` option to linker fixes it, but not sure if it is correct. This repository uses this approach.
+Passing the `--long-plt` option to linker fixes it, but not sure if it is correct.
+
+```asm
+476c <osc_white@plt>:
+476c:   0000        movs    r0, r0              ; ?
+476e:   0000        movs    r0, r0              : ?
+4770:   f240 2c40   movw    ip, #576            ; 0x240
+4774:   f2c0 0c00   movt    ip, #0
+4778:   44fc        add	    ip, pc
+477a:   f8dc f000   ldr.w	pc, [ip]
+477e:   e7fc        b.n	477a <osc_white@plt+0xe>
+```
+
+This repository uses this approach.
 
 ### Original louge-sdk gcc & arm-none-eabi-ld ver
 
