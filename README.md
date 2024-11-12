@@ -24,7 +24,7 @@ If you are interested in creating a sound source for the NTS-1 Digital Kit mkII 
 |Unit name||
 |---|---|
 |osc_waves.nts1mkiiunit| Rust ports louge-sdk Waves |
-|osc_dummy.nts1mkiiunit| Sign oscillator for operation check |
+|osc_dummy.nts1mkiiunit| osc_sinf for operation check |
 |osc_table32.nts1mkiiunit| 32 byte waveform memory oscillator |
 
 ## Build
