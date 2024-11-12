@@ -267,7 +267,7 @@ Passing the `--long-plt` option to linker fixes it, but not sure if it is correc
 ```asm
 476c <osc_white@plt>:
 476c:   0000        movs    r0, r0              ; ?
-476e:   0000        movs    r0, r0              : ?
+476e:   0000        movs    r0, r0              ; ?
 4770:   f240 2c40   movw    ip, #576            ; 0x240
 4774:   f2c0 0c00   movt    ip, #0
 4778:   44fc        add	    ip, pc
