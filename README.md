@@ -161,6 +161,13 @@ Thanks for all the open source.
 
 ## Build (with libnts1mkii.a and bindgen)
 
+This repository already contains a pre-build of the louge-sdk library and bindings, so there is essentially no need to do this build.
+
+- `components/logue_bind/dist/libnts1mkii.a`
+- `components/logue_bind/src/bindings_libnts1mkii.rs`
+
+If you build, please do so under Linux, as cmake is tuned for Linux.
+
 Build logue-sdk: `components/logue_bind/dist/libnts1mkii.a`
 
 ```bash
@@ -178,7 +185,7 @@ nm dist/libnts1mkii.a | tee dist/libnts1mkii.obj.txt
 popd
 ```
 
-Build Rust with bindgen: `WITH_LOGUE_SDK_BINDGEN=true`
+Build Rust with bindgen: `components/logue_bind/src/bindings_libnts1mkii.rs`
 
 ```bash
 WITH_LOGUE_SDK_BINDGEN=true cargo build --release --target=thumbv7em-none-eabihf
